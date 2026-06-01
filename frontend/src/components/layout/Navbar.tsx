@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../auth/AuthContext';
 import styles from './Navbar.module.css';
+
+// 호스트 대시보드(사이드바가 있는) 경로들 — 이때 헤더를 호스트 모드(검정)로 표시한다.
+const HOST_MODE_ROUTES = ['/host', '/host/calendar', '/host/listings', '/host/messages', '/host/bookings'];
 
 export function Navbar() {
   const { user, loginWithGoogle, logout } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const hostMode = HOST_MODE_ROUTES.includes(location.pathname);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
@@ -20,11 +25,13 @@ export function Navbar() {
   }, []);
 
   return (
-    <nav className={styles.navbar}>
-      <button className={styles.hostModeBtn} onClick={() => navigate('/host')}>호스트 모드</button>
+    <nav className={`${styles.navbar} ${hostMode ? styles.navbarHost : ''}`}>
+      <button className={styles.hostModeBtn} onClick={() => navigate(hostMode ? '/' : '/host')}>
+        {hostMode ? '게스트 모드' : '호스트 모드'}
+      </button>
 
       <Link to="/" className={styles.logo}>
-        <img src="/hiero-logo-b.png" alt="HIERO" className={styles.logoImg} />
+        <img src={hostMode ? '/hiero-logo-w.png' : '/hiero-logo-b.png'} alt="HIERO" className={styles.logoImg} />
       </Link>
 
       <div className={styles.navRight}>
@@ -34,7 +41,7 @@ export function Navbar() {
             className={styles.menuToggle}
             onClick={e => { e.stopPropagation(); setDropdownOpen(p => !p); }}
           >
-            {user && <span className={styles.userName}>{user.name?.split(' ')[0] || '사용자'} 님</span>}
+            <span className={styles.userName}>{user ? `${user.name?.split(' ')[0] || '사용자'} 님` : '로그인'}</span>
             <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <line x1="3" y1="7" x2="21" y2="7" />
               <line x1="3" y1="12" x2="21" y2="12" />

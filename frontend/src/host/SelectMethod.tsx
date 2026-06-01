@@ -6,11 +6,6 @@ export function SelectMethod() {
 
   return (
     <div className={styles.selectPage}>
-      <div className={styles.selectHeader}>
-        <div className={styles.selectLogo} onClick={() => navigate('/')}>
-          OPEN LETTER <span>HOST</span>
-        </div>
-      </div>
       <div className={styles.selectContent}>
         <h1 className={styles.selectTitle}>숙소 등록 방식을 선택해주세요</h1>
         <p className={styles.selectDesc}>직접 등록하거나 호스트 상담을 통해 등록할 수 있습니다.</p>

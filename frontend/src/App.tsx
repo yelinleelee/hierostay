@@ -11,6 +11,9 @@ import { MyBookingsPage } from "./pages/Bookings/MyBookings";
 import { HostBookingsPage } from "./pages/HostBookings";
 import { MessagesPage } from "./pages/MessagesPage";
 import { HostDashboard } from "./pages/Host/Dashboard";
+import { HostCalendarPage } from "./pages/Host/Calendar";
+import { HostListingsPage } from "./pages/Host/Listings";
+import { HostMessagesPage } from "./pages/Host/Messages";
 import { BrandStoryPage } from "./pages/BrandStory";
 import { AboutPage } from "./pages/About";
 import { NeighborhoodPage } from "./pages/Neighborhood";
@@ -19,7 +22,6 @@ import { LaunchingPage } from "./pages/Host/Launching";
 import { RegisterLayout } from "./host/RegisterLayout";
 import { SelectMethod } from "./host/SelectMethod";
 import { TypeStep } from "./host/steps/TypeStep";
-import { ConceptStep } from "./host/steps/ConceptStep";
 import { BasicsStep } from "./host/steps/BasicsStep";
 import { DescriptionStep } from "./host/steps/DescriptionStep";
 import { LocationStep } from "./host/steps/LocationStep";
@@ -52,7 +54,6 @@ function App() {
               <Route path="/host/register" element={<RegisterLayout />}>
                 <Route index element={<Navigate to="type" replace />} />
                 <Route path="type" element={<TypeStep />} />
-                <Route path="concept" element={<ConceptStep />} />
                 <Route path="basics" element={<BasicsStep />} />
                 <Route path="description" element={<DescriptionStep />} />
                 <Route path="location" element={<LocationStep />} />
@@ -65,6 +66,9 @@ function App() {
             <Route element={<ProtectedRoute requireHost />}>
               <Route path="/host" element={<HostDashboard />} />
               <Route path="/host/bookings" element={<HostBookingsPage />} />
+              <Route path="/host/calendar" element={<HostCalendarPage />} />
+              <Route path="/host/listings" element={<HostListingsPage />} />
+              <Route path="/host/messages" element={<HostMessagesPage />} />
             </Route>
           </Route>
           <Route path="*" element={<Navigate to="/" replace />} />

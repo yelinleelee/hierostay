@@ -30,6 +30,23 @@
   color: #fff;
 }
 
+/* ── 호스트 모드: 검정 배경 헤더 ── */
+.navbarHost {
+  background: #1a1a1a;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+}
+.navbarHost .menuToggle { color: #fff; }
+.navbarHost .userName { color: #fff; }
+.navbarHost .hostModeBtn {
+  color: #fff;
+  background: transparent;
+  border-color: #fff;
+}
+.navbarHost .hostModeBtn:hover {
+  background: #fff;
+  color: #1a1a1a;
+}
+
 .logo {
   position: absolute;
   left: 50%;

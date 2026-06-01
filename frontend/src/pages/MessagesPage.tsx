@@ -8,7 +8,20 @@ import {
   sendMessage,
 } from "../lib/messages";
 import type { ConversationSummary, Message } from "../types/message";
+import { listMyBookings } from "../lib/bookings";
+import type { Booking } from "../types/booking";
 import { ApiError } from "../lib/api";
+
+const STATUS_LABEL: Record<string, string> = {
+  pending: "예약 요청", confirmed: "예약 확정", completed: "이용 완료", cancelled: "취소됨",
+};
+const STATUS_COLOR: Record<string, string> = {
+  pending: "#b8860b", confirmed: "#2e9e6b", completed: "#777", cancelled: "#c0392b",
+};
+function fmtRange(ci: string, co: string) {
+  const f = (s: string) => { const d = new Date(s); return `${d.getMonth() + 1}월 ${d.getDate()}일`; };
+  return `${f(ci)} ~ ${f(co)}`;
+}
 
 export function MessagesPage() {
   const { user } = useAuth();
@@ -20,7 +33,11 @@ export function MessagesPage() {
   const [draft, setDraft] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [sending, setSending] = useState(false);
+  const [bookings, setBookings] = useState<Booking[]>([]);
   const tailRef = useRef<HTMLDivElement | null>(null);
+
+  // 대화 상대(호스트)와 매칭되는 가장 최근 예약
+  const bookingForHost = (hostId: number) => bookings.find((b) => b.property?.host_id === hostId);
 
   const reloadConversations = useCallback(async () => {
     try {
@@ -33,6 +50,7 @@ export function MessagesPage() {
 
   useEffect(() => {
     reloadConversations();
+    listMyBookings().then(setBookings).catch(() => {});
   }, [reloadConversations]);
 
   // Initialize selected peer from ?peer=N or first conversation.
@@ -113,19 +131,38 @@ export function MessagesPage() {
               <button
                 type="button"
                 onClick={() => selectPeer(c.peer.id)}
-                className={`flex w-full flex-col items-start gap-1 border-b border-slate-100 px-4 py-3 text-left transition hover:bg-slate-50 ${
+                className={`flex w-full items-start gap-3 border-b border-slate-100 px-4 py-3 text-left transition hover:bg-slate-50 ${
                   selectedPeer === c.peer.id ? "bg-slate-50" : ""
                 }`}
               >
-                <div className="flex w-full items-center justify-between">
-                  <span className="text-sm font-medium">{c.peer.name}</span>
-                  {c.unread_count > 0 && (
-                    <span className="rounded-full bg-slate-900 px-2 py-0.5 text-xs text-white">
-                      {c.unread_count}
-                    </span>
+                <div className="size-10 shrink-0 overflow-hidden rounded-full bg-slate-200">
+                  {c.peer.avatar && (
+                    <img src={c.peer.avatar} alt="" className="size-full object-cover" />
                   )}
                 </div>
-                <span className="line-clamp-1 text-xs text-slate-500">{c.last_message}</span>
+                <div className="min-w-0 flex-1">
+                  <div className="flex w-full items-center justify-between">
+                    <span className="text-sm font-medium">{c.peer.name}</span>
+                    {c.unread_count > 0 && (
+                      <span className="rounded-full bg-slate-900 px-2 py-0.5 text-xs text-white">
+                        {c.unread_count}
+                      </span>
+                    )}
+                  </div>
+                  {(() => {
+                    const bk = bookingForHost(c.peer.id);
+                    return bk ? (
+                      <p className="line-clamp-1 text-xs">
+                        <span className="font-semibold" style={{ color: STATUS_COLOR[bk.status] }}>
+                          {STATUS_LABEL[bk.status] ?? bk.status}
+                        </span>
+                        {` · ${fmtRange(bk.check_in, bk.check_out)}`}
+                        {bk.property?.title ? ` · ${bk.property.title}` : ""}
+                      </p>
+                    ) : null;
+                  })()}
+                  <span className="line-clamp-1 text-xs text-slate-500">{c.last_message}</span>
+                </div>
               </button>
             </li>
           ))}

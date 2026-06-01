@@ -4,7 +4,6 @@ import { RegisterProvider, useRegister } from './RegisterContext';
 
 const STEPS = [
   { path: 'type', label: '숙소 유형' },
-  { path: 'concept', label: '컨셉' },
   { path: 'basics', label: '기본 정보' },
   { path: 'description', label: '설명' },
   { path: 'location', label: '위치' },
@@ -43,9 +42,6 @@ function RegisterLayoutInner() {
   return (
     <div className={styles.registerPage}>
       <div className={styles.registerHeader}>
-        <div className={styles.registerLogo} onClick={() => navigate('/')}>
-          OPEN LETTER <span>HOST</span>
-        </div>
         {!isSuccess && currentStep >= 0 && (
           <div className={styles.stepIndicator}>{currentStep + 1} / {total}</div>
         )}

@@ -58,6 +58,17 @@ function markerContent(name: string, price?: number) {
   ">${label}</div>`;
 }
 
+// 카드 호버 시 해당 위치에 "톡" 떨어지는 강조 핀 (브랜드 형광 라임)
+function highlightPinContent() {
+  return `<div class="map-pin-drop" style="transform:translate(-50%,-100%);position:relative;">
+    <div class="map-pin-ring" style="position:absolute;left:50%;bottom:1px;width:16px;height:16px;border-radius:50%;background:rgba(170,255,110,0.55);"></div>
+    <div style="position:relative;display:flex;flex-direction:column;align-items:center;">
+      <div style="width:18px;height:18px;border-radius:50%;background:#aaff6e;border:3px solid #1a1a1a;box-shadow:0 3px 10px rgba(0,0,0,0.35);"></div>
+      <div style="width:2px;height:9px;background:#1a1a1a;margin-top:-1px;"></div>
+    </div>
+  </div>`;
+}
+
 function poiMarkerContent(poi: RoutePOI) {
   return `<div style="
     display:inline-flex;
@@ -137,6 +148,7 @@ export function NaverMap({
   const polylineRef = useRef<naver.maps.Polyline | null>(null);
   const poiMarkersRef = useRef<naver.maps.Marker[]>([]);
   const openIwRef = useRef<naver.maps.InfoWindow | null>(null);
+  const highlightRef = useRef<naver.maps.Marker | null>(null);
   const [status, setStatus] = useState<'loading' | 'ready' | 'error'>('loading');
   const [errorType, setErrorType] = useState<ErrorType>(null);
 
@@ -222,9 +234,26 @@ export function NaverMap({
     const map = mapRef.current;
     if (!map || !window.naver?.maps) return;
 
+    // 이전 강조 핀 제거
+    if (highlightRef.current) {
+      highlightRef.current.setMap(null);
+      highlightRef.current = null;
+    }
+
     if (hoveredStay) {
-      map.panTo(new window.naver.maps.LatLng(hoveredStay.lat, hoveredStay.lng));
+      const pos = new window.naver.maps.LatLng(hoveredStay.lat, hoveredStay.lng);
+      // 부드럽게 그 위치로 이동
+      map.panTo(pos);
       map.setZoom(15, true);
+      // 해당 위치에 "톡" 떨어지는 강조 핀
+      highlightRef.current = new window.naver.maps.Marker({
+        position: pos,
+        map,
+        icon: {
+          content: highlightPinContent(),
+          anchor: new window.naver.maps.Point(0, 0),
+        },
+      });
     }
   }, [hoveredStay]);
 

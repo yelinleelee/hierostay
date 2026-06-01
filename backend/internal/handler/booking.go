@@ -2,6 +2,7 @@ package handler
 
 import (
 	"errors"
+	"fmt"
 	"math"
 	"net/http"
 	"strconv"
@@ -96,6 +97,19 @@ func CreateBooking(db *gorm.DB) gin.HandlerFunc {
 			return
 		}
 		preloadBooking(db, &booking)
+
+		// 예약이 생성되면 게스트가 호스트에게 거는 첫 메시지를 자동으로 만든다.
+		// 메시지가 하나라도 있어야 양쪽 대화함에 상대(예약자)가 표시되므로,
+		// 이걸로 호스트가 바로 예약자에게 말을 걸 수 있게 된다. (실패해도 예약은 유지)
+		autoMsg := model.Message{
+			ConversationID: conversationID(userID, property.HostID),
+			SenderID:       userID,
+			ReceiverID:     property.HostID,
+			Content: fmt.Sprintf("[%s] 숙소를 예약 요청했어요.\n📅 %s ~ %s · 👤 %d명",
+				property.Title, req.CheckIn, req.CheckOut, guests),
+		}
+		db.Create(&autoMsg)
+
 		c.JSON(http.StatusCreated, booking)
 	}
 }

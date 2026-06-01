@@ -29,8 +29,8 @@ export function Footer() {
         </div>
         <div className={styles.right}>
           <div className={styles.footerLogo}>
-            OPEN LETTER
-            <span>HOUSE</span>
+            HIERO
+            <span>STAY</span>
           </div>
           <div className={styles.sns}>
             <a className={styles.snsBtn} href="#" title="Instagram">
