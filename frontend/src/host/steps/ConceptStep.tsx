@@ -1,37 +1,32 @@
-import { CONCEPT_OPTIONS, useRegister } from "../RegisterContext";
-import { StepNav } from "../StepNav";
+import styles from '../Register.module.css';
+import { useRegister } from '../RegisterContext';
+
+const CONCEPTS = [
+  { icon: '🎨', label: '아트 스테이', desc: '예술가의 감성이 담긴 공간' },
+  { icon: '🌿', label: '친환경',     desc: '자연과 함께하는 지속 가능한 공간' },
+  { icon: '🏘', label: '로컬 스테이', desc: '그 동네의 일상을 경험하는 공간' },
+  { icon: '✨', label: '럭셔리',     desc: '최고급 시설과 서비스' },
+];
 
 export function ConceptStep() {
   const { data, setField } = useRegister();
-
   return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">어떤 컨셉인가요?</h1>
-        <p className="mt-1 text-sm text-slate-500">대표 키워드 하나를 골라주세요.</p>
-      </header>
-
-      <div className="flex flex-wrap gap-2">
-        {CONCEPT_OPTIONS.map((c) => {
-          const active = data.concept === c;
-          return (
-            <button
-              key={c}
-              type="button"
-              onClick={() => setField("concept", active ? null : c)}
-              className={`rounded-full border px-4 py-2 text-sm transition ${
-                active
-                  ? "border-slate-900 bg-slate-900 text-white"
-                  : "border-slate-200 hover:border-slate-300"
-              }`}
-            >
-              {c}
-            </button>
-          );
-        })}
+    <div className={styles.stepPage}>
+      <h1 className={styles.stepTitle}>숙소의 컨셉을 선택해주세요</h1>
+      <p className={styles.stepDesc}>가장 잘 어울리는 컨셉을 고르세요.</p>
+      <div className={styles.conceptGrid}>
+        {CONCEPTS.map(c => (
+          <div
+            key={c.label}
+            className={`${styles.conceptCard} ${data.concept === c.label ? styles.conceptCardSelected : ''}`}
+            onClick={() => setField('concept', c.label)}
+          >
+            <div className={styles.typeIcon}>{c.icon}</div>
+            <div className={styles.conceptLabel}>{c.label}</div>
+            <div className={styles.conceptDesc}>{c.desc}</div>
+          </div>
+        ))}
       </div>
-
-      <StepNav back="../type" next="../basics" />
-    </section>
+    </div>
   );
 }

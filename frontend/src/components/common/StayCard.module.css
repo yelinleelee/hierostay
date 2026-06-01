@@ -1,0 +1,63 @@
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.1); }
+
+.imgWrap {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: #d4cfc8;
+}
+.imgWrap img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s;
+}
+.card:hover .imgWrap img { transform: scale(1.04); }
+
+.placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.05em;
+}
+
+/* placeholder color classes */
+:global(.cp-1) { background: linear-gradient(135deg, #c8bfb0, #a09080); }
+:global(.cp-2) { background: linear-gradient(135deg, #b0b8c8, #8090a8); }
+:global(.cp-3) { background: linear-gradient(135deg, #c8c0b0, #b0a890); }
+:global(.cp-4) { background: linear-gradient(135deg, #b8c0b0, #90a890); }
+:global(.cp-5) { background: linear-gradient(135deg, #c0b8c8, #9088a8); }
+:global(.cp-6) { background: linear-gradient(135deg, #c8b8b0, #a88880); }
+
+.badges { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; }
+.badge { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 4px; }
+.badgePromo { background: var(--badge-promo); color: white; }
+.badgeSale { background: var(--badge-sale); color: white; }
+
+.bookmark {
+  position: absolute;
+  top: 10px; right: 10px;
+  background: rgba(255,255,255,0.85);
+  border: none; border-radius: 50%;
+  width: 32px; height: 32px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background 0.2s;
+  color: var(--dark);
+}
+.bookmark:hover { background: white; }
+.saved { color: var(--dark); }
+
+.body { padding: 16px 18px 20px; }
+.name { font-size: 19px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.01em; }
+.meta { font-size: 13px; color: var(--light); margin-bottom: 10px; }
+.priceRow { display: flex; align-items: center; gap: 8px; }
+.price { font-size: 18px; font-weight: 700; color: var(--accent); }

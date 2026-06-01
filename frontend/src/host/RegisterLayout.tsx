@@ -1,46 +1,89 @@
-import { Outlet, useLocation } from "react-router-dom";
-import { RegisterProvider } from "./RegisterContext";
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import styles from './Register.module.css';
+import { RegisterProvider, useRegister } from './RegisterContext';
 
 const STEPS = [
-  { path: "type", label: "유형" },
-  { path: "concept", label: "컨셉" },
-  { path: "basics", label: "기본정보" },
-  { path: "description", label: "소개" },
-  { path: "location", label: "위치" },
-  { path: "photos", label: "사진" },
-  { path: "price", label: "가격" },
-  { path: "success", label: "완료" },
+  { path: 'type', label: '숙소 유형' },
+  { path: 'concept', label: '컨셉' },
+  { path: 'basics', label: '기본 정보' },
+  { path: 'description', label: '설명' },
+  { path: 'location', label: '위치' },
+  { path: 'photos', label: '사진' },
+  { path: 'price', label: '가격' },
 ];
 
-export function RegisterLayout() {
+const STEP_PATHS = STEPS.map((s) => s.path);
+
+function RegisterLayoutInner() {
   const location = useLocation();
-  const currentIndex = STEPS.findIndex((s) => location.pathname.endsWith(`/${s.path}`));
+  const navigate = useNavigate();
+  const { submit, submitting, submitError } = useRegister();
+
+  const currentStep = STEP_PATHS.findIndex((p) => location.pathname.endsWith(`/${p}`));
+  const total = STEP_PATHS.length;
+  const progress = currentStep >= 0 ? ((currentStep + 1) / total) * 100 : 0;
+  const isSuccess = location.pathname.endsWith('/success');
+
+  function goPrev() {
+    if (submitting) return;
+    if (currentStep > 0) navigate(`/host/register/${STEP_PATHS[currentStep - 1]}`);
+    else navigate('/host/register/select');
+  }
+
+  async function goNext() {
+    if (submitting) return;
+    if (currentStep >= 0 && currentStep < total - 1) {
+      navigate(`/host/register/${STEP_PATHS[currentStep + 1]}`);
+    } else if (currentStep === total - 1) {
+      const res = await submit();
+      if (res.ok) navigate('/host/register/success');
+    }
+  }
 
   return (
-    <RegisterProvider>
-      <div className="mx-auto flex w-full max-w-3xl flex-col gap-8 py-4">
-        <ProgressBar current={currentIndex < 0 ? 0 : currentIndex} />
-        <Outlet />
+    <div className={styles.registerPage}>
+      <div className={styles.registerHeader}>
+        <div className={styles.registerLogo} onClick={() => navigate('/')}>
+          OPEN LETTER <span>HOST</span>
+        </div>
+        {!isSuccess && currentStep >= 0 && (
+          <div className={styles.stepIndicator}>{currentStep + 1} / {total}</div>
+        )}
       </div>
-    </RegisterProvider>
+
+      {!isSuccess && currentStep >= 0 && (
+        <div className={styles.progressBar}>
+          <div className={styles.progressFill} style={{ width: `${progress}%` }} />
+        </div>
+      )}
+
+      <div className={styles.registerContent}>
+        <Outlet />
+        {submitError && currentStep === total - 1 && (
+          <div style={{ width: '100%', maxWidth: 600, marginTop: 16, padding: 14, background: '#fff5f5', border: '1px solid #ffcccc', borderRadius: 10, color: '#c0392b', fontSize: 14 }}>
+            {submitError}
+          </div>
+        )}
+      </div>
+
+      {!isSuccess && currentStep >= 0 && (
+        <div className={styles.registerFooter}>
+          <button className={styles.prevBtn} onClick={goPrev} disabled={submitting}>이전</button>
+          <button className={styles.nextBtn} onClick={goNext} disabled={submitting}>
+            {currentStep === total - 1
+              ? (submitting ? '등록 중...' : '등록 완료')
+              : '다음'}
+          </button>
+        </div>
+      )}
+    </div>
   );
 }
 
-function ProgressBar({ current }: { current: number }) {
+export function RegisterLayout() {
   return (
-    <div className="space-y-2">
-      <div className="flex justify-between text-xs text-slate-500">
-        <span>
-          {current + 1} / {STEPS.length} · {STEPS[current]?.label}
-        </span>
-        <span>호스트 등록</span>
-      </div>
-      <div className="h-1.5 w-full overflow-hidden rounded-full bg-slate-100">
-        <div
-          className="h-full bg-slate-900 transition-all"
-          style={{ width: `${((current + 1) / STEPS.length) * 100}%` }}
-        />
-      </div>
-    </div>
+    <RegisterProvider>
+      <RegisterLayoutInner />
+    </RegisterProvider>
   );
 }

@@ -2,7 +2,12 @@
   "permissions": {
     "allow": [
       "Bash(git fsck *)",
-      "Bash(grep -iE \"\\\\.\\(jpg|jpeg|png|webp\\)$\")"
+      "Bash(grep -iE \"\\\\.\\(jpg|jpeg|png|webp\\)$\")",
+      "Bash(cp \"/Users/yelinlee/Desktop/openletter/과거 프로젝트/openletter-web/public/main1.jpg\" /Users/yelinlee/Desktop/openletter/frontend/public/ && cp \"/Users/yelinlee/Desktop/openletter/과거 프로젝트/openletter-web/public/Myeondong.jpg\" /Users/yelinlee/Desktop/openletter/frontend/public/ && cp \"/Users/yelinlee/Desktop/openletter/과거 프로젝트/openletter-web/public/openletter-logo-en.png\" \"/Users/yelinlee/Desktop/openletter/과거 프로젝트/openletter-web/public/openletter-logo-kr.png\" \"/Users/yelinlee/Desktop/openletter/과거 프로젝트/openletter-web/public/openletter-logo-kr-line.png\" \"/Users/yelinlee/Desktop/openletter/과거 프로젝트/openletter-web/public/openletter-logo.png\" /Users/yelinlee/Desktop/openletter/frontend/public/ && cp -r \"/Users/yelinlee/Desktop/openletter/과거 프로젝트/openletter-web/public/images\" /Users/yelinlee/Desktop/openletter/frontend/public/ && ls /Users/yelinlee/Desktop/openletter/frontend/public/)",
+      "Bash(echo \"EXIT=$?\")",
+      "Bash(echo \"---EXIT $?\")",
+      "Bash(curl -i -s -m 3 http://localhost:8080/properties)",
+      "Bash(ps -p 57163 -o pid,ppid,etime,command)"
     ]
   }
 }

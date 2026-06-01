@@ -1,30 +1,20 @@
-import { Link } from "react-router-dom";
-import { Check } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
+import styles from '../Register.module.css';
 
 export function SuccessStep() {
+  const navigate = useNavigate();
   return (
-    <section className="flex flex-col items-center gap-4 py-12 text-center">
-      <div className="flex size-14 items-center justify-center rounded-full bg-emerald-100 text-emerald-700">
-        <Check className="size-6" />
-      </div>
-      <h1 className="text-2xl font-semibold tracking-tight">등록 완료!</h1>
-      <p className="max-w-md text-sm text-slate-500">
-        숙소가 등록되었습니다. 호스트 대시보드에서 예약과 숙소를 관리할 수 있어요.
+    <div className={styles.successPage}>
+      <div className={styles.successIcon}>🎉</div>
+      <h1 className={styles.successTitle}>숙소 등록이 완료되었습니다!</h1>
+      <p className={styles.successDesc}>
+        등록 신청이 접수되었습니다. 오픈레터하우스 팀이 검토 후 승인하면 서비스에 등재됩니다.
+        보통 1~3 영업일이 소요됩니다.
       </p>
-      <div className="flex gap-2 pt-2">
-        <Link
-          to="/host"
-          className="rounded-md bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
-        >
-          호스트 대시보드
-        </Link>
-        <Link
-          to="/stays"
-          className="rounded-md border border-slate-200 px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50"
-        >
-          숙소 둘러보기
-        </Link>
+      <div className={styles.successBtns}>
+        <button className={styles.successPrimaryBtn} onClick={() => navigate('/host')}>대시보드로 이동</button>
+        <button className={styles.successSecondaryBtn} onClick={() => navigate('/')}>홈으로 이동</button>
       </div>
-    </section>
+    </div>
   );
 }

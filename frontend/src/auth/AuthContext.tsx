@@ -30,17 +30,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    const token = tokenStore.get();
-    if (!token) {
-      setReady(true);
-      return;
-    }
-    api<CurrentUser>("/auth/me")
-      .then(setUser)
-      .catch(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const token = tokenStore.get();
+        if (!token) return;
+        const me = await api<CurrentUser>("/auth/me");
+        if (!cancelled) setUser(me);
+      } catch {
         tokenStore.clear();
-      })
-      .finally(() => setReady(true));
+      } finally {
+        if (!cancelled) setReady(true);
+      }
+    })();
+    return () => { cancelled = true; };
   }, []);
 
   const value = useMemo<AuthState>(

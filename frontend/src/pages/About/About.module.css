@@ -1,0 +1,417 @@
+.page {
+  font-family: inherit;
+  color: #222;
+}
+
+/* ── Section base ── */
+.section {
+  padding: 96px 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.bgBeige {
+  background: #f5f0e8;
+  max-width: none;
+  padding-left: max(20px, calc((100% - 1280px) / 2 + 20px));
+  padding-right: max(20px, calc((100% - 1280px) / 2 + 20px));
+}
+
+.bgSoftBlue {
+  background: #e8f0f8;
+  max-width: none;
+  padding-left: max(20px, calc((100% - 1280px) / 2 + 20px));
+  padding-right: max(20px, calc((100% - 1280px) / 2 + 20px));
+}
+
+.bgDark {
+  background: #1a2e25;
+  color: #fff;
+  max-width: none;
+  padding-left: max(20px, calc((100% - 1280px) / 2 + 20px));
+  padding-right: max(20px, calc((100% - 1280px) / 2 + 20px));
+  text-align: center;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 56px;
+  word-break: keep-all;
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  color: #2d6a4f;
+  margin-bottom: 16px;
+}
+.eyebrowLight { color: #c8e1d4; }
+
+.sectionTitle {
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 700;
+  line-height: 1.4;
+  color: #222;
+  letter-spacing: -0.02em;
+}
+.sectionTitleLight {
+  font-size: clamp(26px, 3.4vw, 38px);
+  font-weight: 700;
+  line-height: 1.4;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.sectionLead {
+  margin-top: 16px;
+  font-size: clamp(15px, 1.6vw, 17px);
+  color: #555;
+  line-height: 1.6;
+}
+
+/* ── Section 1: Hero ── */
+.hero {
+  background: linear-gradient(rgba(15, 25, 20, 0.65), rgba(15, 25, 20, 0.5)),
+    url('/Myeondong.jpg') center / cover no-repeat;
+  padding: 160px 20px 150px;
+  text-align: center;
+  color: #fff;
+}
+
+.heroInner {
+  max-width: 760px;
+  margin: 0 auto;
+  word-break: keep-all;
+}
+
+.heroBadge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: #fff;
+  padding: 6px 14px;
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  margin-bottom: 28px;
+}
+
+.heroTitle {
+  font-size: clamp(32px, 5vw, 52px);
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: -0.025em;
+  color: #fff;
+  margin-bottom: 24px;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.35);
+}
+
+.heroDesc {
+  font-size: clamp(15px, 1.7vw, 18px);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.92);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.3);
+}
+.heroDesc strong {
+  color: #b9e5cf;
+}
+
+/* ── Section 2: Why ── */
+.whyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  max-width: 900px;
+  margin: 0 auto 40px;
+}
+
+.whyCard {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  border-radius: 18px;
+  padding: 32px 24px;
+  text-align: center;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.whyCard:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.whyEmoji {
+  font-size: 40px;
+  margin-bottom: 16px;
+}
+
+.whyText {
+  font-size: 15px;
+  line-height: 1.55;
+  color: #333;
+  word-break: keep-all;
+}
+
+.whyConclusion {
+  text-align: center;
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.65;
+  color: #1a3325;
+  max-width: 720px;
+  margin: 0 auto;
+  word-break: keep-all;
+}
+.whyConclusion strong { color: #2d6a4f; }
+
+/* ── Section 3: MORO ── */
+.moroGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto 40px;
+}
+
+.moroCard {
+  background: #fff;
+  border-radius: 24px;
+  padding: 40px 28px;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+}
+
+.moroIconWrap {
+  font-size: 44px;
+  margin-bottom: 18px;
+}
+
+.moroTitle {
+  font-size: 21px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.moroSubtitle {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2d6a4f;
+  letter-spacing: 0.12em;
+  margin-bottom: 18px;
+}
+
+.moroDesc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #555;
+  word-break: keep-all;
+}
+
+.dataNote {
+  text-align: center;
+  font-size: 13px;
+  color: #717171;
+  letter-spacing: 0.02em;
+}
+
+/* ── Section 4: Story Stay ── */
+.storyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 24px;
+}
+
+.storyCard {
+  border-radius: 24px;
+  padding: 44px 32px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s;
+}
+.storyCard:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.08);
+}
+
+.storyArt  { background: linear-gradient(135deg, #f6e8f0, #ead6f4); }
+.storyEco  { background: linear-gradient(135deg, #e6f0e6, #d4ebdc); }
+.storyWork { background: linear-gradient(135deg, #e6ecf5, #d6e2f0); }
+
+.storyEmoji {
+  font-size: 48px;
+  margin-bottom: 20px;
+}
+
+.storyTitle {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin-bottom: 4px;
+}
+
+.storySubtitle {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  color: #555;
+  margin-bottom: 18px;
+}
+
+.storyDesc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: #333;
+  word-break: keep-all;
+}
+
+/* ── Section 5: Local Identity ── */
+.identityCard {
+  max-width: 680px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 24px;
+  padding: 44px 40px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(45, 106, 79, 0.15);
+}
+
+.identityHead {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.identityLocation {
+  font-size: 14px;
+  font-weight: 600;
+  color: #555;
+}
+
+.identityRole {
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: #2d6a4f;
+  padding: 6px 14px;
+  border-radius: 999px;
+}
+
+.identityQuote {
+  font-size: clamp(16px, 1.8vw, 19px);
+  line-height: 1.7;
+  color: #1a3325;
+  margin-bottom: 24px;
+  word-break: keep-all;
+}
+.identityQuote strong { color: #2d6a4f; }
+
+.identityTags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.identityTag {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d6a4f;
+  background: rgba(45, 106, 79, 0.08);
+  padding: 6px 12px;
+  border-radius: 8px;
+}
+
+/* ── Section 6: Trust ── */
+.trustDesc {
+  max-width: 720px;
+  margin: 0 auto 32px;
+  font-size: clamp(15px, 1.7vw, 18px);
+  line-height: 1.75;
+  color: #d6e8df;
+  word-break: keep-all;
+}
+.trustDesc strong { color: #fff; }
+
+.trustLink {
+  background: transparent;
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 14px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s;
+  font-family: inherit;
+}
+.trustLink:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #fff;
+}
+
+/* ── Section 7: CTA ── */
+.cta {
+  background: #2d6a4f;
+  padding: 100px 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.ctaTitle {
+  font-size: clamp(26px, 3.4vw, 36px);
+  font-weight: 700;
+  line-height: 1.4;
+  letter-spacing: -0.02em;
+  margin-bottom: 14px;
+  word-break: keep-all;
+}
+
+.ctaDesc {
+  font-size: clamp(15px, 1.6vw, 18px);
+  margin-bottom: 40px;
+  opacity: 0.92;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 14px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btnPrimary,
+.btnSecondary {
+  padding: 16px 32px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: transform 0.2s, background 0.2s;
+}
+
+.btnPrimary {
+  background: #fff;
+  color: #2d6a4f;
+  border: none;
+}
+.btnPrimary:hover { transform: translateY(-2px); }
+
+.btnSecondary {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+}
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 700px) {
+  .section { padding: 64px 20px; }
+  .hero { padding: 100px 20px 90px; }
+  .sectionHeader { margin-bottom: 36px; }
+  .identityCard { padding: 32px 24px; }
+}

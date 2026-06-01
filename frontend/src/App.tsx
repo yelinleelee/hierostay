@@ -1,22 +1,23 @@
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./auth/AuthContext";
 import { ProtectedRoute } from "./auth/ProtectedRoute";
-import { MainLayout } from "./layout/MainLayout";
-import { HomePage } from "./pages/HomePage";
+import { MainLayout } from "./components/layout/MainLayout";
+import { HomePage } from "./pages/Home";
 import { LoginPage } from "./pages/LoginPage";
 import { MyPage } from "./pages/MyPage";
-import { StaysPage } from "./pages/StaysPage";
-import { StayDetailPage } from "./pages/StayDetailPage";
-import { MyBookingsPage } from "./pages/MyBookingsPage";
-import { HostBookingsPage } from "./pages/HostBookingsPage";
+import { StaysPage } from "./pages/Stays";
+import { StayDetailPage } from "./pages/StayDetail";
+import { MyBookingsPage } from "./pages/Bookings/MyBookings";
+import { HostBookingsPage } from "./pages/HostBookings";
 import { MessagesPage } from "./pages/MessagesPage";
-import { HostDashboard } from "./pages/HostDashboard";
-import { BrandStoryPage } from "./pages/BrandStoryPage";
-import { AboutPage } from "./pages/AboutPage";
-import { NeighborhoodPage } from "./pages/NeighborhoodPage";
-import { HieroPage } from "./pages/HieroPage";
-import { LaunchingPage } from "./pages/LaunchingPage";
+import { HostDashboard } from "./pages/Host/Dashboard";
+import { BrandStoryPage } from "./pages/BrandStory";
+import { AboutPage } from "./pages/About";
+import { NeighborhoodPage } from "./pages/Neighborhood";
+import { HieroLandingPage } from "./pages/Host/Hiero";
+import { LaunchingPage } from "./pages/Host/Launching";
 import { RegisterLayout } from "./host/RegisterLayout";
+import { SelectMethod } from "./host/SelectMethod";
 import { TypeStep } from "./host/steps/TypeStep";
 import { ConceptStep } from "./host/steps/ConceptStep";
 import { BasicsStep } from "./host/steps/BasicsStep";
@@ -39,7 +40,7 @@ function App() {
             <Route path="/brand-story" element={<BrandStoryPage />} />
             <Route path="/about" element={<AboutPage />} />
             <Route path="/neighborhood" element={<NeighborhoodPage />} />
-            <Route path="/host/hiero" element={<HieroPage />} />
+            <Route path="/host/hiero" element={<HieroLandingPage />} />
             <Route path="/host/launching" element={<LaunchingPage />} />
 
             <Route element={<ProtectedRoute />}>
@@ -47,6 +48,7 @@ function App() {
               <Route path="/bookings/my" element={<MyBookingsPage />} />
               <Route path="/messages" element={<MessagesPage />} />
 
+              <Route path="/host/register/select" element={<SelectMethod />} />
               <Route path="/host/register" element={<RegisterLayout />}>
                 <Route index element={<Navigate to="type" replace />} />
                 <Route path="type" element={<TypeStep />} />

@@ -1,53 +1,36 @@
-import { useRegister } from "../RegisterContext";
-import { StepNav } from "../StepNav";
+import styles from '../Register.module.css';
+import { useRegister } from '../RegisterContext';
 
-const REGIONS = ["서울", "경기", "강원", "충청", "전라", "경상", "제주", "기타"];
+const REGIONS = ['서울', '경기', '인천', '강원', '충청', '전라', '경상', '부산', '제주'];
 
 export function LocationStep() {
   const { data, setField } = useRegister();
-  const ready = !!data.city && data.address.trim().length > 0;
-
   return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">위치</h1>
-        <p className="mt-1 text-sm text-slate-500">지역과 주소를 입력해주세요.</p>
-      </header>
-
-      <div className="space-y-2">
-        <span className="text-sm font-medium">지역</span>
-        <div className="flex flex-wrap gap-2">
-          {REGIONS.map((r) => {
-            const active = data.city === r;
-            return (
-              <button
-                key={r}
-                type="button"
-                onClick={() => setField("city", r)}
-                className={`rounded-full border px-3 py-1.5 text-sm transition ${
-                  active
-                    ? "border-slate-900 bg-slate-900 text-white"
-                    : "border-slate-200 hover:border-slate-300"
-                }`}
-              >
-                {r}
-              </button>
-            );
-          })}
-        </div>
+    <div className={styles.stepPage}>
+      <h1 className={styles.stepTitle}>숙소 위치를 알려주세요</h1>
+      <p className={styles.stepDesc}>정확한 주소는 예약 확정 후 게스트에게 공개됩니다.</p>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>지역</label>
+        <select
+          className={styles.formInput}
+          value={data.city}
+          onChange={e => setField('city', e.target.value)}
+          style={{ appearance: 'auto' }}
+        >
+          <option value="">지역 선택</option>
+          {REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
+        </select>
       </div>
-
-      <label className="block space-y-1">
-        <span className="text-sm font-medium">상세 주소</span>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>상세 주소</label>
         <input
+          className={styles.formInput}
+          type="text"
+          placeholder="도로명 주소를 입력해주세요"
           value={data.address}
-          onChange={(e) => setField("address", e.target.value)}
-          placeholder="OO시 OO구 OO동 ..."
-          className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
+          onChange={e => setField('address', e.target.value)}
         />
-      </label>
-
-      <StepNav back="../description" next="../photos" disabled={!ready} />
-    </section>
+      </div>
+    </div>
   );
 }

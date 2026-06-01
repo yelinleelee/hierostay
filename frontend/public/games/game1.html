@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>거리를 읽는 눈</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+:root{
+  --ink:#ffffff;
+  --panel:#f5f5f5;
+  --ink2:#f5f5f5;
+  --cream:#1a1a1a;
+  --cream-d:#666660;
+  --gold:#1a1a1a;
+  --line-c:#ddd8d0;
+  --coral:#e07a5a;
+  --green:#2d6a4f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:#ffffff;
+  color:var(--cream);font-family:'Pretendard',sans-serif;min-height:100vh;
+  -webkit-font-smoothing:antialiased}
+.app{max-width:560px;margin:0 auto;padding:30px 22px 56px}
+.screen{display:none;animation:fade .45s ease}
+.screen.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.kicker{font-size:12px;letter-spacing:.3em;color:var(--gold);font-weight:600;
+  text-transform:uppercase}
+h1{font-size:30px;font-weight:800;line-height:1.3;margin:12px 0;letter-spacing:-.01em}
+.sub{color:var(--cream-d);font-size:16px;line-height:1.75}
+.btn{appearance:none;border:1px solid #1a1a1a;background:#1a1a1a;color:#fff;
+  font-weight:700;font-size:15px;padding:14px 28px;border-radius:30px;cursor:pointer;
+  font-family:inherit;transition:.16s;margin-top:22px}
+.btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(232,184,74,.28)}
+.btn.ghost{background:transparent;color:var(--cream);border-color:var(--line-c)}
+.btn.block{display:block;width:100%}
+/* 라운드 */
+.rhead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px}
+.rhead .rn{font-size:12px;letter-spacing:.2em;color:var(--gold);font-weight:600}
+.rhead .sc{font-size:12px;color:var(--cream-d)}
+.rv-box{border:1px solid var(--line-c);border-radius:14px;overflow:hidden;
+  background:var(--ink2)}
+#roadview{width:100%;height:300px}
+.rv-fallback{display:flex;align-items:center;justify-content:center;height:300px;
+  padding:26px;text-align:center;font-size:13px;color:var(--cream-d);line-height:1.7}
+.ask{font-size:18px;font-weight:700;text-align:center;margin:20px 0 6px}
+.dialwrap{margin:14px 0 4px}
+.dial{width:100%;-webkit-appearance:none;appearance:none;height:6px;border-radius:3px;
+  background:linear-gradient(90deg,#44506e,#8a8f8c,#f6ecc8);outline:none}
+.dial::-webkit-slider-thumb{-webkit-appearance:none;width:26px;height:26px;border-radius:50%;
+  background:var(--gold);border:3px solid #1a1407;cursor:pointer}
+.dial::-moz-range-thumb{width:24px;height:24px;border-radius:50%;background:var(--gold);
+  border:3px solid #1a1407;cursor:pointer}
+.dial-ends{display:flex;justify-content:space-between;font-size:11px;color:var(--cream-d);
+  margin-top:7px}
+.dial-read{text-align:center;font-size:15px;font-weight:700;margin-top:10px;color:var(--gold)}
+/* 공개 */
+.reveal{margin-top:8px;animation:fade .5s ease}
+.rv-name{font-size:26px;font-weight:800;text-align:center}
+.rv-name span{font-size:13px;color:var(--cream-d);font-weight:500;margin-left:6px}
+.score-row{display:flex;gap:10px;margin:16px 0 4px}
+.scard{flex:1;background:var(--panel);border:1px solid var(--line-c);border-radius:12px;
+  padding:13px;text-align:center}
+.scard .lab{font-size:11px;color:var(--cream-d)}
+.scard .big{font-size:30px;font-weight:800;line-height:1.2;margin-top:3px}
+.tell{background:var(--ink2);border:1px solid var(--line-c);border-radius:12px;
+  padding:14px 16px;margin-top:14px;font-size:13.5px;line-height:1.8}
+.tell .th{font-size:11px;letter-spacing:.14em;color:var(--gold);font-weight:700;
+  display:block;margin-bottom:6px}
+.tell b{color:var(--gold)}
+.gap{text-align:center;font-size:13px;color:var(--cream-d);margin-top:12px;line-height:1.7}
+.gap b{color:var(--cream)}
+/* 결과 */
+.res-big{font-size:54px;font-weight:800;text-align:center;color:var(--gold);line-height:1}
+.res-cap{text-align:center;color:var(--cream-d);font-size:14px;margin-top:8px}
+.rank{text-align:center;font-size:20px;font-weight:800;margin:16px 0 4px}
+.skywrap{border:1px solid var(--line-c);border-radius:14px;margin-top:18px;
+  background:rgba(8,12,22,.55);overflow:hidden}
+#resSky{width:100%;height:auto;display:block}
+.mission{border-left:2px solid var(--gold);padding-left:14px;margin-top:20px;
+  font-size:14px;line-height:1.85;color:var(--cream)}
+.mission b{color:var(--gold)}
+.note{margin-top:24px;font-size:11px;color:#65708a;line-height:1.7;text-align:center}
+.npc{display:flex;align-items:flex-start;gap:11px;margin:16px 0 4px}
+.npc-moon{flex:none;width:48px;height:48px;animation:bob 3.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+.npc-bubble{background:var(--panel);border:1px solid var(--line-c);border-radius:13px;
+  border-top-left-radius:3px;padding:11px 14px;font-size:13px;line-height:1.7;
+  color:var(--cream);flex:1}
+.npc-bubble b{color:var(--gold)}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Pretendard', sans-serif !important; font-size: 15px !important; }
+.app { max-width: 600px; margin: 0 auto; text-align: center; }
+h1, h2, h3 { text-align: center; }
+.sub, .note, .result, .delta, .vital { text-align: center; }
+.kicker { text-align: center; display: block; }
+.btn, .nextbtn, .choice { font-size: 15px !important; font-family: 'Pretendard', sans-serif !important; }
+</style>
+</head>
+<body>
+<div class="app">
+
+<section class="screen on" id="s-intro">
+  <h1>거리를 읽는 눈</h1>
+  <p class="sub">골목 하나에 떨어진다. 둘러봐. 그리고 답해 — <b style="color:var(--cream)">이 동네, 살아있어 죽어가?</b>
+너의 직감과, 데이터가 아는 진실. 그 사이의 간극이 점수가 된다. 5개의 골목을 읽고 나면 — 너는 거리를 조금 다르게 보게 될 거야.</p>
+  <button class="btn" onclick="startGame()">첫 골목으로 →</button>
+  <p class="note">골목 그림은 그 거리의 데이터(가게 생존·밀도·녹지)로 그려진다 — 천천히 둘러봐.</p>
+</section>
+
+<section class="screen" id="s-round">
+  <div class="rhead"><span class="rn" id="rNum"></span><span class="sc" id="rScore"></span></div>
+  <div class="rv-box"><div id="roadview"></div></div>
+  <div class="npc">
+    <div class="npc-moon" aria-hidden="true"><svg viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="21" fill="#9db4c8" opacity="0.16"/>
+      <path d="M30 7 A18 18 0 1 0 30 41 A14 18 0 1 1 30 7 Z" fill="#a0b8cc"/>
+      <circle cx="22" cy="20" r="2" fill="#1a2540"/>
+      <circle cx="29" cy="20.5" r="2" fill="#1a2540"/>
+      <path d="M22 27 Q25.5 30.5 29 26.5" stroke="#1a2540" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    </svg></div>
+    <div class="npc-bubble" id="npcBubble">같이 거리를 읽자.</div>
+  </div>
+  <div id="askBlock">
+    <div class="ask">이 골목 — 얼마나 살아있어 보여?</div>
+    <div class="dialwrap">
+      <input type="range" min="0" max="100" value="50" class="dial" id="dial" oninput="dialMove()">
+      <div class="dial-ends"><span>꺼져가는 듯</span><span>살아있는 듯</span></div>
+      <div class="dial-read" id="dialRead">잘 모르겠다</div>
+    </div>
+    <button class="btn block" onclick="submitGuess()">직감 제출</button>
+  </div>
+  <div id="revealBlock"></div>
+</section>
+
+<section class="screen" id="s-result">
+  <div class="kicker" style="text-align:center">너의 눈</div>
+  <div class="res-big" id="resBig"></div>
+  <div class="res-cap">500점 만점 · 5골목 평균 정확도 <b id="resAcc"></b></div>
+  <div class="rank" id="resRank"></div>
+  <div class="skywrap"><svg id="resSky" viewBox="0 0 516 300" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <div class="npc">
+    <div class="npc-moon" aria-hidden="true"><svg viewBox="0 0 48 48">
+      <circle cx="24" cy="24" r="21" fill="#9db4c8" opacity="0.16"/>
+      <path d="M30 7 A18 18 0 1 0 30 41 A14 18 0 1 1 30 7 Z" fill="#a0b8cc"/>
+      <circle cx="22" cy="20" r="2" fill="#1a2540"/>
+      <circle cx="29" cy="20.5" r="2" fill="#1a2540"/>
+      <path d="M22 27 Q25.5 30.5 29 26.5" stroke="#1a2540" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+    </svg></div>
+    <div class="npc-bubble">다섯 골목을 읽었어. 이제 길을 걸을 때 — 너는 전과 다르게 볼 거야. 셔터를, 평상을, 버티는 가게를.</div>
+  </div>
+  <div class="mission" id="resMission"></div>
+  <button class="btn block" onclick="location.reload()">다시 — 다른 골목 5개</button>
+  <p class="note" id="resShare"></p>
+</section>
+
+</div>
+<script>
+const D=[{"g":"강남구","n":"일원동","j":"정주","sv":9.6,"bj":60.2,"el":31.2,"me":79,"sp":29.5,"ng":"1.09","wk":12,"ln":2},{"g":"강동구","n":"고덕동","j":"신규개발","sv":-3.6,"bj":70.0,"el":34.4,"me":74,"sp":18.4,"ng":"1.05","wk":19,"ln":1},{"g":"강동구","n":"길동","j":"정주","sv":-2.0,"bj":50.9,"el":39.0,"me":162,"sp":5.3,"ng":"1.02","wk":7,"ln":1},{"g":"강동구","n":"성내동","j":"정주","sv":-1.2,"bj":53.2,"el":37.0,"me":266,"sp":0.0,"ng":"1.06","wk":9,"ln":2},{"g":"강동구","n":"암사동","j":"정주","sv":-2.3,"bj":49.3,"el":33.3,"me":117,"sp":10.2,"ng":"1.10","wk":16,"ln":1},{"g":"강동구","n":"천호동","j":"관광화","sv":-7.7,"bj":61.5,"el":43.1,"me":278,"sp":1.6,"ng":"1.08","wk":13,"ln":2},{"g":"강북구","n":"미아동","j":"관광화","sv":-7.8,"bj":64.6,"el":21.1,"me":316,"sp":25.5,"ng":"1.08","wk":1,"ln":2},{"g":"강북구","n":"번동","j":"관광화","sv":-13.9,"bj":76.6,"el":14.4,"me":110,"sp":30.6,"ng":"","wk":15,"ln":1},{"g":"강북구","n":"수유동","j":"전이","sv":-4.0,"bj":63.3,"el":25.1,"me":206,"sp":49.6,"ng":"1.11","wk":22,"ln":0},{"g":"강서구","n":"공항동","j":"정주","sv":0.4,"bj":46.9,"el":43.5,"me":35,"sp":0.0,"ng":"0.94","wk":15,"ln":1},{"g":"강서구","n":"화곡동","j":"전이","sv":-5.7,"bj":61.0,"el":25.0,"me":428,"sp":16.8,"ng":"1.13","wk":7,"ln":1},{"g":"관악구","n":"봉천동","j":"전이","sv":-4.3,"bj":73.7,"el":19.3,"me":486,"sp":42.6,"ng":"1.13","wk":8,"ln":1},{"g":"관악구","n":"신림동","j":"전이","sv":-5.4,"bj":77.5,"el":27.0,"me":428,"sp":58.8,"ng":"1.12","wk":52,"ln":0},{"g":"광진구","n":"구의동","j":"관광화","sv":-10.6,"bj":57.7,"el":33.0,"me":171,"sp":17.8,"ng":"1.05","wk":16,"ln":2},{"g":"광진구","n":"군자동","j":"관광화","sv":-17.1,"bj":68.4,"el":38.8,"me":51,"sp":0.2,"ng":"0.98","wk":13,"ln":2},{"g":"광진구","n":"능동","j":"관광화","sv":-12.2,"bj":55.7,"el":52.8,"me":27,"sp":8.1,"ng":"0.80","wk":9,"ln":2},{"g":"광진구","n":"자양동","j":"전이","sv":-4.6,"bj":65.5,"el":37.9,"me":240,"sp":3.4,"ng":"1.02","wk":8,"ln":2},{"g":"광진구","n":"중곡동","j":"전이","sv":-6.1,"bj":62.3,"el":37.9,"me":185,"sp":41.4,"ng":"1.10","wk":5,"ln":2},{"g":"광진구","n":"화양동","j":"관광화","sv":-12.3,"bj":70.3,"el":44.8,"me":79,"sp":4.4,"ng":"0.92","wk":7,"ln":2},{"g":"구로구","n":"가리봉동","j":"관광화","sv":-13.3,"bj":64.5,"el":23.9,"me":15,"sp":7.0,"ng":"1.02","wk":5,"ln":2},{"g":"구로구","n":"개봉동","j":"정주","sv":-3.4,"bj":60.2,"el":24.5,"me":141,"sp":22.8,"ng":"1.11","wk":8,"ln":1},{"g":"구로구","n":"고척동","j":"관광화","sv":-9.2,"bj":62.5,"el":31.5,"me":101,"sp":16.5,"ng":"1.09","wk":19,"ln":1},{"g":"구로구","n":"구로동","j":"정주","sv":-2.5,"bj":52.7,"el":17.1,"me":351,"sp":1.9,"ng":"0.95","wk":18,"ln":1},{"g":"금천구","n":"독산동","j":"정주","sv":-1.8,"bj":72.2,"el":36.0,"me":177,"sp":8.7,"ng":"1.11","wk":11,"ln":1},{"g":"금천구","n":"시흥동","j":"정주","sv":8.8,"bj":71.0,"el":29.7,"me":226,"sp":44.4,"ng":"1.09","wk":25,"ln":0},{"g":"도봉구","n":"방학동","j":"정주","sv":-0.4,"bj":69.4,"el":26.0,"me":133,"sp":30.6,"ng":"1.09","wk":27,"ln":0},{"g":"도봉구","n":"쌍문동","j":"정주","sv":-3.0,"bj":63.8,"el":27.7,"me":117,"sp":10.7,"ng":"1.09","wk":20,"ln":0},{"g":"도봉구","n":"창동","j":"정주","sv":-2.7,"bj":62.4,"el":29.5,"me":203,"sp":9.5,"ng":"1.07","wk":11,"ln":2},{"g":"동대문구","n":"이문동","j":"관광화","sv":-11.3,"bj":63.7,"el":25.8,"me":109,"sp":7.7,"ng":"1.14","wk":10,"ln":1},{"g":"동대문구","n":"전농동","j":"정주","sv":-0.5,"bj":52.8,"el":35.6,"me":113,"sp":12.6,"ng":"1.00","wk":8,"ln":4},{"g":"동대문구","n":"휘경동","j":"관광화","sv":-9.2,"bj":64.8,"el":24.8,"me":53,"sp":13.1,"ng":"1.10","wk":7,"ln":3},{"g":"동작구","n":"노량진동","j":"정주","sv":-3.6,"bj":55.9,"el":25.6,"me":67,"sp":17.1,"ng":"0.94","wk":9,"ln":3},{"g":"동작구","n":"사당동","j":"정주","sv":-3.5,"bj":69.8,"el":24.3,"me":249,"sp":35.5,"ng":"1.10","wk":4,"ln":1},{"g":"동작구","n":"상도1동","j":"관광화","sv":-8.2,"bj":61.5,"el":29.0,"me":33,"sp":21.6,"ng":"1.15","wk":1,"ln":1},{"g":"동작구","n":"상도동","j":"정주","sv":-3.5,"bj":58.9,"el":30.9,"me":217,"sp":35.1,"ng":"1.15","wk":13,"ln":1},{"g":"동작구","n":"신대방동","j":"관광화","sv":-10.2,"bj":69.6,"el":29.9,"me":92,"sp":14.0,"ng":"1.05","wk":11,"ln":3},{"g":"동작구","n":"흑석동","j":"정주","sv":-1.4,"bj":36.5,"el":26.7,"me":71,"sp":44.6,"ng":"0.97","wk":10,"ln":1},{"g":"마포구","n":"공덕동","j":"전이","sv":-4.6,"bj":42.1,"el":23.6,"me":72,"sp":17.3,"ng":"1.04","wk":8,"ln":4},{"g":"마포구","n":"망원동","j":"전이","sv":-4.5,"bj":59.7,"el":18.9,"me":81,"sp":2.7,"ng":"1.11","wk":20,"ln":0},{"g":"마포구","n":"성산동","j":"정주","sv":-0.5,"bj":60.6,"el":25.9,"me":55,"sp":17.7,"ng":"1.07","wk":7,"ln":1},{"g":"마포구","n":"신공덕동","j":"관광화","sv":-21.6,"bj":42.4,"el":36.0,"me":28,"sp":30.2,"ng":"1.07","wk":3,"ln":4},{"g":"마포구","n":"연남동","j":"관광화","sv":-9.9,"bj":52.2,"el":27.8,"me":12,"sp":0.8,"ng":"0.96","wk":15,"ln":3},{"g":"서대문구","n":"남가좌동","j":"정주","sv":1.5,"bj":60.1,"el":20.4,"me":93,"sp":6.7,"ng":"1.05","wk":14,"ln":1},{"g":"서대문구","n":"북가좌동","j":"관광화","sv":-8.0,"bj":67.0,"el":18.4,"me":79,"sp":11.2,"ng":"1.12","wk":11,"ln":3},{"g":"서대문구","n":"연희동","j":"전이","sv":-4.1,"bj":73.0,"el":25.2,"me":57,"sp":48.8,"ng":"1.06","wk":27,"ln":0},{"g":"서초구","n":"방배동","j":"정주","sv":0.3,"bj":50.8,"el":43.4,"me":329,"sp":37.5,"ng":"0.91","wk":14,"ln":3},{"g":"성동구","n":"금호동3가","j":"정주","sv":1.6,"bj":59.2,"el":19.5,"me":26,"sp":61.3,"ng":"","wk":4,"ln":4},{"g":"성동구","n":"사근동","j":"관광화","sv":-25.8,"bj":59.0,"el":25.3,"me":2,"sp":26.9,"ng":"0.87","wk":7,"ln":4},{"g":"성동구","n":"송정동","j":"신규개발","sv":2.7,"bj":66.5,"el":65.0,"me":10,"sp":3.1,"ng":"1.02","wk":19,"ln":1},{"g":"성동구","n":"용답동","j":"전이","sv":-4.0,"bj":80.5,"el":61.5,"me":32,"sp":2.0,"ng":"0.96","wk":12,"ln":1},{"g":"성북구","n":"삼선동5가","j":"신규개발","sv":-17.4,"bj":53.7,"el":29.5,"me":10,"sp":4.5,"ng":"0.97","wk":11,"ln":3},{"g":"성북구","n":"상월곡동","j":"정주","sv":-3.8,"bj":58.8,"el":17.3,"me":7,"sp":43.7,"ng":"","wk":7,"ln":1},{"g":"성북구","n":"석관동","j":"전이","sv":-4.4,"bj":67.1,"el":33.1,"me":59,"sp":11.1,"ng":"1.06","wk":6,"ln":2},{"g":"성북구","n":"성북동","j":"관광화","sv":-19.9,"bj":54.7,"el":28.2,"me":3,"sp":75.3,"ng":"1.04","wk":34,"ln":0},{"g":"성북구","n":"장위동","j":"정주","sv":6.8,"bj":73.2,"el":26.4,"me":65,"sp":13.3,"ng":"1.13","wk":19,"ln":1},{"g":"성북구","n":"정릉동","j":"정주","sv":2.3,"bj":46.8,"el":28.0,"me":98,"sp":71.3,"ng":"1.10","wk":24,"ln":0},{"g":"성북구","n":"하월곡동","j":"전이","sv":-6.7,"bj":53.2,"el":26.3,"me":92,"sp":23.0,"ng":"","wk":10,"ln":1},{"g":"송파구","n":"거여동","j":"정주","sv":9.0,"bj":61.0,"el":25.5,"me":106,"sp":10.5,"ng":"1.10","wk":8,"ln":1},{"g":"송파구","n":"마천동","j":"정주","sv":-1.1,"bj":69.6,"el":16.8,"me":77,"sp":13.8,"ng":"1.17","wk":9,"ln":1},{"g":"송파구","n":"삼전동","j":"전이","sv":-6.8,"bj":31.7,"el":18.9,"me":70,"sp":6.2,"ng":"1.12","wk":21,"ln":0},{"g":"송파구","n":"석촌동","j":"전이","sv":-3.9,"bj":30.3,"el":22.3,"me":125,"sp":0.1,"ng":"1.05","wk":14,"ln":2},{"g":"송파구","n":"송파동","j":"전이","sv":3.0,"bj":32.3,"el":27.5,"me":108,"sp":0.2,"ng":"1.07","wk":6,"ln":2},{"g":"송파구","n":"풍납동","j":"관광화","sv":-7.8,"bj":73.5,"el":28.6,"me":74,"sp":3.8,"ng":"0.99","wk":17,"ln":1},{"g":"양천구","n":"목동","j":"전이","sv":-5.2,"bj":55.2,"el":26.3,"me":382,"sp":6.5,"ng":"1.05","wk":24,"ln":0},{"g":"양천구","n":"신월동","j":"정주","sv":-3.1,"bj":71.0,"el":23.5,"me":177,"sp":14.4,"ng":"1.06","wk":29,"ln":0},{"g":"영등포구","n":"대림동","j":"전이","sv":-5.5,"bj":77.6,"el":31.8,"me":138,"sp":0.6,"ng":"1.00","wk":6,"ln":2},{"g":"영등포구","n":"도림동","j":"관광화","sv":-11.8,"bj":53.8,"el":28.8,"me":22,"sp":1.5,"ng":"1.17","wk":10,"ln":2},{"g":"영등포구","n":"신길동","j":"전이","sv":-5.1,"bj":61.3,"el":23.8,"me":211,"sp":1.5,"ng":"1.02","wk":13,"ln":1},{"g":"용산구","n":"보광동","j":"정주","sv":-2.1,"bj":63.7,"el":4.1,"me":15,"sp":28.1,"ng":"1.06","wk":18,"ln":1},{"g":"용산구","n":"용문동","j":"관광화","sv":-11.3,"bj":32.8,"el":36.8,"me":10,"sp":11.5,"ng":"1.22","wk":11,"ln":4},{"g":"용산구","n":"용산동2가","j":"정주","sv":7.0,"bj":76.1,"el":2.6,"me":11,"sp":40.4,"ng":"0.94","wk":17,"ln":3},{"g":"용산구","n":"청파동2가","j":"정주","sv":5.6,"bj":52.7,"el":31.1,"me":7,"sp":13.2,"ng":"0.97","wk":16,"ln":4},{"g":"용산구","n":"청파동3가","j":"관광화","sv":-17.4,"bj":49.4,"el":56.8,"me":10,"sp":15.3,"ng":"0.97","wk":11,"ln":4},{"g":"용산구","n":"효창동","j":"전이","sv":0.7,"bj":43.7,"el":33.9,"me":17,"sp":19.0,"ng":"1.01","wk":12,"ln":4},{"g":"용산구","n":"후암동","j":"정주","sv":1.2,"bj":44.1,"el":25.1,"me":25,"sp":47.4,"ng":"1.15","wk":14,"ln":5},{"g":"은평구","n":"갈현동","j":"정주","sv":-3.6,"bj":56.9,"el":26.7,"me":105,"sp":36.1,"ng":"1.01","wk":21,"ln":0},{"g":"은평구","n":"구산동","j":"정주","sv":1.6,"bj":50.9,"el":32.7,"me":36,"sp":45.6,"ng":"1.20","wk":21,"ln":0},{"g":"은평구","n":"대조동","j":"관광화","sv":-9.6,"bj":56.5,"el":30.4,"me":135,"sp":1.2,"ng":"1.10","wk":6,"ln":3},{"g":"은평구","n":"불광동","j":"정주","sv":6.2,"bj":65.0,"el":24.6,"me":140,"sp":62.1,"ng":"1.14","wk":2,"ln":2},{"g":"은평구","n":"신사동","j":"정주","sv":-2.9,"bj":57.3,"el":28.3,"me":68,"sp":48.2,"ng":"1.18","wk":18,"ln":1},{"g":"은평구","n":"역촌동","j":"정주","sv":1.4,"bj":52.0,"el":26.1,"me":76,"sp":7.5,"ng":"1.11","wk":13,"ln":1},{"g":"은평구","n":"응암동","j":"전이","sv":-4.3,"bj":58.5,"el":27.5,"me":198,"sp":31.6,"ng":"1.11","wk":13,"ln":1},{"g":"은평구","n":"증산동","j":"관광화","sv":-10.8,"bj":71.5,"el":20.8,"me":32,"sp":29.8,"ng":"1.06","wk":12,"ln":3},{"g":"종로구","n":"계동","j":"관광화","sv":-7.9,"bj":25.7,"el":0.0,"me":4,"sp":19.7,"ng":"0.62","wk":12,"ln":1},{"g":"종로구","n":"누하동","j":"정주","sv":5.2,"bj":26.6,"el":25.0,"me":4,"sp":15.8,"ng":"0.89","wk":14,"ln":1},{"g":"종로구","n":"명륜3가","j":"정주","sv":1.6,"bj":55.7,"el":2.5,"me":1,"sp":55.1,"ng":"0.86","wk":25,"ln":0},{"g":"종로구","n":"부암동","j":"쇠퇴","sv":-4.2,"bj":52.3,"el":21.4,"me":2,"sp":86.6,"ng":"1.02","wk":34,"ln":0},{"g":"종로구","n":"평창동","j":"정주","sv":0.9,"bj":83.0,"el":20.5,"me":12,"sp":88.8,"ng":"1.12","wk":63,"ln":0},{"g":"중랑구","n":"망우동","j":"정주","sv":3.0,"bj":67.9,"el":41.8,"me":136,"sp":38.6,"ng":"1.02","wk":17,"ln":1},{"g":"중랑구","n":"면목동","j":"정주","sv":0.7,"bj":71.2,"el":44.7,"me":269,"sp":31.2,"ng":"1.15","wk":5,"ln":1},{"g":"중랑구","n":"묵동","j":"정주","sv":-0.4,"bj":55.9,"el":40.1,"me":85,"sp":14.0,"ng":"1.11","wk":7,"ln":2},{"g":"중랑구","n":"상봉동","j":"정주","sv":-1.7,"bj":56.0,"el":54.9,"me":109,"sp":9.6,"ng":"0.98","wk":5,"ln":3},{"g":"중랑구","n":"중화동","j":"정주","sv":-0.9,"bj":68.9,"el":48.1,"me":80,"sp":7.4,"ng":"1.14","wk":8,"ln":4}];
+const LL={"청파동2가":[37.54601,126.96335],"청파동3가":[37.54325,126.96393],"평창동":[37.61303,126.97161],"부암동":[37.59476,126.9627],"효창동":[37.54282,126.95808],"용문동":[37.53766,126.9568],"계동":[37.58235,126.98404],"누하동":[37.57929,126.96539],"후암동":[37.5499,126.97773],"용산동2가":[37.54289,126.98213],"명륜3가":[37.58822,126.99026],"전농동":[37.57974,127.05284],"삼선동5가":[37.58854,127.01299],"쌍문동":[37.65336,127.0242],"방학동":[37.66528,127.02817],"사근동":[37.5589,127.04472],"창동":[37.64775,127.04117],"정릉동":[37.61546,126.99496],"금호동3가":[37.54976,127.01679],"이문동":[37.59947,127.06036],"송정동":[37.55318,127.05919],"용답동":[37.56147,127.05347],"하월곡동":[37.60468,127.03647],"면목동":[37.58236,127.08633],"상월곡동":[37.60617,127.04488],"상봉동":[37.59848,127.08423],"장위동":[37.61522,127.04702],"중화동":[37.6005,127.07526],"석관동":[37.60827,127.05859],"묵동":[37.61271,127.07685],"망우동":[37.59959,127.10344],"성북동":[37.59724,126.99002],"미아동":[37.62111,127.02099],"보광동":[37.52687,126.99805],"휘경동":[37.58822,127.06163],"번동":[37.62904,127.03387],"수유동":[37.63833,127.00448],"망원동":[37.55548,126.89704],"연남동":[37.56302,126.91864],"목동":[37.53604,126.87163],"성산동":[37.56566,126.9018],"구로동":[37.49429,126.88169],"연희동":[37.57198,126.92994],"가리봉동":[37.48288,126.88476],"신월동":[37.52619,126.83121],"고척동":[37.50328,126.85578],"북가좌동":[37.57896,126.90831],"개봉동":[37.4942,126.84906],"남가좌동":[37.57552,126.91637],"신공덕동":[37.54413,126.95305],"화곡동":[37.5407,126.84438],"불광동":[37.61916,126.93269],"갈현동":[37.62028,126.90915],"공덕동":[37.54809,126.95212],"공항동":[37.55478,126.80758],"구산동":[37.60941,126.90537],"대조동":[37.61226,126.92026],"응암동":[37.59384,126.92023],"역촌동":[37.60458,126.91173],"독산동":[37.46748,126.89541],"신사동":[37.59561,126.90431],"증산동":[37.58417,126.90307],"시흥동":[37.44953,126.9064],"성내동":[37.53049,127.1261],"천호동":[37.54438,127.12474],"상도1동":[37.50325,126.94778],"흑석동":[37.50549,126.95945],"사당동":[37.48562,126.96942],"신림동":[37.4632,126.93292],"신대방동":[37.49267,126.9143],"일원동":[37.48801,127.07997],"봉천동":[37.47797,126.9506],"풍납동":[37.53321,127.11111],"송파동":[37.50511,127.11066],"석촌동":[37.50273,127.09962],"삼전동":[37.5019,127.089],"방배동":[37.47949,126.99023],"거여동":[37.48955,127.14278],"마천동":[37.49849,127.14986],"고덕동":[37.56366,127.15458],"노량진동":[37.51157,126.93899],"길동":[37.53962,127.14304],"암사동":[37.55781,127.12817],"상도동":[37.49871,126.94119],"대림동":[37.49543,126.89724],"도림동":[37.5091,126.89765],"중곡동":[37.56352,127.0859],"능동":[37.55058,127.07885],"화양동":[37.54325,127.07052],"군자동":[37.55304,127.07078],"구의동":[37.54441,127.09008],"자양동":[37.5317,127.07163],"신길동":[37.50606,126.91072]};
+function vitality(d){
+  const cl=x=>Math.max(0,Math.min(100,x));
+  const bt=cl((d.sv+20)/30*100);
+  const med=Math.min(d.me/2,100);
+  const ngv=d.ng===''?50:cl((parseFloat(d.ng)-0.85)/0.30*100);
+  const slope=cl((1-d.sp/60)*100);
+  const banj=cl((1-(d.bj-30)/55)*100);
+  const elev=cl(d.el/45*100);
+  const base=(med+ngv+slope+banj+elev)/5;
+  const conn=0.6*cl((1-(d.wk-3)/27)*100)+0.4*cl(d.ln/4*100);
+  let vi=0.40*bt+0.35*base+0.25*conn;
+  vi*=({'관광화':0.92,'쇠퇴':0.80})[d.j]||1;
+  return Math.round(vi);
+}
+const G={order:[],idx:0,rounds:[]};
+const HINTS=[
+ '1층을 잘 봐. 유리로 열려 있어, 셔터가 내려 있어?',
+ '평상이나 의자, 화분 — 사람이 머문 흔적이 보여?',
+ '북적인다고 다 살아있는 건 아니야. 천천히 둘러봐.',
+ '간판이 새것뿐이야? 가게가 오래 못 버틴 거리일 수 있어.',
+ '사람이 걷고 있어? 그 골목에 일상이 있다는 뜻이야.'];
+function npcSay(t){const b=document.getElementById('npcBubble');if(b)b.innerHTML=t;}
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function startGame(){
+  const pool=D.map((d,i)=>i).filter(i=>LL[D[i].n]);
+  for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]];}
+  G.order=pool.slice(0,5); G.idx=0; G.rounds=[];
+  renderRound();
+}
+function dialMove(){
+  const v=+document.getElementById('dial').value;
+  const t=v<34?'꺼져가는 것 같다':v<67?'잘 모르겠다':'살아있는 것 같다';
+  document.getElementById('dialRead').textContent=t;
+}
+function renderRound(){
+  const d=D[G.order[G.idx]];
+  document.getElementById('rNum').textContent='골목 '+(G.idx+1)+' / 5';
+  const sofar=G.rounds.reduce((a,r)=>a+r.score,0);
+  document.getElementById('rScore').textContent=G.idx?('지금까지 '+sofar+'점'):'';
+  document.getElementById('dial').value=50; dialMove();
+  document.getElementById('askBlock').style.display='block';
+  document.getElementById('revealBlock').innerHTML='';
+  npcSay(HINTS[Math.floor(Math.random()*HINTS.length)]);
+  const box=document.getElementById('roadview');
+  show('s-round');
+  drawAlley(box, vitality(d), d.g+d.n);
+}
+/* ── 골목 그림 — 거리의 데이터(생명력)로 그려진다.
+   불 켜진 창·열린 셔터·차양·평상·사람이 살아있음의 신호. 같은 골목은 늘 같은 그림. ── */
+function alleyHash(s){let h=2166136261;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619);}return h>>>0;}
+function drawAlley(box, vit, key){
+  box.className=''; box.removeAttribute('style');
+  const NS='http://www.w3.org/2000/svg', W=516, H=300, gy=250;
+  let sd=alleyHash(key); const rnd=()=>{sd=(Math.imul(sd,1664525)+1013904223)>>>0;return sd/4294967296;};
+  const t=Math.max(0,Math.min(1,vit/100)), warm='#f2cf6e', glow='#1a1a1a';
+  function el(tag,a){const e=document.createElementNS(NS,tag);for(const k in a)e.setAttribute(k,a[k]);return e;}
+  const svg=el('svg',{viewBox:'0 0 '+W+' '+H});
+  svg.setAttribute('xmlns',NS);
+  svg.setAttribute('style','width:100%;height:100%;display:block');
+  /* 하늘 + 별 */
+  svg.appendChild(el('rect',{x:0,y:0,width:W,height:gy,fill:'#f0ede6'}));
+  for(let i=0;i<46;i++)svg.appendChild(el('circle',{cx:(rnd()*W).toFixed(1),
+    cy:(rnd()*(gy-50)).toFixed(1),r:(rnd()*0.9+0.3).toFixed(1),fill:'#1a1a1a',
+    opacity:(rnd()*0.4+0.06).toFixed(2)}));
+  /* 골목 바닥 */
+  svg.appendChild(el('rect',{x:0,y:gy,width:W,height:H-gy,fill:'#e8e4dd'}));
+  svg.appendChild(el('line',{x1:0,y1:gy,x2:W,y2:gy,stroke:'#2a3346','stroke-width':1.5}));
+  /* 건물 줄 — 점등 = 생명력 */
+  const N=6+Math.floor(rnd()*3), slot=W/N;
+  const jit=[];for(let i=0;i<N;i++)jit.push(rnd());
+  const ord=[];for(let i=0;i<N;i++)ord.push(i);
+  ord.sort((a,b)=>(Math.abs(a-(N-1)/2)+jit[a]*1.5)-(Math.abs(b-(N-1)/2)+jit[b]*1.5));
+  const litSet={};ord.slice(0,Math.round(t*N)).forEach(i=>litSet[i]=1);
+  for(let i=0;i<N;i++){
+    const on=litSet[i],bh=66+Math.floor(rnd()*94),bw=slot*0.84,
+      bx=i*slot+(slot-bw)/2,by=gy-bh;
+    if(on)svg.appendChild(el('rect',{x:bx-6,y:by-6,width:bw+12,height:bh+12,
+      fill:glow,opacity:'0.12',rx:5}));
+    svg.appendChild(el('rect',{x:bx,y:by,width:bw,height:bh,fill:on?'#2b2c34':'#1b2130'}));
+    const sfH=30,rows=Math.max(1,Math.floor((bh-sfH-10)/19));
+    for(let r=0;r<rows;r++)for(let c=0;c<2;c++){
+      const lon=on&&rnd()<0.66;
+      const win=el('rect',{x:bx+7+c*(bw-14)/2,y:by+9+r*19,
+        width:(bw-14)/2-5,height:12,fill:lon?warm:'#141a27',rx:1});
+      if(lon)win.appendChild(el('animate',{attributeName:'opacity',
+        values:'1;0.74;1',dur:(3+rnd()*3).toFixed(1)+'s',repeatCount:'indefinite'}));
+      svg.appendChild(win);
+    }
+    const sfY=gy-sfH;
+    if(on){
+      svg.appendChild(el('rect',{x:bx-2,y:sfY-6,width:bw+4,height:6,
+        fill:['#c2603e','#3d7a6f','#b9933a'][Math.floor(rnd()*3)]}));
+      svg.appendChild(el('rect',{x:bx+3,y:sfY,width:bw-6,height:sfH,fill:'#3a2f1c'}));
+      svg.appendChild(el('rect',{x:bx+5,y:sfY+2,width:bw-10,height:sfH-4,
+        fill:warm,opacity:'0.82'}));
+    }else{
+      svg.appendChild(el('rect',{x:bx+3,y:sfY,width:bw-6,height:sfH,fill:'#2f3647'}));
+      for(let k=1;k<5;k++)svg.appendChild(el('line',{x1:bx+3,y1:sfY+k*6,
+        x2:bx+bw-3,y2:sfY+k*6,stroke:'#232a39','stroke-width':1.4}));
+    }
+    if(on&&rnd()<0.6){
+      const fx=bx+bw/2;
+      svg.appendChild(el('circle',{cx:fx,cy:gy-19,r:2.4,fill:'#dac6a2'}));
+      svg.appendChild(el('rect',{x:fx-2.4,y:gy-17,width:4.8,height:8,
+        fill:'#b9714a',rx:1.4}));
+    }
+  }
+  /* 가로수 */
+  [0.16,0.5,0.84].forEach(fx=>{
+    const tx=fx*W,green=t>0.42;
+    svg.appendChild(el('rect',{x:tx-2,y:gy-15,width:4,height:15,fill:'#3a3026'}));
+    svg.appendChild(el('circle',{cx:tx,cy:gy-20,r:green?9:5.5,
+      fill:green?'#5d7a4a':'#403526'}));
+  });
+  /* 가로등 */
+  [0.07,0.93].forEach(fx=>{
+    const lx=fx*W,lon=t>0.22;
+    svg.appendChild(el('rect',{x:lx-1.2,y:gy-32,width:2.4,height:32,fill:'#454e60'}));
+    if(lon)svg.appendChild(el('circle',{cx:lx,cy:gy-33,r:9,fill:glow,opacity:'0.32'}));
+    svg.appendChild(el('circle',{cx:lx,cy:gy-33,r:3,fill:lon?warm:'#4a5468'}));
+  });
+  /* 평상 — 생명력 높은 골목에만 */
+  if(t>=0.56){
+    const px=W*(0.3+rnd()*0.4);
+    svg.appendChild(el('rect',{x:px-18,y:gy-8,width:36,height:6,fill:'#7a5a38',rx:1.5}));
+  }
+  /* 걷는 사람 */
+  const ppl=Math.round(t*5);
+  for(let k=0;k<ppl;k++){
+    const x0=40+rnd()*(W-80),py=gy+12+rnd()*(H-gy-22),
+      rng=(k%2?1:-1)*(40+rnd()*40),g=el('g',{});
+    g.appendChild(el('circle',{cx:0,cy:py-9,r:2.6,fill:'#9c8068'}));
+    g.appendChild(el('rect',{x:-2.6,y:py-7,width:5.2,height:9,
+      fill:k%2?'#8089a6':'#b9714a',rx:1.5}));
+    g.appendChild(el('animateTransform',{attributeName:'transform',type:'translate',
+      values:x0+',0;'+(x0+rng)+',0;'+x0+',0',
+      dur:(9+rnd()*6).toFixed(1)+'s',repeatCount:'indefinite'}));
+    svg.appendChild(g);
+  }
+  box.innerHTML='';
+  box.appendChild(svg);
+}
+const TELL={
+ 정주:['이 거리는 가게가 자리를 잡고 버틴다. 화려하지 않아도 — 생존율이 그걸 말해. 사람이 사는 결이다.','정주'],
+ 전이:['지금 결이 바뀌는 중. 한 발은 옛 정주, 한 발은 새 활기. 아직 어느 쪽도 아니다.','전이'],
+ 관광화:['눈을 속았을지도. 북적임은 손님의 것 — 가게가 1~2년 만에 갈린다. 활기는 있어도 정주민의 길은 아니다.','관광화'],
+ 신규개발:['이제 막 자리를 잡아가는 어린 동네. 결은 지금부터 만들어진다.','신규개발'],
+ 쇠퇴:['조용히 비어가는 중. 생존율이 깊이 내려앉았다. 남은 사람들의 자리가 그래서 더 선명하다.','쇠퇴']
+};
+function submitGuess(){
+  const d=D[G.order[G.idx]];
+  const guess=+document.getElementById('dial').value;
+  const vi=vitality(d);
+  const score=Math.max(0,Math.round(100-Math.abs(guess-vi)));
+  G.rounds.push({n:d.n,g:d.g,vi:vi,guess:guess,score:score,j:d.j});
+  document.getElementById('askBlock').style.display='none';
+  const gap=Math.abs(guess-vi);
+  let gapMsg;
+  if(gap<=8) gapMsg='<b>너의 눈이 거의 정확했어.</b> 거리를 읽고 있어.';
+  else if(guess>vi+8) gapMsg='너는 <b>살아있다고</b> 봤는데 — 데이터는 더 차갑게 말해. 활기에 속았을 수 있어.';
+  else if(guess<vi-8) gapMsg='너는 <b>꺼져간다고</b> 봤는데 — 데이터는 더 따뜻해. 안 화려해도 버티는 거리였어.';
+  else gapMsg='제법 가까웠어.';
+  if(gap<=8) npcSay('거봐 — 네 눈이 거리를 읽었어. 점점 보이지?');
+  else if(guess>vi+8) npcSay('활기에 속았지? 나도 자주 그래 — 북적임은 손님의 것일 때가 많아.');
+  else if(guess<vi-8) npcSay('안 화려하다고 죽은 건 아니야. 이 골목, 조용히 버티고 있었어.');
+  else npcSay('제법 가까웠어. 한 골목 더 읽어보자.');
+  const tell=TELL[d.j]||TELL['전이'];
+  const svtxt=(d.sv>=0?'+':'')+d.sv+'%p';
+  let h='<div class="reveal">'+
+    '<div class="rv-name">'+d.n+'<span>'+d.g+'</span></div>'+
+    '<div class="score-row">'+
+      '<div class="scard"><div class="lab">너의 직감</div><div class="big" style="color:var(--cream)">'+guess+'</div></div>'+
+      '<div class="scard"><div class="lab">생명력 지수</div><div class="big" id="viCount" style="color:var(--gold)">0</div></div>'+
+      '<div class="scard"><div class="lab">이 골목 점수</div><div class="big" style="color:var(--green)">+'+score+'</div></div>'+
+    '</div>'+
+    '<div class="gap">'+gapMsg+'</div>'+
+    '<div class="tell"><span class="th">이 거리가 숨긴 것</span>'+
+      '판정 <b>'+tell[1]+'</b> · 가게 생존율 추세 <b>'+svtxt+'</b>.<br>'+tell[0]+'</div>'+
+    '<button class="btn block" onclick="nextRound()">'+(G.idx<4?'다음 골목 →':'결과 보기 →')+'</button>'+
+  '</div>';
+  document.getElementById('revealBlock').innerHTML=h;
+  countUp(document.getElementById('viCount'),vi);
+}
+function countUp(el,target){
+  let v=0; const step=Math.max(1,Math.round(target/28));
+  const t=setInterval(function(){
+    v+=step; if(v>=target){v=target;clearInterval(t);}
+    el.textContent=v;
+  },22);
+}
+function nextRound(){
+  G.idx++;
+  if(G.idx<5) renderRound();
+  else showResult();
+}
+function showResult(){
+  const total=G.rounds.reduce((a,r)=>a+r.score,0);
+  const acc=Math.round(total/5);
+  document.getElementById('resBig').textContent=total;
+  document.getElementById('resAcc').textContent=acc+'%';
+  let rank,msg;
+  if(acc>=85){rank='거리를 읽는 눈 · 자(者)';msg='너는 거리를 읽는다. 골목을 5초만 봐도 살아있는지 안다.';}
+  else if(acc>=70){rank='거리를 읽는 눈 · 숙련';msg='눈이 제법 트였어. 활기와 생존을 구별하기 시작했다.';}
+  else if(acc>=55){rank='거리를 읽는 눈 · 견습';msg='아직은 활기에 속는다. 하지만 — 한 번 본 거리는 다르게 보일 거야.';}
+  else{rank='거리를 읽는 눈 · 입문';msg='괜찮아. 거리를 읽는 건 원래 배우는 거야. 다시 5골목.';}
+  document.getElementById('resRank').textContent=rank;
+  drawResSky();
+  document.getElementById('resMission').innerHTML=
+    '이제 너는 거리를 읽을 수 있어. 그리고 — 네가 방금 읽은 별들 중 몇은, <b>곧 꺼진다.</b> '+
+    '살아있는 동네도 평당가 한 줄에 밀려 사라져. 이 게임을 만든 이유야 — '+
+    '<b>잴 수 없는 건 지킬 수 없고, 보이지 않는 건 잴 수 없으니까.</b>';
+  const best=G.rounds.slice().sort((a,b)=>b.vi-a.vi)[0];
+  document.getElementById('resShare').textContent=
+    '거리를 읽는 눈 — '+total+'/500 · 가장 살아있던 골목: '+best.n+' '+best.vi;
+  show('s-result');
+}
+function drawResSky(){
+  const svg=document.getElementById('resSky'),NS='http://www.w3.org/2000/svg';
+  svg.innerHTML='';
+  for(let i=0;i<70;i++){const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',Math.random()*516);c.setAttribute('cy',Math.random()*300);
+    c.setAttribute('r',Math.random()*0.8+0.2);c.setAttribute('fill','#fff');
+    c.setAttribute('opacity',Math.random()*0.3+0.05);svg.appendChild(c);}
+  const rd=G.rounds, n=rd.length;
+  rd.forEach(function(r,i){
+    const t=Math.max(0,Math.min(1,(r.vi-12)/64));
+    const x=64+i*(388/4), y=150-(r.vi-50)*1.4;
+    const L=(a,b)=>Math.round(a+(b-a)*t);
+    const col='rgb('+L(0x46,0xf6)+','+L(0x52,0xec)+','+L(0x70,0xc8)+')';
+    const r2=4+t*8;
+    const halo=document.createElementNS(NS,'circle');
+    halo.setAttribute('cx',x);halo.setAttribute('cy',y);halo.setAttribute('r',r2*2.6);
+    halo.setAttribute('fill',col);halo.setAttribute('opacity',(0.08+t*0.16).toFixed(3));
+    svg.appendChild(halo);
+    const c=document.createElementNS(NS,'circle');
+    c.setAttribute('cx',x);c.setAttribute('cy',y);c.setAttribute('r',r2);
+    c.setAttribute('fill',col);svg.appendChild(c);
+    const t1=document.createElementNS(NS,'text');
+    t1.setAttribute('x',x);t1.setAttribute('y',y+r2+16);t1.setAttribute('text-anchor','middle');
+    t1.setAttribute('font-size','11');t1.setAttribute('font-family','Pretendard');
+    t1.setAttribute('fill','#ece3cc');t1.textContent=r.n;svg.appendChild(t1);
+    const t2=document.createElementNS(NS,'text');
+    t2.setAttribute('x',x);t2.setAttribute('y',y+r2+30);t2.setAttribute('text-anchor','middle');
+    t2.setAttribute('font-size','10');t2.setAttribute('font-family','Pretendard');
+    t2.setAttribute('fill','#b9ad8e');t2.textContent='생명력 '+r.vi;svg.appendChild(t2);
+  });
+  const cap=document.createElementNS(NS,'text');
+  cap.setAttribute('x',258);cap.setAttribute('y',286);cap.setAttribute('text-anchor','middle');
+  cap.setAttribute('font-size','11');cap.setAttribute('font-family','Pretendard');
+  cap.setAttribute('fill','#65708a');cap.textContent='네가 읽은 다섯 별 — 높고 밝을수록 살아있는 동네';
+  svg.appendChild(cap);
+}
+</script>
+</body>
+</html>

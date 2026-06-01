@@ -1,0 +1,69 @@
+.footer {
+  background: var(--footer-bg);
+  border-top: 1px solid var(--border);
+  padding: 48px 40px 80px;
+  margin-top: 40px;
+}
+
+.inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  gap: 48px;
+}
+
+.left { flex: 1; max-width: 640px; }
+.right { display: flex; flex-direction: column; align-items: flex-end; gap: 20px; }
+
+.hours { font-size: 12px; color: var(--light); margin-bottom: 16px; line-height: 1.7; }
+
+.ctaRow { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 24px; }
+.ctaBtn {
+  font-size: 12px; font-weight: 500;
+  border: 1px solid var(--border);
+  background: var(--white);
+  border-radius: 20px;
+  padding: 7px 16px;
+  cursor: pointer;
+  color: var(--dark);
+  transition: background 0.15s;
+  font-family: inherit;
+}
+.ctaBtn:hover { background: var(--dark); color: white; border-color: var(--dark); }
+
+.links { display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px; }
+.links a { font-size: 12px; color: var(--mid); text-decoration: none; }
+.links a:hover { color: var(--dark); text-decoration: underline; }
+.links span { color: var(--border); }
+
+.biz { font-size: 11px; color: var(--light); line-height: 1.9; margin-bottom: 12px; }
+.disclaimer { font-size: 11px; color: #aaa; margin-bottom: 8px; }
+.copyright { font-size: 11px; color: #bbb; }
+
+.footerLogo {
+  font-size: 14px; font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--dark); line-height: 1.2;
+}
+.footerLogo span { display: block; font-weight: 300; letter-spacing: 0.15em; font-size: 12px; }
+
+.sns { display: flex; gap: 12px; }
+.snsBtn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; color: var(--mid);
+  transition: background 0.15s, color 0.15s;
+  text-decoration: none;
+}
+.snsBtn:hover { background: var(--dark); color: white; border-color: var(--dark); }
+
+@media (max-width: 900px) {
+  .footer { padding: 40px 20px 60px; }
+  .inner { flex-direction: column; }
+  .right { align-items: flex-start; }
+}

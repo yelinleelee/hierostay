@@ -1,0 +1,119 @@
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 40px 80px;
+}
+
+/* ── 루트 필터 바 ── */
+.routeBar {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 20px;
+  scrollbar-width: none;
+}
+.routeBar::-webkit-scrollbar { display: none; }
+
+.routeBtn {
+  flex-shrink: 0;
+  padding: 8px 16px;
+  border-radius: 99px;
+  border: 1.5px solid var(--border);
+  background: #fff;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--mid);
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.routeBtn:hover { border-color: #aaa; color: var(--dark); }
+.routeBtnActive { color: #fff; }
+
+/* ── 헤더 ── */
+.header { margin-bottom: 24px; }
+.title { font-size: 26px; font-weight: 700; margin-bottom: 8px; letter-spacing: -0.02em; }
+
+.activeRouteInfo {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  color: var(--mid);
+  margin-bottom: 8px;
+}
+.activeRouteDot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.activeRouteInfo strong { color: var(--dark); }
+
+.searchInfo {
+  display: flex; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.searchInfo span {
+  font-size: 13px; color: var(--mid);
+  background: #f5f5f5;
+  padding: 4px 10px; border-radius: 20px;
+}
+.count { font-size: 14px; color: var(--light); }
+
+/* ── 카드 + 지도 레이아웃 ── */
+.layout {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start;
+}
+
+/* 왼쪽: 카드 목록 */
+.cardList {
+  flex: 1;
+  min-width: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.empty {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--light);
+  font-size: 16px;
+  line-height: 2;
+}
+
+/* 오른쪽: 지도 패널 */
+.mapPanel {
+  width: 420px;
+  flex-shrink: 0;
+  position: sticky;
+  top: 128px;
+  height: calc(100vh - 152px);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+}
+
+/* ── 반응형 ── */
+@media (max-width: 1100px) {
+  .mapPanel { width: 340px; }
+}
+@media (max-width: 900px) {
+  .page { padding: 24px 20px 60px; }
+  .layout { flex-direction: column; }
+  .mapPanel {
+    width: 100%;
+    position: static;
+    height: 300px;
+  }
+  .grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .grid { grid-template-columns: 1fr; }
+}

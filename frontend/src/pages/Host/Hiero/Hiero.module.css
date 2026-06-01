@@ -1,0 +1,266 @@
+.page {
+  font-family: inherit;
+  color: #222;
+}
+
+.section {
+  padding: 80px 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.bgGray {
+  background: #f8f9fa;
+  max-width: none;
+  padding-left: max(20px, calc((100% - 1280px) / 2 + 20px));
+  padding-right: max(20px, calc((100% - 1280px) / 2 + 20px));
+}
+
+.bgDark {
+  background: #1a1a1a;
+  color: #fff;
+  max-width: none;
+  padding-left: max(20px, calc((100% - 1280px) / 2 + 20px));
+  padding-right: max(20px, calc((100% - 1280px) / 2 + 20px));
+  text-align: center;
+}
+
+.hero {
+  background: #fff;
+  padding: 120px 20px 80px;
+  text-align: center;
+  color: #1a1a1a;
+}
+
+.heroImage {
+  display: block;
+  margin: 0 auto 40px;
+  max-width: 320px;
+  width: 100%;
+  height: auto;
+}
+
+.heroTitle {
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 700;
+  line-height: 1.4;
+  margin-bottom: 24px;
+  letter-spacing: -0.02em;
+  color: #1a1a1a;
+}
+
+.heroDesc {
+  font-size: clamp(16px, 2vw, 20px);
+  line-height: 1.6;
+  color: #555;
+}
+
+.sectionHeader {
+  text-align: center;
+  margin-bottom: 48px;
+  word-break: keep-all;
+}
+
+.sectionTitle {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.45;
+  color: #222;
+  letter-spacing: -0.02em;
+}
+
+.sectionTitleDark {
+  font-size: clamp(24px, 3vw, 32px);
+  font-weight: 700;
+  line-height: 1.45;
+  color: #fff;
+  letter-spacing: -0.02em;
+}
+
+.painPoints {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.painPointCard {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  padding: 24px 32px;
+  border-radius: 16px;
+  font-size: 18px;
+  font-weight: 500;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+}
+
+.solutionGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+}
+
+.solutionCard {
+  background: #fff;
+  padding: 36px 24px;
+  border-radius: 20px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.04);
+}
+
+.solutionIcon {
+  font-size: 44px;
+  margin-bottom: 20px;
+}
+
+.solutionTitle {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+
+.solutionDesc {
+  color: #555;
+  line-height: 1.6;
+  word-break: keep-all;
+}
+
+.competitivenessContent {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #eaf3ec;
+  padding: 48px;
+  border-radius: 24px;
+}
+
+.featureList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.featureList li {
+  position: relative;
+  padding-left: 32px;
+  font-size: 18px;
+  line-height: 1.6;
+  color: #1a3325;
+  font-weight: 500;
+  word-break: keep-all;
+}
+
+.featureList li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #2d6a4f;
+  font-weight: 800;
+}
+
+.trustDesc {
+  font-size: 20px;
+  line-height: 1.65;
+  max-width: 800px;
+  margin: 0 auto;
+  opacity: 0.9;
+  word-break: keep-all;
+}
+
+.reviewGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.reviewCard {
+  background: #fff;
+  border: 1px solid #ebebeb;
+  padding: 36px 28px;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewStars {
+  margin-bottom: 16px;
+  font-size: 14px;
+  letter-spacing: 2px;
+}
+
+.reviewText {
+  font-size: 16px;
+  line-height: 1.6;
+  color: #333;
+  margin-bottom: 24px;
+  font-style: italic;
+  flex: 1;
+}
+
+.reviewAuthor {
+  font-size: 14px;
+  font-weight: 600;
+  color: #717171;
+}
+
+.ctaSection {
+  background: #2d6a4f;
+  padding: 96px 20px;
+  text-align: center;
+  color: #fff;
+}
+
+.ctaTitle {
+  font-size: clamp(28px, 4vw, 36px);
+  font-weight: 700;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.ctaDesc {
+  font-size: 20px;
+  margin-bottom: 48px;
+  opacity: 0.95;
+}
+
+.ctaButtons {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.btnPrimary {
+  background: #fff;
+  color: #2d6a4f;
+  border: none;
+  padding: 18px 36px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btnPrimary:hover {
+  transform: translateY(-2px);
+}
+
+.btnSecondary {
+  background: transparent;
+  color: #fff;
+  border: 1px solid #fff;
+  padding: 18px 36px;
+  border-radius: 12px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btnSecondary:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

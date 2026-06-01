@@ -1,39 +1,34 @@
-import { useRegister } from "../RegisterContext";
-import { StepNav } from "../StepNav";
+import styles from '../Register.module.css';
+import { useRegister } from '../RegisterContext';
 
 export function DescriptionStep() {
   const { data, setField } = useRegister();
-  const ready = data.name.trim().length > 0;
-
   return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">숙소 소개</h1>
-        <p className="mt-1 text-sm text-slate-500">이름과 설명을 적어주세요.</p>
-      </header>
-
-      <label className="block space-y-1">
-        <span className="text-sm font-medium">숙소 이름</span>
+    <div className={styles.stepPage}>
+      <h1 className={styles.stepTitle}>숙소를 소개해주세요</h1>
+      <p className={styles.stepDesc}>숙소 이름과 설명을 입력해주세요.</p>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>숙소 이름</label>
         <input
+          className={styles.formInput}
+          type="text"
+          placeholder="예: 신당동 오픈레터하우스"
           value={data.name}
-          onChange={(e) => setField("name", e.target.value)}
-          placeholder="예: 한적한 마을의 단독 한옥"
-          className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
+          onChange={e => setField('name', e.target.value)}
+          maxLength={50}
         />
-      </label>
-
-      <label className="block space-y-1">
-        <span className="text-sm font-medium">설명</span>
+      </div>
+      <div className={styles.formGroup}>
+        <label className={styles.formLabel}>숙소 설명</label>
         <textarea
+          className={`${styles.formInput} ${styles.formTextarea}`}
+          placeholder="숙소의 특징과 매력을 자유롭게 소개해주세요."
           value={data.description}
-          onChange={(e) => setField("description", e.target.value)}
-          rows={6}
-          placeholder="공간의 분위기와 추천 활동을 적어주세요."
-          className="w-full rounded-md border border-slate-200 px-3 py-2 text-sm outline-none focus:border-slate-400"
+          onChange={e => setField('description', e.target.value)}
+          maxLength={500}
         />
-      </label>
-
-      <StepNav back="../basics" next="../location" disabled={!ready} />
-    </section>
+        <div style={{ textAlign: 'right', fontSize: 12, color: 'var(--light)', marginTop: 4 }}>{data.description.length}/500</div>
+      </div>
+    </div>
   );
 }

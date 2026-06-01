@@ -1,0 +1,103 @@
+.box {
+  border: 1.5px solid var(--border);
+  border-radius: 16px;
+  background: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.price { font-size: 22px; font-weight: 700; color: var(--accent); }
+.per { font-size: 13px; color: var(--light); }
+
+.calendarWrap {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.dateSummary {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.dateCol {
+  padding: 10px 14px;
+  border-right: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.dateCol:last-child { border-right: none; }
+.dateLabel { font-size: 11px; color: var(--light); }
+.dateVal { font-size: 13px; font-weight: 600; color: var(--dark); }
+
+.guestRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 2px;
+}
+.guestLabel { font-size: 14px; font-weight: 600; }
+.counter { display: flex; align-items: center; gap: 12px; }
+.counterBtn {
+  width: 30px; height: 30px; border-radius: 50%;
+  border: 1px solid var(--border); background: white;
+  cursor: pointer; font-size: 16px; font-family: inherit;
+  display: flex; align-items: center; justify-content: center;
+  transition: border-color 0.15s;
+}
+.counterBtn:hover:not(:disabled) { border-color: var(--dark); }
+.counterBtn:disabled { opacity: 0.3; cursor: not-allowed; }
+.counterNum { font-size: 14px; font-weight: 600; min-width: 18px; text-align: center; }
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 14px;
+}
+.totalRow strong { font-size: 16px; font-weight: 700; }
+
+.errorBox {
+  padding: 10px 12px;
+  background: #fff5f5;
+  border: 1px solid #ffcccc;
+  border-radius: 8px;
+  color: #c0392b;
+  font-size: 13px;
+}
+
+.reserveBtn {
+  width: 100%;
+  padding: 14px;
+  background: var(--dark);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+.reserveBtn:hover:not(:disabled) { background: #333; }
+.reserveBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.note {
+  font-size: 11px;
+  color: var(--light);
+  text-align: center;
+  margin: 0;
+  line-height: 1.5;
+}

@@ -2,8 +2,7 @@ import { initializeApp, type FirebaseApp } from "firebase/app";
 import {
   getAuth,
   GoogleAuthProvider,
-  signInWithRedirect,
-  getRedirectResult,
+  signInWithPopup,
   signOut as firebaseSignOut,
   type Auth,
   type User as FirebaseUser,
@@ -26,9 +25,7 @@ export const firebaseAuth: Auth = getAuth(firebaseApp);
 const provider = new GoogleAuthProvider();
 
 export async function signInWithGoogle(): Promise<{ idToken: string; user: FirebaseUser }> {
-  await signInWithRedirect(firebaseAuth, provider);
-  const result = await getRedirectResult(firebaseAuth);
-  if (!result) throw new Error("No redirect result");
+  const result = await signInWithPopup(firebaseAuth, provider);
   const idToken = await result.user.getIdToken();
   return { idToken, user: result.user };
 }

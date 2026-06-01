@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title> · 서울의 하루 — 게임</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nanum+Myeongjo:wght@400;700;800&display=swap">
+<style>
+:root{
+  --ink:#ffffff;
+  --panel:#f5f5f5;
+  --ink2:#f5f5f5;
+  --cream:#1a1a1a;
+  --cream-d:#666660;
+  --gold:#1a1a1a;
+  --line-c:#ddd8d0;
+  --coral:#e07a5a;
+  --green:#2d6a4f;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:
+  radial-gradient(ellipse 80% 50% at 50% 4%,rgba(58,140,180,.30),transparent 68%),
+  radial-gradient(ellipse 100% 70% at 50% 108%,rgba(20,60,95,.30),transparent 64%),
+  #04101c;
+  color:var(--cream);font-family:'Pretendard',sans-serif;min-height:100vh;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.app{max-width:880px;margin:0 auto;padding:34px 22px 58px}
+.screen{display:none;animation:fade .42s ease}
+.screen.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.kicker{font-size:12px;letter-spacing:.34em;color:var(--gold);font-weight:600;text-transform:uppercase}
+h1{font-family:var(--serif);font-size:42px;font-weight:800;margin:14px 0 12px;
+  letter-spacing:-.012em;line-height:1.22;text-shadow:0 0 32px rgba(95,214,224,.36)}
+h1 .hl{background:linear-gradient(90deg,var(--gold),var(--lime));-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:none}
+.sub{color:var(--cream-d);font-size:14.5px;line-height:1.86;max-width:660px}
+.sub b{color:var(--cream)}
+.back{background:none;border:none;color:var(--cream-d);cursor:pointer;font-size:13px;
+  padding:6px 0;font-family:inherit}
+.back:hover{color:var(--cream)}
+.btn{appearance:none;border:1px solid var(--line-c);background:rgba(12,34,54,.55);color:var(--cream);
+  font-weight:800;font-size:14.5px;padding:14px;border-radius:14px;cursor:pointer;
+  font-family:inherit;width:100%;margin-top:12px;transition:.2s}
+.btn:hover{border-color:#1a1a1a;box-shadow:0 0 18px rgba(95,214,224,.22)}
+.btn.primary{background:linear-gradient(135deg,#1f5b78,#143e54);border-color:#3a8aae;color:#eafcff}
+.btn.primary:hover{box-shadow:0 0 26px rgba(95,214,224,.5);transform:translateY(-1px)}
+.btn.ghost{background:transparent}
+
+/* ===== HOME ===== */
+.cinema{position:relative;margin:22px 0 4px;border:1px solid var(--line-c);border-radius:22px;
+  background:radial-gradient(ellipse at 50% 30%,#0a2840 0%,#030b14 100%);
+  overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 0 80px rgba(12,52,82,.5)}
+.cinema svg{width:100%;height:auto;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.cinema svg:active{cursor:grabbing}
+.cine-clock{position:absolute;top:14px;left:18px;display:flex;align-items:baseline;gap:8px;
+  font-family:var(--serif)}
+.cine-hour{font-size:46px;font-weight:800;color:#eafcff;text-shadow:0 0 22px rgba(95,214,224,.55);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.cine-hour span{font-size:24px;color:var(--cream-d);font-weight:500;margin-left:2px}
+.cine-mark{font-family:'Pretendard',sans-serif;font-size:12px;letter-spacing:.16em;
+  color:var(--gold);font-weight:700;text-transform:uppercase}
+.cine-top3{position:absolute;top:16px;right:18px;width:172px;
+  background:rgba(7,22,36,.65);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);
+  border:1px solid #2a4f6e;border-radius:13px;padding:10px 12px}
+.cine-top3 .ct{font-size:10px;letter-spacing:.18em;color:var(--gold);font-weight:700;margin-bottom:6px}
+.cine-top3 .ti{display:flex;justify-content:space-between;font-size:12.5px;font-weight:700;
+  color:var(--cream);padding:3px 0;border-bottom:1px solid rgba(28,58,82,.5)}
+.cine-top3 .ti:last-child{border-bottom:none}
+.cine-top3 .ti span{color:var(--cream-d);font-weight:500;font-size:11px}
+.cine-tag{position:absolute;bottom:14px;left:18px;font-size:11px;letter-spacing:.12em;
+  color:#5e7488;font-weight:700}
+.cine-tag b{color:var(--cream-d);font-weight:700}
+
+.menu{display:flex;flex-direction:column;gap:11px;margin-top:24px}
+.game-btn{appearance:none;border:none;background:linear-gradient(135deg,rgba(20,55,80,.85),rgba(8,26,43,.85));
+  border:1px solid var(--line-c);color:var(--cream);
+  padding:18px 20px;border-radius:18px;cursor:pointer;font-family:inherit;text-align:left;
+  transition:.22s;display:block;width:100%;box-shadow:0 6px 18px rgba(0,0,0,.3)}
+.game-btn:hover{border-color:#1a1a1a;transform:translateY(-2px);
+  box-shadow:0 14px 28px rgba(0,0,0,.45),0 0 22px rgba(95,214,224,.18)}
+.game-btn.hot{background:linear-gradient(135deg,rgba(80,30,55,.85),rgba(40,12,28,.85));border-color:#6f2746}
+.game-btn.hot:hover{border-color:var(--hot);box-shadow:0 14px 28px rgba(0,0,0,.45),0 0 22px rgba(255,107,138,.32)}
+.game-btn.ghost{background:rgba(8,18,28,.6)}
+.game-btn .gb-tag{font-size:11px;letter-spacing:.18em;font-weight:800;color:var(--gold);text-transform:uppercase}
+.game-btn.hot .gb-tag{color:var(--hot)}
+.game-btn.ghost .gb-tag{color:var(--cream-d)}
+.game-btn .gb-title{font-family:var(--serif);font-size:22px;font-weight:800;margin-top:5px;letter-spacing:-.01em}
+.game-btn .gb-sub{font-size:12px;color:var(--cream-d);margin-top:4px;line-height:1.55}
+
+/* ===== GAME BAR ===== */
+.game-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;gap:10px}
+.round-info,.streak-info{display:flex;gap:14px;font-size:12.5px;color:var(--cream-d)}
+.round-info b,.streak-info b{color:var(--cream);font-weight:800;font-size:14px}
+.progress{height:5px;background:#0b1d2d;border-radius:3px;overflow:hidden;margin-bottom:18px}
+.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--gold),var(--lime));transition:width .5s}
+
+/* ===== PEAK GAME ===== */
+.quiz-card{background:radial-gradient(ellipse at 50% 0%,#0f2c44,#081a2b);
+  border:1px solid var(--line-c);border-radius:22px;
+  padding:24px 22px;box-shadow:0 18px 44px rgba(0,0,0,.55)}
+.qc-q{font-family:var(--serif);font-size:14px;letter-spacing:.12em;color:var(--gold);font-weight:700;
+  text-transform:uppercase;text-align:center}
+.qc-name{font-family:var(--serif);font-size:36px;font-weight:800;margin-top:6px;text-align:center;
+  letter-spacing:-.014em;text-shadow:0 0 30px rgba(95,214,224,.4)}
+.qc-name span{font-size:14px;color:var(--cream-d);font-weight:500;margin-left:8px;
+  font-family:'Pretendard',sans-serif}
+.qc-hint{text-align:center;color:#7a92a4;font-size:12px;margin-top:6px;font-style:italic}
+#qzBars{width:100%;height:auto;display:block;margin-top:14px}
+.time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:18px}
+.tg-btn{background:rgba(12,34,54,.6);border:1px solid var(--line-c);color:var(--cream);
+  padding:14px 8px;border-radius:13px;cursor:pointer;font-family:inherit;text-align:center;
+  transition:.16s;font-weight:800}
+.tg-btn:hover:not(:disabled){border-color:#1a1a1a;background:rgba(34,80,108,.5);
+  transform:translateY(-1px);box-shadow:0 0 18px rgba(95,214,224,.22)}
+.tg-btn:disabled{cursor:not-allowed;opacity:.55}
+.tg-btn .tn{font-size:13.5px}
+.tg-btn .ts{font-size:10.5px;color:var(--cream-d);font-weight:500;margin-top:2px}
+.tg-btn.right{background:linear-gradient(135deg,rgba(40,110,70,.9),rgba(20,70,42,.9));
+  border-color:var(--lime);box-shadow:0 0 24px rgba(116,239,176,.36)}
+.tg-btn.right .tn,.tg-btn.right .ts{color:#f0fff5}
+.tg-btn.wrong{background:linear-gradient(135deg,rgba(110,38,55,.9),rgba(70,20,32,.9));
+  border-color:var(--hot)}
+.tg-btn.wrong .tn,.tg-btn.wrong .ts{color:#ffe2ea}
+
+/* reveal */
+.reveal{display:none;margin-top:14px;animation:popIn .4s cubic-bezier(.2,.9,.3,1.2)}
+.reveal.on{display:block}
+@keyframes popIn{from{opacity:0;transform:scale(.92) translateY(8px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.rv-result{font-family:var(--serif);font-size:30px;font-weight:800;text-align:center;
+  margin:6px 0 12px;letter-spacing:-.014em}
+.rv-result.win{color:var(--lime);text-shadow:0 0 26px rgba(116,239,176,.5)}
+.rv-result.lose{color:var(--hot);text-shadow:0 0 26px rgba(255,107,138,.5)}
+.rv-insight{background:linear-gradient(180deg,rgba(12,34,54,.7),rgba(8,26,43,.7));
+  border:1px solid var(--line-c);border-radius:15px;padding:16px 18px;
+  font-size:13.5px;color:var(--cream);line-height:1.85}
+.rv-insight b{color:var(--gold);font-weight:800}
+.rv-insight .t{color:var(--lime);font-weight:800}
+
+/* ===== SAJU ===== */
+.saju-card{background:radial-gradient(ellipse at 50% 0%,#0f2c44,#081a2b);
+  border:1px solid var(--line-c);border-radius:22px;
+  padding:28px 24px;box-shadow:0 18px 44px rgba(0,0,0,.55);text-align:center;position:relative;overflow:hidden}
+.saju-card::before{content:'';position:absolute;top:-40px;left:50%;transform:translateX(-50%);
+  width:280px;height:200px;border-radius:50%;
+  background:radial-gradient(ellipse,rgba(95,214,224,.18),transparent 65%);pointer-events:none}
+.sj-tag{font-size:11px;letter-spacing:.22em;color:var(--gold);font-weight:800;
+  text-transform:uppercase;position:relative}
+.sj-q{font-family:var(--serif);font-size:26px;font-weight:800;margin:10px 0 22px;
+  letter-spacing:-.014em;line-height:1.36;position:relative;text-shadow:0 0 24px rgba(95,214,224,.32)}
+.sj-options{display:flex;flex-direction:column;gap:9px;position:relative}
+.sj-opt{background:rgba(12,34,54,.6);border:1px solid var(--line-c);color:var(--cream);
+  padding:15px 18px;border-radius:14px;cursor:pointer;font-family:inherit;text-align:left;
+  font-weight:700;font-size:14.5px;line-height:1.55;transition:.16s}
+.sj-opt:hover{border-color:#1a1a1a;background:rgba(34,80,108,.55);
+  transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.4),0 0 18px rgba(95,214,224,.22)}
+.sj-opt b{color:var(--gold);font-weight:800}
+.sj-opt em{font-style:italic;color:var(--teal)}
+
+/* ===== SAJU RESULT ===== */
+.saju-result{text-align:center}
+.sr-banner{font-size:12px;letter-spacing:.24em;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:6px}
+.sr-fate{font-family:var(--serif);font-size:14px;letter-spacing:.2em;color:var(--cream-d);font-weight:600;text-transform:uppercase}
+.sr-name{font-family:var(--serif);font-size:54px;font-weight:800;letter-spacing:-.024em;
+  background:linear-gradient(135deg,#eafcff,var(--gold));-webkit-background-clip:text;background-clip:text;color:transparent;
+  text-shadow:0 0 38px rgba(95,214,224,.5);margin:4px 0 2px;line-height:1.05}
+.sr-name-sub{font-size:14px;color:var(--cream-d);font-weight:500}
+.sr-cluster{display:inline-block;font-size:11.5px;letter-spacing:.14em;color:var(--gold);
+  font-weight:800;background:rgba(95,214,224,.13);padding:5px 14px;border-radius:18px;
+  border:1px solid rgba(95,214,224,.32);margin-top:11px}
+.sr-poem{font-family:var(--serif);font-size:17px;line-height:1.92;color:var(--cream);
+  margin:22px auto 0;max-width:520px;border-left:2px solid var(--gold);padding:6px 0 6px 18px;text-align:left}
+.sr-poem b{color:var(--gold);font-weight:800}
+.sr-poem em{font-style:italic;color:var(--teal)}
+.sr-section{margin-top:22px;padding:14px 16px;background:rgba(12,34,54,.5);
+  border:1px solid var(--line-c);border-radius:14px;text-align:left}
+.sr-section .sh{font-size:10.5px;letter-spacing:.2em;color:var(--gold);font-weight:800;text-transform:uppercase;margin-bottom:8px}
+.sr-pair{display:flex;gap:8px;flex-wrap:wrap}
+.sr-pair .pi{flex:1;min-width:130px;background:radial-gradient(ellipse at 50% 0%,#0f2c44,#081a2b);
+  border:1px solid var(--line-c);border-radius:12px;padding:11px 12px;text-align:center}
+.sr-pair .pn{font-family:var(--serif);font-size:18px;font-weight:800;letter-spacing:-.01em}
+.sr-pair .pg{font-size:10.5px;color:var(--cream-d);margin-top:2px}
+.sr-pair .pl{font-size:10px;color:var(--gold);margin-top:3px;font-weight:700}
+.sr-opposite{margin-top:18px;padding:14px 16px;background:rgba(80,30,50,.32);
+  border:1px solid rgba(255,107,138,.34);border-radius:14px;text-align:left}
+.sr-opposite .sh{color:var(--hot)}
+.sr-opposite .pn{font-family:var(--serif);font-size:22px;font-weight:800;color:#ffb1c0;margin-top:4px}
+.sr-opposite .pl{color:#ffb1c0;font-size:11px}
+
+/* 오행 차트 */
+.elem-row{display:flex;gap:6px;justify-content:space-between;margin-top:4px}
+.elem-cell{flex:1;text-align:center}
+.el-name{font-family:var(--serif);font-size:18px;font-weight:800;letter-spacing:-.01em}
+.el-name small{font-size:10.5px;color:var(--cream-d);margin-left:2px;font-weight:500}
+.el-dots{display:flex;flex-direction:column;gap:3px;margin:7px 0 5px;align-items:center}
+.el-dots i{width:14px;height:14px;border-radius:3px;transition:.3s}
+.el-val{font-size:11px;color:var(--cream-d);font-weight:700}
+
+/* 옛말 인용 */
+.sr-quote{background:linear-gradient(180deg,rgba(40,30,12,.55),rgba(20,15,6,.55));
+  border:1px solid rgba(201,138,30,.32);border-radius:14px;padding:16px 18px;margin-top:18px;text-align:center}
+.sr-quote .qh{font-family:var(--serif);font-size:22px;font-weight:800;letter-spacing:.18em;color:#ffd96b;
+  text-shadow:0 0 18px rgba(255,217,107,.35)}
+.sr-quote .qk{font-size:11px;letter-spacing:.22em;color:var(--cream-d);font-weight:500;margin-left:6px;font-family:'Pretendard',sans-serif;letter-spacing:.14em}
+.sr-quote .ql{font-family:var(--serif);font-size:14.5px;line-height:1.78;color:var(--cream);margin-top:9px;font-style:italic}
+
+/* 용신 박스 강조 */
+.sr-useful{background:radial-gradient(ellipse at 50% 0%,rgba(95,214,224,.18),rgba(8,26,43,.7))!important;
+  border-color:#1a1a1a!important;box-shadow:0 0 22px rgba(95,214,224,.18)}
+.sr-useful .sh{color:var(--gold)!important}
+
+/* ===== WALK GAME (legacy, hidden) ===== */
+.walk-prompt{text-align:center;margin:8px 0 18px}
+.wp-time{font-family:var(--serif);font-size:14px;letter-spacing:.16em;color:var(--gold);
+  font-weight:700;text-transform:uppercase}
+.wp-q{font-family:var(--serif);font-size:24px;font-weight:800;margin-top:4px;letter-spacing:-.01em;line-height:1.34}
+.walk-choices{display:flex;flex-direction:column;gap:10px}
+.walk-choice{background:radial-gradient(ellipse at 50% 0%,#0f2c44,#081a2b);
+  border:1px solid var(--line-c);border-radius:18px;padding:18px 19px;cursor:pointer;
+  font-family:inherit;text-align:left;color:var(--cream);transition:.2s;
+  box-shadow:0 8px 22px rgba(0,0,0,.4);position:relative;overflow:hidden;width:100%}
+.walk-choice:hover{border-color:#1a1a1a;transform:translateY(-2px);
+  box-shadow:0 14px 30px rgba(0,0,0,.5),0 0 22px rgba(95,214,224,.2)}
+.walk-choice .wc-hd{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.walk-choice .wc-nm{font-family:var(--serif);font-size:22px;font-weight:800;letter-spacing:-.01em}
+.walk-choice .wc-nm span{font-size:11.5px;color:var(--cream-d);font-weight:500;margin-left:6px;
+  font-family:'Pretendard',sans-serif}
+.walk-choice .wc-tag{font-size:10.5px;letter-spacing:.14em;font-weight:800;color:var(--gold);text-transform:uppercase;flex-shrink:0}
+.walk-choice .wc-hint{font-size:13px;color:var(--cream-d);margin-top:6px;line-height:1.62}
+.walk-choice .wc-hint b{color:var(--cream)}
+.walk-choice .wc-sparkline{margin-top:10px;display:flex;align-items:flex-end;gap:3px;height:22px}
+.walk-choice .wc-sparkline i{flex:1;border-radius:2px 2px 0 0;background:linear-gradient(180deg,var(--gold),rgba(95,214,224,.25));opacity:.7}
+.rv-scene{background:linear-gradient(180deg,rgba(12,34,54,.78),rgba(8,26,43,.78));
+  border:1px solid var(--line-c);border-radius:18px;padding:20px 22px;margin-bottom:12px;
+  position:relative;overflow:hidden}
+.rv-scene::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;
+  border-radius:50%;background:radial-gradient(circle,rgba(95,214,224,.18),transparent 70%)}
+.rv-scene .rs-nm{font-family:var(--serif);font-size:28px;font-weight:800;letter-spacing:-.012em;
+  text-shadow:0 0 22px rgba(95,214,224,.42);position:relative}
+.rv-scene .rs-nm span{font-size:13px;color:var(--cream-d);font-weight:500;margin-left:7px;
+  font-family:'Pretendard',sans-serif;text-shadow:none}
+.rv-scene .rs-tag{display:inline-block;font-size:10.5px;letter-spacing:.14em;color:var(--gold);
+  font-weight:800;text-transform:uppercase;margin-top:6px;padding:3px 10px;border-radius:14px;
+  background:rgba(95,214,224,.12);border:1px solid rgba(95,214,224,.3);position:relative}
+.rv-scene .rs-poem{font-family:var(--serif);font-size:16px;line-height:1.78;
+  margin-top:14px;color:var(--cream);position:relative}
+.rv-scene .rs-poem em{font-style:italic;color:var(--teal)}
+.rv-scene .rs-data{font-size:12.5px;color:var(--cream-d);margin-top:14px;padding-top:12px;
+  border-top:1px solid var(--line-c);line-height:1.7;position:relative}
+.rv-scene .rs-data b{color:var(--gold);font-weight:800}
+
+/* ===== CARDS GAME ===== */
+.card-stage{min-height:380px;display:flex;align-items:center;justify-content:center;
+  margin:20px 0 24px;perspective:1000px}
+.empty-card{text-align:center;padding:30px;border:2px dashed var(--line-c);border-radius:22px;
+  background:rgba(8,18,28,.5);width:100%;max-width:380px;position:relative;overflow:hidden}
+.ec-glow{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 50%,rgba(95,214,224,.07),transparent 70%);animation:pulse 3.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+.ec-line{font-family:var(--serif);font-size:22px;color:var(--cream-d);font-weight:800;position:relative}
+.ec-sub{font-size:13px;color:#5f7588;margin-top:8px;position:relative}
+.star-card{background:radial-gradient(ellipse at 50% -20%,#1a3a52 0%,#081a2b 60%,#040d18 100%);
+  border:1px solid #2a4f6e;border-radius:24px;padding:30px 24px 24px;
+  box-shadow:0 24px 60px rgba(0,0,0,.55),0 0 40px rgba(95,214,224,.18),inset 0 0 60px rgba(95,214,224,.05);
+  width:100%;max-width:380px;text-align:center;animation:cardDrop .7s cubic-bezier(.18,1.0,.34,1.0);
+  position:relative;overflow:hidden}
+@keyframes cardDrop{from{opacity:0;transform:translateY(-40px) scale(.84) rotateX(20deg)}
+  to{opacity:1;transform:translateY(0) scale(1) rotateX(0)}}
+.star-card::before{content:'';position:absolute;top:-50px;left:50%;transform:translateX(-50%);
+  width:200px;height:200px;border-radius:50%;
+  background:radial-gradient(circle,rgba(95,214,224,.28),transparent 65%);pointer-events:none}
+.sc-time{font-size:11.5px;letter-spacing:.22em;color:var(--gold);font-weight:800;text-transform:uppercase;position:relative}
+.sc-clock{font-family:var(--serif);font-size:48px;font-weight:800;color:#eafcff;
+  text-shadow:0 0 30px rgba(95,214,224,.6);margin-top:4px;line-height:1;letter-spacing:-.02em;position:relative;
+  font-variant-numeric:tabular-nums}
+.sc-clock small{font-size:18px;color:var(--cream-d);font-weight:500;margin-left:3px}
+.sc-name{font-family:var(--serif);font-size:36px;font-weight:800;margin-top:14px;letter-spacing:-.014em;
+  text-shadow:0 0 26px rgba(95,214,224,.45);position:relative}
+.sc-name span{font-size:13.5px;color:var(--cream-d);font-weight:500;margin-left:7px;
+  font-family:'Pretendard',sans-serif;text-shadow:none}
+.sc-line{font-family:var(--serif);font-size:16px;line-height:1.78;color:var(--cream);
+  margin:15px auto 0;max-width:300px;position:relative}
+.sc-line em{font-style:italic;color:var(--teal)}
+.sc-data{font-size:12px;color:var(--cream-d);margin-top:14px;padding-top:12px;
+  border-top:1px solid rgba(28,58,82,.7);line-height:1.66;position:relative}
+.sc-data b{color:var(--gold);font-weight:800}
+.sc-fav{position:absolute;top:14px;right:14px;background:rgba(8,18,28,.55);
+  border:1px solid var(--line-c);width:42px;height:42px;border-radius:50%;cursor:pointer;
+  font-size:20px;line-height:1;transition:.18s;color:#7a92a4}
+.sc-fav:hover{transform:scale(1.12);border-color:var(--hot);color:var(--hot);box-shadow:0 0 18px rgba(255,107,138,.4)}
+.sc-fav.on{color:var(--hot);background:rgba(255,107,138,.18);border-color:var(--hot);box-shadow:0 0 22px rgba(255,107,138,.5)}
+.card-actions{display:flex;flex-direction:column;gap:9px}
+.big-pull{font-size:17px;padding:18px;background:linear-gradient(135deg,#2c5b78,#143e54);
+  border:1px solid #3a8aae;text-shadow:0 0 14px rgba(95,214,224,.4)}
+.big-pull:hover{box-shadow:0 0 30px rgba(95,214,224,.5);transform:translateY(-2px)}
+
+.col-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(155px,1fr));gap:11px;margin-top:18px}
+.col-card{background:radial-gradient(ellipse at 50% 0%,#0f2c44,#081a2b);
+  border:1px solid var(--line-c);border-radius:14px;padding:13px 11px;text-align:center;
+  cursor:pointer;transition:.15s;position:relative}
+.col-card:hover{border-color:#1a1a1a;transform:translateY(-2px)}
+.col-card .cc-time{font-size:9.5px;letter-spacing:.16em;color:var(--gold);font-weight:800}
+.col-card .cc-nm{font-family:var(--serif);font-size:16px;font-weight:800;margin-top:3px;letter-spacing:-.01em}
+.col-card .cc-g{font-size:10px;color:var(--cream-d);margin-top:2px}
+.col-card .cc-x{position:absolute;top:6px;right:8px;color:#5f7588;font-size:11px;cursor:pointer;background:none;border:none;padding:2px}
+.col-card .cc-x:hover{color:var(--hot)}
+
+/* ===== HILO (legacy — kept in case) ===== */
+.hilo-q{font-family:var(--serif);font-size:22px;font-weight:800;text-align:center;
+  color:var(--cream);margin:18px 0 16px;line-height:1.4;letter-spacing:-.01em}
+.hilo-q span{color:var(--gold)}
+.hilo-board{display:grid;grid-template-columns:1fr;gap:10px}
+.hilo-card{background:radial-gradient(ellipse at 50% 0%,#0f2c44,#081a2b);
+  border:1px solid var(--line-c);border-radius:18px;padding:22px 20px;text-align:center;
+  box-shadow:0 12px 30px rgba(0,0,0,.5);position:relative}
+.hilo-card.right{background:radial-gradient(ellipse at 50% 0%,#1a3a52,#0c2236)}
+.hc-name{font-family:var(--serif);font-size:26px;font-weight:800;letter-spacing:-.01em}
+.hc-name span{font-size:12.5px;color:var(--cream-d);font-weight:500;margin-left:7px;
+  font-family:'Pretendard',sans-serif}
+.hc-stat{font-size:11.5px;color:var(--gold);font-weight:700;margin-top:7px;letter-spacing:.12em;text-transform:uppercase}
+.hc-num{font-family:var(--serif);font-size:54px;font-weight:800;margin-top:8px;
+  color:var(--gold);text-shadow:0 0 28px rgba(95,214,224,.5);
+  font-variant-numeric:tabular-nums;letter-spacing:-.02em;line-height:1}
+.hc-num small{font-size:18px;color:var(--cream-d);font-weight:500;margin-left:5px}
+.hc-num.q{color:var(--cream-d);text-shadow:none}
+
+.vs-zone{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px;margin:6px 0}
+.vs-btn{appearance:none;border:none;background:rgba(12,34,54,.7);color:var(--cream);
+  padding:14px 12px;border-radius:14px;cursor:pointer;font-family:inherit;font-weight:800;
+  font-size:14px;border:1px solid var(--line-c);transition:.16s}
+.vs-btn.up{color:var(--lime);border-color:rgba(116,239,176,.4)}
+.vs-btn.up:hover{background:rgba(40,80,55,.7);box-shadow:0 0 22px rgba(116,239,176,.36);transform:translateY(-2px)}
+.vs-btn.down{color:var(--hot);border-color:rgba(255,107,138,.4)}
+.vs-btn.down:hover{background:rgba(80,30,50,.7);box-shadow:0 0 22px rgba(255,107,138,.36);transform:translateY(-2px)}
+.vs-btn .vd{font-size:24px;line-height:1;display:block;margin-bottom:2px}
+.vs-or{font-family:var(--serif);font-size:13px;color:var(--cream-d);font-weight:500;text-align:center;
+  letter-spacing:.12em}
+
+/* ===== RESULT ===== */
+.result-wrap{text-align:center;padding:20px 0 0}
+.rs-banner{font-family:var(--serif);font-size:14px;letter-spacing:.22em;color:var(--gold);
+  font-weight:700;text-transform:uppercase}
+.rs-score{font-family:var(--serif);font-size:88px;font-weight:800;letter-spacing:-.03em;
+  background:linear-gradient(135deg,var(--gold),var(--lime));
+  -webkit-background-clip:text;background-clip:text;color:transparent;line-height:1;margin:6px 0 4px;
+  text-shadow:0 0 50px rgba(95,214,224,.5)}
+.rs-score small{font-size:24px;color:var(--cream-d);font-weight:500;letter-spacing:0;
+  background:none;-webkit-text-fill-color:var(--cream-d)}
+.rs-grade{display:inline-block;font-family:'Pretendard',sans-serif;font-size:14px;font-weight:800;
+  letter-spacing:.04em;background:rgba(95,214,224,.13);color:var(--gold);padding:5px 14px;border-radius:20px;
+  border:1px solid rgba(95,214,224,.3)}
+.rs-title{font-family:var(--serif);font-size:28px;font-weight:800;margin-top:14px;letter-spacing:-.01em}
+.rs-title-sub{font-size:13px;color:var(--cream-d);margin-top:4px;line-height:1.7;max-width:340px;
+  margin-left:auto;margin-right:auto}
+.rs-grid{display:flex;gap:8px;justify-content:center;margin:22px 0 6px;font-size:42px;line-height:1}
+.rs-grid .sq{display:inline-block;width:42px;height:42px;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;font-size:23px;font-weight:800;
+  font-family:var(--serif)}
+.rs-grid .sq.g{background:rgba(116,239,176,.18);border:1.5px solid var(--lime);color:var(--lime)}
+.rs-grid .sq.r{background:rgba(255,107,138,.13);border:1.5px solid rgba(255,107,138,.45);color:#ffb1c0}
+.rs-insight{background:linear-gradient(180deg,rgba(12,34,54,.7),rgba(8,26,43,.7));
+  border:1px solid var(--line-c);border-radius:15px;padding:16px 20px;margin:20px auto 0;
+  font-size:13.5px;color:var(--cream);line-height:1.88;max-width:540px;text-align:left}
+.rs-insight b{color:var(--gold);font-weight:800}
+.rs-insight .t{color:var(--lime);font-weight:800}
+.rs-actions{display:flex;flex-direction:column;gap:9px;margin:20px auto 0;max-width:380px}
+.share-toast{position:fixed;bottom:30px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:rgba(116,239,176,.2);color:var(--lime);border:1px solid var(--lime);padding:11px 22px;
+  border-radius:25px;font-weight:800;font-size:13px;opacity:0;pointer-events:none;
+  transition:.3s;z-index:99;box-shadow:0 8px 22px rgba(0,0,0,.4)}
+.share-toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ===== EXPLORE MODE (preserved) ===== */
+.lensrow{margin:19px 0 0;display:flex;gap:6px;flex-wrap:wrap}
+.lens{background:rgba(12,34,54,.55);border:1px solid var(--line-c);border-radius:13px;
+  padding:9px 8px;cursor:pointer;transition:.2s;text-align:center;font-family:inherit;flex:1;min-width:78px;
+  -webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px)}
+.lens:hover{border-color:#356d8e}
+.lens.on{background:rgba(34,80,108,.5);border-color:#1a1a1a;
+  box-shadow:0 0 20px rgba(95,214,224,.3),inset 0 0 15px rgba(95,214,224,.13)}
+.lens .ln{font-size:12.5px;font-weight:800;color:var(--cream-d)}
+.lens.on .ln{color:#ddf6fb}
+.lens .ls{font-size:9.5px;color:#5e7488;margin-top:2px}
+.lens.on .ls{color:var(--gold)}
+.sky-frame{position:relative;margin:15px 0 0;border:1px solid var(--line-c);
+  border-radius:20px;background:radial-gradient(ellipse at 50% 22%,#0a2840 0%,#030b14 100%);
+  overflow:hidden;box-shadow:0 18px 50px rgba(0,0,0,.6),inset 0 0 80px rgba(12,52,82,.5)}
+#sky{width:100%;height:auto;display:block;cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+#sky:active{cursor:grabbing}
+.info{position:absolute;top:14px;right:14px;width:214px;
+  background:rgba(7,22,36,.85);-webkit-backdrop-filter:blur(9px);backdrop-filter:blur(9px);
+  border:1px solid #2a4f6e;border-radius:15px;padding:13px 15px;
+  box-shadow:0 0 26px rgba(0,0,0,.5),inset 0 0 18px rgba(95,214,224,.07);
+  transition:opacity .18s;opacity:0;pointer-events:none}
+.info.on{opacity:1}
+.info .nm{font-family:var(--serif);font-size:18px;font-weight:800}
+.info .nm span{font-size:11px;color:var(--cream-d);font-weight:500;margin-left:5px;
+  font-family:'Pretendard',sans-serif}
+.info .own{font-size:13px;font-weight:800;margin-top:8px}
+.info .pop{font-size:11.5px;color:var(--cream-d);margin-top:4px}
+.info .hint{font-size:10.5px;color:#5f7588;margin-top:8px;border-top:1px solid var(--line-c);padding-top:7px}
+.legend{margin-top:14px;font-size:12px;color:var(--cream-d);display:flex;gap:18px;
+  flex-wrap:wrap;align-items:center;line-height:1.7}
+.dwrap{max-width:560px}
+.d-nm{font-family:var(--serif);font-size:30px;font-weight:800;text-shadow:0 0 24px rgba(95,214,224,.32)}
+.d-nm span{font-size:13px;color:var(--cream-d);font-weight:500;margin-left:7px;font-family:'Pretendard',sans-serif}
+.barcard{background:radial-gradient(ellipse at 50% 0%,#0f2c44,#081a2b);
+  border:1px solid var(--line-c);border-radius:20px;
+  padding:19px 16px 12px;margin-top:15px;box-shadow:0 14px 40px rgba(0,0,0,.55)}
+.barcard .ct{font-size:12px;letter-spacing:.13em;color:var(--gold);font-weight:700;margin-bottom:6px}
+#bars{width:100%;height:auto;display:block}
+.agelg{display:flex;gap:13px;flex-wrap:wrap;justify-content:center;margin-top:10px;
+  font-size:11.5px;color:var(--cream-d)}
+.agelg span{display:inline-flex;align-items:center;gap:5px}
+.agelg i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.dread{border-left:2px solid var(--gold);padding-left:15px;margin-top:19px;
+  font-family:var(--serif);font-size:15.5px;line-height:2.05;color:var(--cream)}
+.dread b{color:var(--gold);font-weight:700}
+.dread .t{color:var(--teal);font-weight:700}
+.note{margin-top:21px;font-size:11px;color:#5c7184;line-height:1.72;max-width:672px}
+@media (max-width:560px){
+  h1{font-size:34px}
+  .qc-name{font-size:30px}
+  .hc-name{font-size:22px}
+  .hc-num{font-size:44px}
+  .rs-score{font-size:72px}
+  .cine-top3{width:140px;font-size:11px;padding:8px 10px}
+  .cine-hour{font-size:38px}
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'Pretendard', sans-serif !important; font-size: 15px !important; }
+.app { max-width: 600px; margin: 0 auto; text-align: center; }
+h1, h2, h3 { text-align: center; }
+.sub, .note, .result, .delta, .vital { text-align: center; }
+.kicker { text-align: center; display: block; }
+.btn, .nextbtn, .choice { font-size: 15px !important; font-family: 'Pretendard', sans-serif !important; }
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ===== HOME ===== -->
+<section class="screen on" id="s-home">
+    <h1>지금 서울,<br>어디가 <span class="hl">깨어있을까?</span></h1>
+  <p class="sub">저층주거지 93곳. 새벽 3시에 가장 차 있는 동네는? 청년이 가장 많은 골목은? — 5초 안에 들어와서, 한 판 하고 가.</p>
+  <div class="cinema">
+    <svg id="cineSky" viewBox="0 0 820 500" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="cine-clock">
+      <div class="cine-hour" id="cineHour">14<span>시</span></div>
+      <div class="cine-mark" id="cineMark">— 늦은오후</div>
+    </div>
+    <div class="cine-top3">
+      <div class="ct">지금 가장 붐비는 동네</div>
+      <div id="cineTop3List"></div>
+    </div>
+    <div class="cine-tag"><b>자동 재생</b> · 24시간 → 30초 &nbsp;·&nbsp; 🖱️ 휠 확대 · 드래그 이동 · 더블클릭 리셋</div>
+  </div>
+  <div class="menu">
+    <button class="game-btn" onclick="startSaju()">
+      <div class="gb-tag">🔮 메인 — 사주·풍수·별자리</div>
+      <div class="gb-title">서울 별자리 — 당신의 운명 동네</div>
+      <div class="gb-sub">잠·방위·호흡을 묻는 일곱 질문. 93개 별 중 당신의 영혼이 깃든 별을 찾아드립니다. 사주 풀이로.</div>
+    </button>
+    <button class="game-btn ghost" onclick="enterExplore()">
+      <div class="gb-tag">🔭 탐험 모드</div>
+      <div class="gb-title">93개 별, 직접 둘러보기</div>
+      <div class="gb-sub">시간대별 지도 + 동네별 하루 곡선. 천천히 산책하듯이.</div>
+    </button>
+  </div>
+</section>
+
+<!-- ===== SAJU ===== -->
+<section class="screen" id="s-saju">
+  <div class="game-bar">
+    <button class="back" onclick="confirmQuit()">← 그만두기</button>
+    <div class="round-info">
+      <span>질문 <b id="sjStep">1</b><span style="opacity:.5"> / 7</span></span>
+    </div>
+  </div>
+  <div class="progress"><i id="sjProg" style="width:14%"></i></div>
+  <div class="saju-card">
+    <div class="sj-tag" id="sjTag">사주 · 시간</div>
+    <div class="sj-q" id="sjQ">—</div>
+    <div class="sj-options" id="sjOptions"></div>
+  </div>
+</section>
+
+<!-- (s-hilo removed — replaced by s-walk and s-cards) -->
+
+<!-- ===== RESULT ===== -->
+<section class="screen" id="s-result">
+  <div class="result-wrap">
+    <div class="rs-banner" id="rsBanner">FINAL · 절정 시간 맞히기</div>
+    <div class="rs-score"><span id="rsScore">0</span><small id="rsMax"> / 500</small></div>
+    <div class="rs-grade" id="rsGrade">B등급</div>
+    <div class="rs-title" id="rsTitle">—</div>
+    <div class="rs-title-sub" id="rsTitleSub"></div>
+    <div class="rs-grid" id="rsGrid"></div>
+    <div class="rs-insight" id="rsInsight"></div>
+    <div class="rs-actions">
+      <button class="btn primary" id="rsAgain" onclick="rsAgain()">한 판 더</button>
+      <button class="btn" id="rsSwap">다른 게임 도전</button>
+      <button class="btn ghost" onclick="copyShare()">📋 결과 복사</button>
+      <button class="btn ghost" onclick="show('s-home')">← 홈으로</button>
+    </div>
+  </div>
+</section>
+
+<!-- ===== EXPLORE MODE (preserved) ===== -->
+<section class="screen" id="s-sky">
+  <button class="back" onclick="show('s-home')" style="margin-bottom:6px">← 홈으로</button>
+  <div class="kicker">탐험 모드</div>
+  <h1 style="font-size:30px">93개 별, 직접 둘러봐</h1>
+  <p class="sub">별빛의 <b>색</b>은 그 동네의 주인 세대. 시간대를 누르면 그 시각 가장 붐비는 별이 환히 떠올라.</p>
+  <div class="lensrow" id="lensRow"></div>
+  <div class="sky-frame">
+    <svg id="sky" viewBox="0 0 820 680" xmlns="http://www.w3.org/2000/svg"></svg>
+    <div class="info" id="info">
+      <div class="nm" id="iNm">—</div>
+      <div class="own" id="iOwn">—</div>
+      <div class="pop" id="iPop">—</div>
+      <div class="hint">눌러서 이 동네의 하루 보기 →</div>
+    </div>
+  </div>
+  <div class="legend" id="legend"></div>
+  <p class="note" id="srcNote"></p>
+</section>
+
+<section class="screen" id="s-detail">
+  <button class="back" onclick="show('s-sky')">← 탐험 지도로</button>
+  <div class="dwrap">
+    <div class="d-nm" id="dNm"></div>
+    <div class="barcard">
+      <div class="ct">이 동네의 하루 — 여섯 시간대의 인구와 세대</div>
+      <svg id="bars" viewBox="0 0 440 258" xmlns="http://www.w3.org/2000/svg"></svg>
+      <div class="agelg">
+        <span><i style="background:var(--c-y)"></i>유소년</span>
+        <span><i style="background:var(--c-c)"></i>청년</span>
+        <span><i style="background:var(--c-m)"></i>중년</span>
+        <span><i style="background:var(--c-o)"></i>노년</span>
+      </div>
+    </div>
+    <div class="dread" id="dRead"></div>
+    <button class="btn" onclick="show('s-sky')">다른 별 보기</button>
+  </div>
+</section>
+
+<div class="share-toast" id="toast">결과를 복사했어 — 어디든 붙여넣기 해봐!</div>
+
+</div>
+<script>
+const SKY=[{"n":"청파동2가","g":"용산구","la":37.54601,"lo":126.96335,"w":[[3728,10411,7856,2672],[5145,12325,8241,2679],[3752,11548,8168,2632],[2633,10404,7652,2604],[2304,10122,7183,2613],[2246,10226,7076,2589]]},{"n":"청파동3가","g":"용산구","la":37.54325,"lo":126.96393,"w":[[3728,10411,7856,2672],[5145,12325,8241,2679],[3752,11548,8168,2632],[2633,10404,7652,2604],[2304,10122,7183,2613],[2246,10226,7076,2589]]},{"n":"평창동","g":"종로구","la":37.61303,"lo":126.97161,"w":[[3164,3845,7271,3799],[2896,3549,6112,3328],[3073,3465,6061,3296],[3215,3486,7175,3693],[3510,3990,8130,3873],[3688,4255,8607,3993]]},{"n":"부암동","g":"종로구","la":37.59476,"lo":126.9627,"w":[[2697,2997,4228,1910],[3223,4070,3789,1660],[2549,3612,3704,1699],[1774,2668,3969,1868],[1894,2753,4513,2042],[1830,2722,4485,2015]]},{"n":"효창동","g":"용산구","la":37.54282,"lo":126.95808,"w":[[1676,3746,3904,1458],[1911,3589,3678,1403],[1720,3510,3715,1505],[1413,3587,3832,1518],[1441,3808,3949,1472],[1371,3817,3863,1417]]},{"n":"용문동","g":"용산구","la":37.53766,"lo":126.9568,"w":[[528,2304,2783,1291],[354,1774,2475,1218],[733,1824,2635,1296],[942,2270,3033,1287],[1141,2821,3373,1383],[1183,3014,3493,1431]]},{"n":"계동","g":"종로구","la":37.58235,"lo":126.98404,"w":[[1812,2202,3375,781],[1879,3373,4445,968],[1335,3416,3809,789],[795,1355,1773,652],[580,845,1525,646],[531,803,1503,630]]},{"n":"누하동","g":"종로구","la":37.57929,"lo":126.96539,"w":[[5047,5136,7476,2265],[6099,7176,8754,2412],[3660,6933,7824,2217],[2692,4324,6057,2084],[2865,3687,5964,2173],[2950,3701,6126,2234]]},{"n":"후암동","g":"용산구","la":37.5499,"lo":126.97773,"w":[[1714,3744,4700,1885],[1590,3441,4581,1735],[1649,3284,4274,1709],[1730,3381,4172,1864],[2026,4260,5043,2122],[2116,4655,5345,2224]]},{"n":"용산동2가","g":"용산구","la":37.54289,"lo":126.98213,"w":[[2537,3901,4149,1646],[2702,3652,4034,1549],[1824,4058,3946,1650],[1589,4800,4223,1761],[1232,4353,4021,1764],[1108,4126,3909,1708]]},{"n":"명륜3가","g":"종로구","la":37.58822,"lo":126.99026,"w":[[6059,14587,8154,3031],[7693,17307,9154,3094],[6916,17941,8964,3047],[6216,18588,8881,2979],[4978,14993,7702,2912],[4551,13852,7414,2924]]},{"n":"전농동","g":"동대문구","la":37.57974,"lo":127.05284,"w":[[4566,7764,8832,3696],[4779,7351,8336,3893],[4520,7292,8483,3900],[4240,8001,9152,3775],[4244,8220,9194,3636],[4208,8306,9266,3619]]},{"n":"삼선동5가","g":"성북구","la":37.58854,"lo":127.01299,"w":[[4085,9721,9614,3364],[4770,9916,9512,3493],[5442,10803,9903,3590],[5179,11788,10516,3604],[3980,10693,9976,3494],[3617,10130,9577,3384]]},{"n":"쌍문동","g":"도봉구","la":37.65336,"lo":127.0242,"w":[[3247,3999,5341,2995],[3453,3453,4707,2740],[3009,3255,4809,2906],[2746,3774,5785,3210],[2587,4346,6310,3303],[2556,4549,6402,3302]]},{"n":"방학동","g":"도봉구","la":37.66528,"lo":127.02817,"w":[[2569,3625,6284,3753],[2431,3181,5936,3566],[2635,3189,6176,3763],[2833,3803,7197,4109],[2951,4104,7368,4114],[2964,4221,7403,4097]]},{"n":"사근동","g":"성동구","la":37.5589,"lo":127.04472,"w":[[6973,16207,7175,2268],[9605,20705,7241,2307],[6812,19653,7216,2261],[4604,16923,6282,2025],[3921,14163,4839,1855],[3516,12859,4444,1808]]},{"n":"창동","g":"도봉구","la":37.64775,"lo":127.04117,"w":[[3223,5433,7756,3897],[2949,4358,6858,3746],[3095,4392,7100,3923],[3236,5420,8172,4055],[3505,6100,8658,4112],[3563,6248,8738,4089]]},{"n":"정릉동","g":"성북구","la":37.61546,"lo":126.99496,"w":[[3101,5218,4979,2481],[3264,5362,4279,2168],[3068,5001,4505,2379],[2982,5057,5587,2736],[3180,5542,6077,2835],[3222,5770,6204,2826]]},{"n":"금호동3가","g":"성동구","la":37.54976,"lo":127.01679,"w":[[2209,4782,6753,3033],[1816,3370,5307,2699],[2601,3435,5613,2895],[3043,4891,7428,3233],[3269,6059,8517,3378],[3319,6477,8844,3412]]},{"n":"이문동","g":"동대문구","la":37.59947,"lo":127.06036,"w":[[3833,11578,6612,2653],[4103,11613,5832,2340],[4417,10970,5966,2502],[4058,11243,7113,2731],[4254,12111,7695,2859],[4332,12637,7866,2909]]},{"n":"송정동","g":"성동구","la":37.55318,"lo":127.05919,"w":[[987,5960,5884,1949],[855,5004,5722,1955],[948,4815,5557,1889],[1097,4981,4886,1799],[1270,5652,4750,1772],[1317,5988,4678,1767]]},{"n":"용답동","g":"성동구","la":37.56147,"lo":127.05347,"w":[[1260,7444,7863,2558],[1177,6380,7855,2723],[1224,6231,7622,2605],[1392,6567,6539,2363],[1496,7019,5982,2178],[1520,7258,5820,2144]]},{"n":"하월곡동","g":"성북구","la":37.60468,"lo":127.03647,"w":[[4027,6491,7836,3472],[4263,7008,7583,3384],[4624,6646,7946,3525],[4455,6670,8661,3681],[4663,6710,8668,3626],[4704,6771,8663,3621]]},{"n":"면목동","g":"중랑구","la":37.58236,"lo":127.08633,"w":[[2216,5057,6631,3107],[2161,3941,5980,2915],[2266,3862,6257,3124],[2254,5106,7333,3389],[2516,6087,7921,3508],[2573,6423,8066,3521]]},{"n":"상월곡동","g":"성북구","la":37.60617,"lo":127.04488,"w":[[3297,7938,7606,3700],[3922,8194,7564,3654],[3730,7416,7855,3799],[3459,7612,8029,3855],[3514,7692,7481,3682],[3462,7845,7259,3635]]},{"n":"상봉동","g":"중랑구","la":37.59848,"lo":127.08423,"w":[[2578,6732,7163,3111],[2653,5554,7336,3344],[2405,5875,7611,3557],[2395,7906,8079,3295],[2298,7916,7458,2972],[2235,7752,7251,2894]]},{"n":"장위동","g":"성북구","la":37.61522,"lo":127.04702,"w":[[2279,3914,5386,2508],[2081,3084,4642,2268],[2156,3087,4805,2394],[2285,4057,5931,2756],[2673,4753,6581,2824],[2743,4997,6747,2836]]},{"n":"중화동","g":"중랑구","la":37.6005,"lo":127.07526,"w":[[2743,5270,7095,3710],[2658,3924,6201,3379],[2679,4022,6550,3675],[2754,5657,7956,4053],[2778,6525,8488,4181],[2788,6818,8619,4203]]},{"n":"석관동","g":"성북구","la":37.60827,"lo":127.05859,"w":[[4006,8003,9480,4902],[3809,6552,8661,4722],[3874,6788,9155,4992],[3812,8456,10524,5280],[3875,9034,10467,5138],[3794,9105,10334,4989]]},{"n":"묵동","g":"중랑구","la":37.61271,"lo":127.07685,"w":[[3246,5573,7319,3581],[3066,4269,6423,3349],[3027,4355,6759,3524],[3140,5831,8216,3867],[3406,6667,8674,3915],[3437,6973,8787,3931]]},{"n":"망우동","g":"중랑구","la":37.59959,"lo":127.10344,"w":[[5209,6196,8978,4242],[5424,5277,8526,4093],[4207,5275,8550,4229],[3711,6610,9489,4424],[3770,7405,10058,4518],[3782,7676,10210,4545]]},{"n":"성북동","g":"성북구","la":37.59724,"lo":126.99002,"w":[[3867,5679,7429,3144],[3861,4940,7112,3064],[3281,4904,6676,2892],[3043,5402,7045,3066],[3016,5785,7475,3198],[3242,6239,7888,3363]]},{"n":"미아동","g":"강북구","la":37.62111,"lo":127.02099,"w":[[4244,5791,8524,4187],[4314,4937,7927,4054],[3888,4893,8185,4307],[3747,5842,9308,4505],[3799,6473,9717,4542],[3824,6698,9825,4507]]},{"n":"보광동","g":"용산구","la":37.52687,"lo":126.99805,"w":[[912,2018,3167,1078],[967,1906,2829,989],[880,1758,2747,1010],[819,1642,2750,1068],[834,1686,3008,1162],[836,1750,3095,1184]]},{"n":"휘경동","g":"동대문구","la":37.58822,"lo":127.06163,"w":[[3097,9008,6125,2670],[3006,6661,4982,2424],[2704,6788,5155,2475],[2492,8339,5920,2555],[2624,9581,6137,2603],[2661,9971,6175,2596]]},{"n":"번동","g":"강북구","la":37.62904,"lo":127.03387,"w":[[1408,3449,4845,2697],[1384,2911,4623,2529],[1527,2924,4765,2608],[1583,3436,5168,2793],[1696,4088,5530,2964],[1725,4400,5659,3010]]},{"n":"수유동","g":"강북구","la":37.63833,"lo":127.00448,"w":[[2486,5463,7065,3821],[2384,4680,6849,3762],[2443,4588,6869,3829],[2538,5662,7771,4077],[2726,6272,8074,4169],[2762,6413,8113,4174]]},{"n":"망원동","g":"마포구","la":37.55548,"lo":126.89704,"w":[[2173,11799,9642,2869],[2551,15847,11568,3163],[3434,18335,11606,3124],[3900,18301,10607,2904],[2824,13035,8823,2693],[2419,10710,8195,2624]]},{"n":"연남동","g":"마포구","la":37.56302,"lo":126.91864,"w":[[1859,6679,5148,1827],[1782,7357,5357,1593],[1534,8078,5294,1697],[1503,8496,5738,1895],[1522,7801,5753,2031],[1552,7536,5732,2049]]},{"n":"목동","g":"양천구","la":37.53604,"lo":126.87163,"w":[[6554,5944,9718,3675],[6515,5494,9039,3590],[7501,5704,9539,3657],[8116,6346,11103,3779],[6865,6367,11139,3674],[6654,6384,11089,3633]]},{"n":"성산동","g":"마포구","la":37.56566,"lo":126.9018,"w":[[3455,9327,10021,3329],[3421,7503,8963,3095],[3404,7501,9162,3176],[3351,8751,10037,3304],[3429,10067,10627,3379],[3442,10547,10847,3388]]},{"n":"구로동","g":"구로구","la":37.49429,"lo":126.88169,"w":[[3067,11153,13006,3990],[3025,11602,14346,4410],[2851,11414,13915,4290],[2738,9425,11219,3808],[2874,8622,10355,3700],[2856,8257,10132,3679]]},{"n":"연희동","g":"서대문구","la":37.57198,"lo":126.92994,"w":[[6062,16808,13336,4774],[5964,13878,12853,4586],[5225,13519,12192,4381],[4440,14382,11979,4480],[4725,17291,12701,4692],[4849,18784,13053,4762]]},{"n":"가리봉동","g":"구로구","la":37.48288,"lo":126.88476,"w":[[370,5082,5065,1289],[346,4677,5187,1339],[350,4826,5384,1329],[406,4610,4800,1325],[414,4765,4702,1281],[422,5058,4702,1285]]},{"n":"신월동","g":"양천구","la":37.52619,"lo":126.83121,"w":[[2273,2603,4055,2026],[2326,2113,3682,1929],[1947,2105,3825,2048],[1871,2636,4417,2189],[1961,3035,4658,2236],[1955,3168,4708,2226]]},{"n":"고척동","g":"구로구","la":37.50328,"lo":126.85578,"w":[[4041,4784,6773,3181],[4429,4481,6205,3057],[3839,4383,6375,3121],[3362,5568,7552,3322],[3429,5606,7891,3398],[3461,5731,7991,3418]]},{"n":"북가좌동","g":"서대문구","la":37.57896,"lo":126.90831,"w":[[3610,5067,6972,3101],[3604,3999,5909,2799],[3811,4063,6429,3078],[3912,5297,8309,3494],[3992,6032,8840,3528],[3920,6237,8823,3484]]},{"n":"개봉동","g":"구로구","la":37.4942,"lo":126.84906,"w":[[3095,5521,7636,3813],[2818,4212,6573,3480],[3214,4464,7178,3842],[3566,6363,9193,4282],[3802,7193,9655,4422],[3747,7314,9624,4424]]},{"n":"남가좌동","g":"서대문구","la":37.57552,"lo":126.91637,"w":[[3427,4941,4980,2059],[3761,5341,4560,2030],[4441,4989,4923,2189],[4205,5114,5869,2243],[3969,5174,5855,2150],[3904,5310,5941,2136]]},{"n":"신공덕동","g":"마포구","la":37.54413,"lo":126.95305,"w":[[4322,11017,13342,4490],[4005,9723,13043,4385],[4191,9478,12849,4445],[4488,10910,13740,4701],[5386,12270,14177,4763],[5419,12489,14100,4763]]},{"n":"화곡동","g":"강서구","la":37.5407,"lo":126.84438,"w":[[3626,8483,9583,4103],[3233,7228,8872,3841],[4212,7113,9125,4057],[4590,8515,10314,4356],[4715,9424,10743,4421],[4744,9648,10774,4403]]},{"n":"불광동","g":"은평구","la":37.61916,"lo":126.93269,"w":[[3158,5359,7363,4127],[3127,3941,6260,3838],[2739,3878,6498,4045],[2768,5401,8027,4429],[3217,6668,9140,4698],[3294,7101,9339,4688]]},{"n":"갈현동","g":"은평구","la":37.62028,"lo":126.90915,"w":[[4954,5468,7574,3630],[5022,4292,6526,3293],[4054,4248,6697,3488],[3627,5719,8315,3885],[3269,6506,9051,4056],[3208,6613,9134,4068]]},{"n":"공덕동","g":"마포구","la":37.54809,"lo":126.95212,"w":[[5416,8351,10386,3375],[5319,7808,10144,3349],[4814,7757,10158,3345],[4791,8280,10777,3366],[5073,8716,10883,3324],[5097,8957,10939,3329]]},{"n":"공항동","g":"강서구","la":37.55478,"lo":126.80758,"w":[[7962,10582,14656,4924],[7737,10553,14310,4803],[7189,10125,13793,4782],[7322,9016,12819,4750],[7856,9048,13086,4915],[8109,9408,13554,5066]]},{"n":"구산동","g":"은평구","la":37.60941,"lo":126.90537,"w":[[6418,5845,8714,4297],[6584,4535,7221,3737],[4853,4242,7301,3972],[4336,5462,9346,4694],[4501,7066,11054,5113],[4700,8002,11942,5323]]},{"n":"대조동","g":"은평구","la":37.61226,"lo":126.92026,"w":[[7729,15353,18998,7875],[7281,12872,17774,8012],[8346,13264,18744,8446],[9199,17554,22246,8779],[9547,18703,22251,8369],[9885,19378,22364,8370]]},{"n":"응암동","g":"은평구","la":37.59384,"lo":126.92023,"w":[[3578,5264,7229,3167],[3518,4027,6267,3063],[3485,4051,6505,3221],[3706,5400,8017,3410],[3869,6356,8800,3472],[3912,6618,8948,3450]]},{"n":"역촌동","g":"은평구","la":37.60458,"lo":126.91173,"w":[[4846,10359,14390,6542],[4144,8314,12797,6177],[6208,8292,13636,6632],[6770,10717,16504,7273],[6898,12132,17421,7372],[6931,12551,17556,7301]]},{"n":"독산동","g":"금천구","la":37.46748,"lo":126.89541,"w":[[2161,6660,7589,3000],[2116,5300,7098,2881],[2091,5426,7396,2995],[2147,6866,7829,3078],[2247,7743,8045,3082],[2248,8090,8095,3078]]},{"n":"신사동","g":"은평구","la":37.59561,"lo":126.90431,"w":[[2924,4118,5594,2626],[2893,3141,4516,2298],[2435,3099,4767,2522],[2273,4132,6172,2860],[2541,4844,6869,3001],[2603,5120,7099,3041]]},{"n":"증산동","g":"은평구","la":37.58417,"lo":126.90307,"w":[[2098,3662,5003,2069],[2209,2668,3948,1859],[1912,2723,4170,1996],[1754,3436,5096,2148],[1864,3639,5239,2050],[1862,3755,5327,2041]]},{"n":"시흥동","g":"금천구","la":37.44953,"lo":126.9064,"w":[[2371,3293,5312,2439],[2294,2674,4818,2299],[2275,2786,4996,2411],[2313,3438,5622,2579],[2311,3828,5943,2665],[2325,3945,6019,2684]]},{"n":"성내동","g":"강동구","la":37.53049,"lo":127.1261,"w":[[3375,7013,9135,4025],[3337,6451,9071,4043],[3750,6576,9206,4069],[3755,7474,9704,4121],[3812,7906,9927,4295],[3825,8115,10054,4370]]},{"n":"천호동","g":"강동구","la":37.54438,"lo":127.12474,"w":[[4306,9665,12287,5700],[4222,8106,11574,5609],[4176,8231,12042,5967],[4407,10388,13441,6208],[4762,11437,13882,6227],[4812,11714,14034,6242]]},{"n":"상도1동","g":"동작구","la":37.50325,"lo":126.94778,"w":[[7386,18600,12354,6132],[8251,19056,10634,5115],[8939,18248,11161,5571],[8247,18480,13705,6400],[8530,20149,15051,6949],[8681,21049,15519,7071]]},{"n":"흑석동","g":"동작구","la":37.50549,"lo":126.95945,"w":[[7707,13848,10875,4425],[9927,19128,10441,4228],[8173,17500,10022,4009],[6518,14301,10426,4084],[6503,12260,10721,4111],[6344,11641,10821,4102]]},{"n":"사당동","g":"동작구","la":37.48562,"lo":126.96942,"w":[[2713,5674,6490,3106],[2621,4372,5648,3044],[2723,4622,6059,3170],[2821,6478,7279,3270],[2985,6887,7464,3271],[2950,6937,7478,3257]]},{"n":"신림동","g":"관악구","la":37.4632,"lo":126.93292,"w":[[2159,9403,6979,2740],[2375,8579,6760,2639],[2230,8262,6740,2764],[2011,9298,7108,2927],[2037,10352,7366,2975],[2053,10685,7415,2964]]},{"n":"신대방동","g":"동작구","la":37.49267,"lo":126.9143,"w":[[3369,7965,8767,3396],[3245,6790,8455,3368],[2795,6621,8326,3247],[2811,7135,7987,3169],[3265,7481,8137,3164],[3391,7673,8271,3198]]},{"n":"일원동","g":"강남구","la":37.48801,"lo":127.07997,"w":[[5697,4930,8331,3660],[5644,4217,7383,3434],[4468,4084,7254,3341],[4010,4354,8068,3370],[5152,4918,8812,3461],[5307,5084,8962,3481]]},{"n":"봉천동","g":"관악구","la":37.47797,"lo":126.9506,"w":[[3058,9188,6569,2826],[2814,6515,5876,2687],[2828,6632,6057,2839],[3038,9592,7130,2983],[3065,11196,7626,3056],[3059,11653,7762,3076]]},{"n":"풍납동","g":"송파구","la":37.53321,"lo":127.11111,"w":[[3110,7801,11323,4429],[3047,7494,11347,4434],[2799,6871,10147,3929],[2731,6123,8711,3722],[3181,6403,8635,3749],[3270,6535,8734,3791]]},{"n":"송파동","g":"송파구","la":37.50511,"lo":127.11066,"w":[[4154,6447,7440,3050],[4259,5827,7002,2901],[3940,6225,7077,2936],[3821,7856,8075,3171],[3689,7780,8350,3177],[3651,7890,8467,3186]]},{"n":"석촌동","g":"송파구","la":37.50273,"lo":127.09962,"w":[[3339,9320,9790,3371],[3545,8116,9709,3448],[3481,8353,9668,3427],[3491,10047,10531,3435],[3408,11018,10749,3549],[3403,11151,10578,3550]]},{"n":"삼전동","g":"송파구","la":37.5019,"lo":127.089,"w":[[3178,9488,9714,3459],[3196,7969,9288,3413],[3952,8068,9333,3421],[4359,9652,10263,3534],[3714,11148,10921,3735],[3716,11600,11032,3771]]},{"n":"방배동","g":"서초구","la":37.47949,"lo":126.99023,"w":[[4705,9398,12705,3897],[4953,11288,14555,4397],[4949,11210,14083,4063],[4715,8728,11657,3685],[4441,7403,10179,3469],[4344,7033,9908,3468]]},{"n":"거여동","g":"송파구","la":37.48955,"lo":127.14278,"w":[[6896,5528,8975,3450],[6558,4572,7699,3138],[6636,4751,8060,3293],[6580,5765,9820,3557],[7595,6419,10815,3739],[7738,6645,11117,3776]]},{"n":"마천동","g":"송파구","la":37.49849,"lo":127.14986,"w":[[1337,2440,4193,2512],[965,1832,3577,2241],[1473,1797,3773,2398],[1920,2332,4638,2641],[2311,2911,5315,2860],[2453,3155,5535,2928]]},{"n":"고덕동","g":"강동구","la":37.56366,"lo":127.15458,"w":[[8155,4834,8612,3110],[8179,4466,7488,2798],[6561,4412,7629,2866],[6016,4207,8598,2907],[7301,4356,9172,2925],[7512,4514,9402,2916]]},{"n":"노량진동","g":"동작구","la":37.51157,"lo":126.93899,"w":[[2414,12257,8200,3065],[2270,10818,7413,3004],[2503,10994,7711,3097],[2735,12167,8127,3121],[2439,11663,7483,2935],[2404,11614,7368,2919]]},{"n":"길동","g":"강동구","la":37.53962,"lo":127.14304,"w":[[6561,11473,16055,8036],[6584,9796,15354,8269],[6280,9908,15820,8320],[6315,12128,17731,8324],[6648,12952,17436,8055],[6498,12969,17061,7939]]},{"n":"암사동","g":"강동구","la":37.55781,"lo":127.12817,"w":[[3778,4655,7379,3179],[3591,3600,6341,2926],[3667,3670,6720,3133],[3685,4797,8131,3383],[4078,5543,8688,3459],[4094,5793,8820,3481]]},{"n":"상도동","g":"동작구","la":37.49871,"lo":126.94119,"w":[[4006,8794,7780,3705],[4108,7775,6672,3269],[4424,7589,6958,3538],[4404,8760,8547,3950],[4635,10224,9557,4210],[4709,10789,9828,4244]]},{"n":"대림동","g":"영등포구","la":37.49543,"lo":126.89724,"w":[[1515,4659,6578,2609],[1515,3771,6159,2657],[1493,3933,6524,2761],[1532,4908,7267,2791],[1527,4901,7210,2634],[1488,4801,7036,2562]]},{"n":"도림동","g":"영등포구","la":37.5091,"lo":126.89765,"w":[[1258,4425,5224,2277],[985,3078,4268,2029],[1316,3185,4555,2164],[1656,4668,5789,2395],[1933,5655,6602,2530],[2006,6019,6772,2561]]},{"n":"중곡동","g":"광진구","la":37.56352,"lo":127.0859,"w":[[2608,5430,6155,2678],[2355,4274,5728,2559],[2385,4224,5900,2702],[2405,5587,6697,2963],[2370,6394,7018,2984],[2427,6759,7185,3011]]},{"n":"능동","g":"광진구","la":37.55058,"lo":127.07885,"w":[[2913,7192,5842,2246],[3285,7529,5879,2260],[3131,7413,6008,2369],[2617,7493,6214,2365],[2596,7383,5957,2289],[2611,7323,5869,2269]]},{"n":"화양동","g":"광진구","la":37.54325,"lo":127.07052,"w":[[4270,24180,9428,2944],[5800,25540,10497,3080],[5421,25429,10483,3107],[5716,29320,9958,2949],[4131,26851,8017,2630],[3324,24951,7445,2545]]},{"n":"군자동","g":"광진구","la":37.55304,"lo":127.07078,"w":[[3341,12467,6905,2489],[4533,15257,7486,2491],[4489,14437,7439,2481],[3398,12448,7196,2485],[3334,12006,6681,2447],[3387,11952,6657,2502]]},{"n":"구의동","g":"광진구","la":37.54441,"lo":127.09008,"w":[[3746,6933,8251,3047],[3415,5967,7756,2954],[4268,6239,8089,3037],[4414,7135,8787,3106],[4030,7593,8988,3228],[3980,7650,8995,3247]]},{"n":"자양동","g":"광진구","la":37.5317,"lo":127.07163,"w":[[3868,8895,9063,3413],[3880,7523,8381,3419],[3732,8205,8783,3586],[3840,10007,9551,3604],[3687,9558,9276,3544],[3596,9298,9118,3487]]},{"n":"신길동","g":"영등포구","la":37.50606,"lo":126.91072,"w":[[2325,4358,5364,2267],[2232,3284,4680,2190],[2318,3447,4937,2252],[2363,4612,5797,2373],[2356,5205,6091,2437],[2341,5391,6172,2456]]}];
+const WIN=['오전','이른오후','늦은오후','저녁','밤','심야'];
+const WSUB=['7–9시','11–13시','15–17시','19–21시','22–24시','새벽 2–4시'];
+const WHR=[8,12,16,20,23,3];
+const AGE=['유소년','청년','중년','노년'];
+const ACOL=['#74efb0','#5fcdff','#ffd96b','#ff9b73'];
+const TCOL=['#ffce7a','#ffe98c','#ff9d6b','#ff86a8','#8fb4ff','#9a8fe8'];
+const RIVER=[[126.76,37.583],[126.808,37.580],[126.834,37.574],[126.860,37.563],[126.882,37.553],[126.900,37.546],[126.918,37.539],[126.936,37.533],[126.953,37.528],[126.970,37.522],[126.988,37.514],[127.005,37.512],[127.022,37.520],[127.038,37.528],[127.055,37.531],[127.072,37.529],[127.090,37.533],[127.105,37.546],[127.120,37.561],[127.140,37.573],[127.165,37.581],[127.195,37.585]];
+const NS='http://www.w3.org/2000/svg';
+function el(t,a){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);return e;}
+function tot(w){return w[0]+w[1]+w[2]+w[3];}
+const GUP=[[[126.9673,37.5645],[126.9528,37.576],[126.9574,37.5782],[126.9583,37.5923],[126.9523,37.596],[126.9481,37.6205],[126.9567,37.6264],[126.9722,37.6296],[126.9791,37.6258],[126.9858,37.6112],[126.9859,37.6013],[126.9759,37.5952],[126.9884,37.5885],[127.0002,37.5896],[127.0079,37.5777],[127.014,37.5796],[127.0173,37.5748],[127.0223,37.5753],[127.0226,37.5692],[126.9673,37.5645]],[[126.9846,37.551],[126.9616,37.5488],[126.9609,37.5563],[126.9687,37.5592],[126.9659,37.5631],[126.9724,37.5666],[127.0221,37.5692],[127.0228,37.5624],[127.026,37.5623],[127.0082,37.5414],[127.0035,37.5475],[126.9944,37.5445],[126.9846,37.551]],[[126.9814,37.5038],[126.9491,37.5148],[126.9491,37.5243],[126.9438,37.531],[126.9549,37.5367],[126.9629,37.546],[126.9616,37.5488],[126.9684,37.5529],[126.9846,37.551],[126.9944,37.5445],[127.0035,37.5475],[127.009,37.5367],[127.0167,37.5349],[127.0057,37.5207],[126.9814,37.5038]],[[127.0342,37.5331],[127.0167,37.5312],[127.0167,37.5349],[127.008,37.5392],[127.0085,37.5447],[127.0257,37.5606],[127.0226,37.5692],[127.0302,37.567],[127.0411,37.5702],[127.058,37.5596],[127.0729,37.5567],[127.0554,37.5256],[127.0342,37.5331]],[[127.0902,37.525],[127.0762,37.5198],[127.0554,37.5256],[127.0774,37.5691],[127.0897,37.5669],[127.1001,37.571],[127.1034,37.5686],[127.1011,37.5567],[127.1145,37.554],[127.1075,37.5387],[127.0902,37.525]],[[127.0694,37.5872],[127.0774,37.5691],[127.0716,37.5572],[127.058,37.5596],[127.0411,37.5702],[127.0302,37.567],[127.0226,37.5692],[127.0225,37.5756],[127.0411,37.5937],[127.0703,37.6049],[127.0694,37.5872]],[[127.1159,37.5913],[127.0948,37.5679],[127.0774,37.5692],[127.0695,37.5868],[127.0687,37.5945],[127.0721,37.5983],[127.0694,37.6127],[127.0853,37.6175],[127.1149,37.6169],[127.1177,37.6049],[127.1132,37.5972],[127.1159,37.5913]],[[127.0159,37.579],[127.0079,37.5777],[127.0002,37.5896],[126.9884,37.5885],[126.9759,37.5952],[126.986,37.6018],[126.9829,37.6184],[126.9791,37.6258],[126.9739,37.627],[126.9765,37.6308],[126.9851,37.633],[127.0071,37.6213],[127.0101,37.6135],[127.0213,37.6086],[127.0294,37.6096],[127.0295,37.6062],[127.0489,37.6215],[127.061,37.6117],[127.0707,37.6114],[127.0696,37.6043],[127.0411,37.5937],[127.0222,37.5751],[127.0173,37.5748],[127.0159,37.579]],[[127.0489,37.6215],[127.0295,37.6062],[127.0294,37.6096],[127.0213,37.6086],[127.0093,37.6141],[127.0071,37.6213],[126.9834,37.6336],[126.9849,37.6433],[126.9789,37.6533],[126.9932,37.664],[126.9914,37.6769],[126.9965,37.6807],[127.0079,37.6817],[127.0179,37.6681],[127.0121,37.648],[127.0312,37.6394],[127.0489,37.6215]],[[127.0474,37.6677],[127.055,37.6379],[127.0497,37.6421],[127.0417,37.6277],[127.0239,37.6446],[127.0124,37.6477],[127.018,37.6678],[127.0081,37.6778],[127.0089,37.694],[127.0146,37.6987],[127.0262,37.6984],[127.0316,37.6891],[127.0478,37.6913],[127.0513,37.6817],[127.0474,37.6677]],[[127.0502,37.642],[127.055,37.6379],[127.0474,37.6677],[127.051,37.6843],[127.0626,37.6922],[127.0803,37.6934],[127.0844,37.6876],[127.0952,37.6863],[127.0912,37.6764],[127.0957,37.6669],[127.0904,37.6566],[127.0919,37.6458],[127.0938,37.6418],[127.1058,37.6426],[127.1114,37.6376],[127.1049,37.6177],[127.0853,37.6175],[127.061,37.6117],[127.0409,37.6287],[127.0502,37.642]],[[126.9121,37.5845],[126.9013,37.5733],[126.8812,37.5881],[126.8866,37.5912],[126.8864,37.5858],[126.8961,37.5858],[126.901,37.5924],[126.8995,37.6084],[126.9092,37.6265],[126.9054,37.6305],[126.9104,37.6332],[126.9115,37.6416],[126.904,37.6465],[126.9129,37.642],[126.9233,37.6434],[126.9468,37.6565],[126.9563,37.6501],[126.9625,37.6305],[126.9482,37.6216],[126.9496,37.6079],[126.9392,37.6003],[126.9401,37.596],[126.9295,37.5918],[126.9201,37.5802],[126.9121,37.5845]],[[126.9687,37.5592],[126.9361,37.5524],[126.9258,37.5561],[126.9252,37.5624],[126.901,37.5738],[126.9121,37.5845],[126.9152,37.5803],[126.921,37.5807],[126.9496,37.6079],[126.9523,37.596],[126.9583,37.5923],[126.9574,37.5782],[126.9528,37.576],[126.9659,37.5631],[126.9678,37.5607],[126.9687,37.5592]],[[126.9293,37.5387],[126.904,37.5387],[126.8982,37.5453],[126.8655,37.5603],[126.8528,37.5711],[126.8755,37.5754],[126.8813,37.588],[126.908,37.5687],[126.9252,37.5624],[126.9258,37.5561],[126.9361,37.5524],[126.9623,37.5555],[126.9629,37.546],[126.9505,37.5335],[126.9438,37.531],[126.9293,37.5387]],[[126.8799,37.5248],[126.8728,37.5008],[126.8521,37.5079],[126.8345,37.5001],[126.8231,37.5081],[126.8244,37.5203],[126.8281,37.5238],[126.8208,37.537],[126.829,37.545],[126.8292,37.5389],[126.8323,37.5391],[126.8397,37.5237],[126.8632,37.527],[126.8634,37.5484],[126.8719,37.5443],[126.8799,37.5454],[126.8899,37.5289],[126.8799,37.5248]],[[126.8055,37.5416],[126.7936,37.5331],[126.791,37.541],[126.7708,37.5456],[126.7637,37.5526],[126.7716,37.5543],[126.775,37.5592],[126.7771,37.5572],[126.774,37.565],[126.7795,37.5648],[126.7906,37.5787],[126.7924,37.5741],[126.7927,37.5818],[126.8002,37.5854],[126.7963,37.595],[126.8018,37.6023],[126.8797,37.5535],[126.8771,37.5506],[126.8795,37.545],[126.8634,37.5484],[126.8632,37.527],[126.8397,37.5237],[126.8323,37.5391],[126.8292,37.5389],[126.829,37.545],[126.8213,37.5379],[126.8055,37.5416]],[[126.8461,37.4791],[126.8442,37.4707],[126.831,37.4749],[126.8163,37.4705],[126.8138,37.4719],[126.8185,37.4827],[126.8228,37.485],[126.8122,37.4937],[126.8189,37.4965],[126.8214,37.5049],[126.8255,37.506],[126.8345,37.5001],[126.8521,37.5079],[126.8728,37.5008],[126.8761,37.5081],[126.8732,37.5084],[126.8787,37.515],[126.8911,37.5074],[126.8953,37.4866],[126.9024,37.4823],[126.8982,37.4764],[126.8891,37.4766],[126.8806,37.4828],[126.8738,37.4826],[126.876,37.4858],[126.8694,37.4868],[126.8674,37.4924],[126.8519,37.4791],[126.8461,37.4791]],[[126.9074,37.4699],[126.9132,37.4551],[126.9214,37.4539],[126.9275,37.4466],[126.9086,37.4311],[126.9022,37.4313],[126.8932,37.45],[126.8855,37.4536],[126.8847,37.4574],[126.8881,37.4582],[126.882,37.4616],[126.8838,37.4633],[126.871,37.4825],[126.8777,37.4839],[126.8943,37.4758],[126.909,37.478],[126.9106,37.4717],[126.9074,37.4699]],[[126.8913,37.5066],[126.8774,37.516],[126.8799,37.5248],[126.8899,37.5289],[126.8773,37.549],[126.8797,37.5535],[126.8982,37.5453],[126.904,37.5387],[126.9321,37.5378],[126.9491,37.5243],[126.9491,37.5148],[126.9261,37.5128],[126.919,37.495],[126.9113,37.4934],[126.9024,37.4823],[126.8953,37.4866],[126.8913,37.5066]],[[126.9287,37.4915],[126.9024,37.4823],[126.9113,37.4934],[126.919,37.495],[126.9261,37.5128],[126.9488,37.5149],[126.9796,37.5038],[126.9846,37.4971],[126.9809,37.4738],[126.9697,37.4726],[126.9603,37.4808],[126.9595,37.491],[126.9529,37.4879],[126.948,37.4911],[126.9287,37.4915]],[[126.9234,37.4872],[126.9271,37.4923],[126.9529,37.4879],[126.9595,37.491],[126.964,37.4767],[126.9697,37.4726],[126.9809,37.4738],[126.9878,37.4554],[126.9738,37.4517],[126.9635,37.4435],[126.9622,37.4375],[126.9378,37.4333],[126.9217,37.4536],[126.9132,37.4551],[126.9129,37.4627],[126.9074,37.4699],[126.9106,37.4717],[126.909,37.478],[126.8982,37.4762],[126.9024,37.4823],[126.9234,37.4872]],[[127.0702,37.4275],[127.0514,37.4256],[127.0348,37.4363],[127.0374,37.4431],[127.032,37.4624],[127.0287,37.4626],[127.0252,37.4551],[127.0137,37.4521],[127.0079,37.455],[127.0029,37.465],[126.9964,37.4645],[126.996,37.4591],[126.9879,37.4554],[126.9809,37.4729],[126.9846,37.4971],[126.9796,37.5038],[126.9848,37.5038],[127.0078,37.5228],[127.0124,37.5198],[127.0144,37.5221],[127.0333,37.4816],[127.041,37.4827],[127.05,37.4645],[127.0841,37.4728],[127.0842,37.4684],[127.0949,37.4583],[127.0944,37.4536],[127.0813,37.4386],[127.0713,37.4395],[127.0702,37.4275]],[[127.05,37.4645],[127.041,37.4827],[127.0333,37.4816],[127.017,37.5191],[127.0078,37.5228],[127.0204,37.5331],[127.0394,37.533],[127.0667,37.5219],[127.069,37.5],[127.1027,37.49],[127.1234,37.4638],[127.1161,37.4559],[127.1054,37.4597],[127.0944,37.4536],[127.0949,37.4583],[127.0842,37.4684],[127.0841,37.4728],[127.05,37.4645]],[[127.1109,37.481],[127.0964,37.4931],[127.069,37.5],[127.0667,37.5218],[127.0848,37.522],[127.1123,37.5404],[127.1226,37.5359],[127.1183,37.5252],[127.1445,37.5139],[127.1398,37.5128],[127.1427,37.5099],[127.1403,37.5027],[127.1606,37.4974],[127.1574,37.4879],[127.147,37.4759],[127.1386,37.4707],[127.1294,37.4723],[127.1331,37.4658],[127.1241,37.4668],[127.1234,37.4638],[127.1109,37.481]],[[127.1624,37.5422],[127.1441,37.5141],[127.1183,37.5252],[127.1226,37.5359],[127.1084,37.5404],[127.1149,37.5549],[127.1222,37.5607],[127.1482,37.5657],[127.1764,37.5784],[127.1749,37.5721],[127.183,37.5428],[127.1624,37.5422]]];
+const GUN=["종로구","중구","용산구","성동구","광진구","동대문구","중랑구","성북구","강북구","도봉구","노원구","은평구","서대문구","마포구","양천구","강서구","구로구","금천구","영등포구","동작구","관악구","서초구","강남구","송파구","강동구"];
+function drawGuBase(svg,pxFn,pyFn,opts){
+  opts=opts||{};
+  var fill=opts.fill||'rgba(95,170,210,0.04)';
+  var stroke=opts.stroke||'rgba(140,200,225,0.30)';
+  var sw=opts.sw||'1';
+  var labelFill=opts.labelFill||'rgba(200,225,240,0.42)';
+  var labelSize=opts.labelSize||9;
+  GUP.forEach(function(ring,gi){
+    var d='',sx=0,sy=0;
+    ring.forEach(function(p,j){var X=pxFn(p[0]),Y=pyFn(p[1]);d+=(j?'L':'M')+X.toFixed(1)+' '+Y.toFixed(1)+' ';sx+=X;sy+=Y;});
+    svg.appendChild(el('path',{d:d+'Z',fill:fill,stroke:stroke,'stroke-width':sw,'stroke-linejoin':'round','pointer-events':'none'}));
+    var t=el('text',{x:(sx/ring.length).toFixed(1),y:(sy/ring.length).toFixed(1),fill:labelFill,'font-size':labelSize,'font-weight':'700','text-anchor':'middle','dominant-baseline':'central','font-family':'Pretendard','letter-spacing':'0.04em','pointer-events':'none'});
+    t.textContent=GUN[gi];svg.appendChild(t);
+  });
+}
+function attachZoomPan(svg,baseVB){
+  var zoom=1,panX=0,panY=0,dragging=false,panActive=false,lastX=0,lastY=0,downX=0,downY=0;
+  function apply(){
+    var w=baseVB.w/zoom,h=baseVB.h/zoom;
+    panX=Math.max(0,Math.min(baseVB.w-w,panX));
+    panY=Math.max(0,Math.min(baseVB.h-h,panY));
+    svg.setAttribute('viewBox',(baseVB.x+panX).toFixed(1)+' '+(baseVB.y+panY).toFixed(1)+' '+w.toFixed(1)+' '+h.toFixed(1));
+  }
+  function svgPt(cx,cy){
+    var p=svg.createSVGPoint();p.x=cx;p.y=cy;
+    var ctm=svg.getScreenCTM();
+    if(!ctm)return null;
+    return p.matrixTransform(ctm.inverse());
+  }
+  svg.addEventListener('wheel',function(e){
+    e.preventDefault();
+    var p=svgPt(e.clientX,e.clientY);if(!p)return;
+    var factor=e.deltaY<0?1.2:1/1.2;
+    var newZ=Math.max(1,Math.min(8,zoom*factor));
+    var w=baseVB.w/zoom,h=baseVB.h/zoom;
+    var nw=baseVB.w/newZ,nh=baseVB.h/newZ;
+    var rx=(p.x-baseVB.x-panX)/w,ry=(p.y-baseVB.y-panY)/h;
+    panX=(p.x-baseVB.x)-rx*nw;panY=(p.y-baseVB.y)-ry*nh;
+    zoom=newZ;apply();
+  },{passive:false});
+  svg.addEventListener('pointerdown',function(e){
+    if(e.button!==0&&e.pointerType!=='touch')return;
+    dragging=true;panActive=false;
+    downX=e.clientX;downY=e.clientY;lastX=e.clientX;lastY=e.clientY;
+  });
+  svg.addEventListener('pointermove',function(e){
+    if(!dragging)return;
+    if(!panActive){
+      if(Math.abs(e.clientX-downX)+Math.abs(e.clientY-downY)<5)return;
+      panActive=true;
+      try{svg.setPointerCapture(e.pointerId);}catch(_){}
+      svg.style.cursor='grabbing';
+    }
+    var ctm=svg.getScreenCTM();if(!ctm)return;
+    var sc=ctm.a;
+    panX-=(e.clientX-lastX)/sc;panY-=(e.clientY-lastY)/sc;
+    lastX=e.clientX;lastY=e.clientY;
+    apply();
+  });
+  function end(){dragging=false;panActive=false;svg.style.cursor='';}
+  svg.addEventListener('pointerup',end);
+  svg.addEventListener('pointercancel',end);
+  svg.addEventListener('dblclick',function(){zoom=1;panX=0;panY=0;apply();});
+}
+SKY.forEach(d=>{
+  const s=[0,0,0,0];d.w.forEach(w=>w.forEach((v,i)=>s[i]+=v));
+  d.s=s;d.dom=s.indexOf(Math.max.apply(0,s));
+  d.tw=d.w.map(tot);
+  d.day=d.tw.reduce((a,b)=>a+b,0);
+  const lo=Math.min.apply(0,d.tw),hi=Math.max.apply(0,d.tw);
+  d.own=d.tw.map(t=>(t-lo)/(hi-lo||1));
+  d.pk=d.tw.indexOf(hi);d.tr=d.tw.indexOf(lo);
+  d.swing=hi/lo;
+  // 세대 비율 평균
+  const tg=s[0]+s[1]+s[2]+s[3];
+  d.youthPct=s[1]/tg;d.kidPct=s[0]/tg;d.midPct=s[2]/tg;d.oldPct=s[3]/tg;
+});
+// 도시 평균
+const CITY_YOUTH=SKY.reduce((a,d)=>a+d.youthPct,0)/SKY.length;
+const CITY_OLD=SKY.reduce((a,d)=>a+d.oldPct,0)/SKY.length;
+
+/* ===== Common ===== */
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('on'));
+  document.getElementById(id).classList.add('on');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function confirmQuit(){
+  if(confirm('진행 중인 게임을 그만둘까?')){show('s-home');}
+}
+function shuffle(a){const x=a.slice();for(let i=x.length-1;i>0;i--){const j=(Math.random()*(i+1))|0;[x[i],x[j]]=[x[j],x[i]];}return x;}
+
+/* ===== CINEMATIC TIMELAPSE (home) ===== */
+let cineTimer=null,cineFrame=0;
+// 서울 전체 경계 + 위도 보정으로 자연 비율 유지
+const SEOUL_LO_MIN=126.76, SEOUL_LO_MAX=127.20;
+const SEOUL_LA_MIN=37.425, SEOUL_LA_MAX=37.705;
+const SEOUL_COS=Math.cos((SEOUL_LA_MIN+SEOUL_LA_MAX)/2*Math.PI/180);
+function makeProj(VBW,VBH,padX,padYT,padYB){
+  var aW=VBW-padX*2, aH=VBH-padYT-padYB;
+  var loSpan=(SEOUL_LO_MAX-SEOUL_LO_MIN)*SEOUL_COS;
+  var laSpan=SEOUL_LA_MAX-SEOUL_LA_MIN;
+  var s=Math.min(aW/loSpan, aH/laSpan);
+  var offX=padX+(aW-loSpan*s)/2, offY=padYT+(aH-laSpan*s)/2;
+  return {
+    px:function(lo){return offX+(lo-SEOUL_LO_MIN)*SEOUL_COS*s;},
+    py:function(la){return offY+(SEOUL_LA_MAX-la)*s;},
+    bx:offX, by:offY, bw:loSpan*s, bh:laSpan*s
+  };
+}
+const CINE_VBW=820,CINE_VBH=500,CINE_PX=18,CINE_PYT=68,CINE_PYB=28;
+const _cProj=makeProj(CINE_VBW,CINE_VBH,CINE_PX,CINE_PYT,CINE_PYB);
+const cPx=_cProj.px, cPy=_cProj.py;
+function buildCineBase(){
+  const sv=document.getElementById('cineSky');sv.innerHTML='';
+  const defs=el('defs',{});
+  const fb=el('filter',{id:'cgb',x:'-50%',y:'-50%',width:'200%',height:'200%'});
+  fb.appendChild(el('feGaussianBlur',{stdDeviation:'2.2'}));
+  defs.appendChild(fb);
+  sv.appendChild(defs);
+  // background stars
+  for(let i=0;i<46;i++){
+    sv.appendChild(el('circle',{cx:(Math.random()*CINE_VBW).toFixed(1),cy:(Math.random()*CINE_VBH).toFixed(1),
+      r:(Math.random()*0.8+0.2).toFixed(1),fill:'#bcd6e8',opacity:(Math.random()*0.13+0.04).toFixed(2)}));
+  }
+  // river
+  let dp='';RIVER.forEach((p,i)=>{dp+=(i?'L':'M')+cPx(p[0]).toFixed(1)+' '+cPy(p[1]).toFixed(1)+' ';});
+  sv.appendChild(el('path',{d:dp,fill:'none',stroke:'#2f6d8f','stroke-width':14,
+    'stroke-linecap':'round','stroke-linejoin':'round',opacity:0.32,filter:'url(#cgb)'}));
+  sv.appendChild(el('path',{d:dp,fill:'none',stroke:'#6fd6e6','stroke-width':2,
+    'stroke-linecap':'round','stroke-linejoin':'round',opacity:0.46}));
+  // 25 구 경계 + 이름
+  drawGuBase(sv,cPx,cPy,{stroke:'rgba(140,200,225,0.32)',labelSize:8.5,labelFill:'rgba(210,235,245,0.40)'});
+  // dots (one per neighborhood)
+  SKY.forEach((d,i)=>{
+    d._cx=cPx(d.lo);d._cy=cPy(d.la);
+    const halo=el('circle',{cx:d._cx,cy:d._cy,r:8,fill:ACOL[d.dom],opacity:0.05});
+    const core=el('circle',{cx:d._cx,cy:d._cy,r:2.4,fill:ACOL[d.dom],opacity:0.45});
+    sv.appendChild(halo);sv.appendChild(core);
+    d._halo=halo;d._core=core;
+  });
+  attachZoomPan(sv,{x:0,y:0,w:CINE_VBW,h:CINE_VBH});
+}
+function cineStep(){
+  // 24 frames per loop, 6 bands * 4 sub-frames = smooth
+  const N=24,bandIdx=(cineFrame/4)|0,nextIdx=(bandIdx+1)%6,sub=(cineFrame%4)/4;
+  const hour=Math.round((WHR[bandIdx]*(1-sub)+(WHR[nextIdx]<WHR[bandIdx]?WHR[nextIdx]+24:WHR[nextIdx])*sub))%24;
+  document.getElementById('cineHour').innerHTML=String(hour).padStart(2,'0')+'<span>시</span>';
+  document.getElementById('cineMark').textContent='— '+WIN[bandIdx];
+  SKY.forEach(d=>{
+    const v=d.own[bandIdx]*(1-sub)+d.own[nextIdx]*sub;
+    const r=2.2+v*7.5,op=0.18+v*0.78,hr=r*4,hop=0.04+v*0.22;
+    d._core.setAttribute('r',r.toFixed(1));d._core.setAttribute('opacity',op.toFixed(2));
+    d._halo.setAttribute('r',hr.toFixed(1));d._halo.setAttribute('opacity',hop.toFixed(2));
+  });
+  const sorted=SKY.slice().sort((a,b)=>(b.own[bandIdx]*(1-sub)+b.own[nextIdx]*sub)-(a.own[bandIdx]*(1-sub)+a.own[nextIdx]*sub));
+  let h='';for(let i=0;i<3;i++){const d=sorted[i];h+='<div class="ti"><span style="color:'+ACOL[d.dom]+'">'+(i+1)+'. '+d.n+'</span><span>'+d.g+'</span></div>';}
+  document.getElementById('cineTop3List').innerHTML=h;
+  cineFrame=(cineFrame+1)%N;
+}
+function startCine(){if(cineTimer)return;buildCineBase();cineStep();cineTimer=setInterval(cineStep,1250);}
+function stopCine(){if(cineTimer){clearInterval(cineTimer);cineTimer=null;}}
+
+/* ===== WALK GAME — Night Voyage (Operation Seoul) ===== */
+const TIME_TAG=['SECTOR α · 오전','SECTOR β · 정오','SECTOR γ · 오후','SECTOR δ · 저녁','SECTOR ε · 밤','SECTOR Ω · 심야'];
+const TIME_Q=[
+  '아침이 동네를 흔든다. 어디서 깨어날래?',
+  '낮은 비었다. 그래도 깨어있는 셋 — 어디로?',
+  '학교가 끝났다. 누가 돌아왔지?',
+  '퇴근. 다시 차오르는 동네 — 어디로?',
+  '잠 전의 정점. 가장 환한 셋 중에서.',
+  '잠의 도시 속에서. 누가 깨어있어?'
+];
+const SCENE_INTRO={
+  0:['7시의 골목길.','출근으로 도시가 흔들린다.','학교종 울리는 시각.','지하철이 가장 차는 시간.'],
+  1:['정오의 동네.','낮의 침묵.','12시 그늘 아래.','회식 점심의 시각.'],
+  2:['오후 4시.','학교가 풀린 시각.','늦은 햇살 속에.','오후 카페가 가장 시끄러운 때.'],
+  3:['저녁 8시.','퇴근의 동네.','불 켜진 골목.','저녁 식탁의 냄새.'],
+  4:['밤 11시.','잠 전의 정점.','한밤의 빛.','TV가 가장 많이 켜진 시각.'],
+  5:['새벽 3시.','심야의 도시.','잠의 시간 속에.','24시 편의점의 빛 하나.']
+};
+const DOM_PERSONA=[
+  ['유소년 — 노란 별의 동네','어린 발걸음의 동네','학교 종소리 빠지지 않는 골목'],
+  ['청년의 별','노트북과 카페와 새벽의 동네','젊은 리듬의 골목','파란 별빛'],
+  ['중년의 별','가족의 시간이 깃든 동네','퇴근과 학원의 골목','샛노란 별빛'],
+  ['노년의 별','천천한 호흡의 동네','오래된 골목의 시간','오렌지빛 별']
+];
+function pickRand(arr){return arr[(Math.random()*arr.length)|0];}
+function buildScene(d,t){
+  const heatRank=SKY.filter(o=>o.own[t]>d.own[t]).length+1;
+  const youthDiff=(d.youthPct-CITY_YOUTH)*100;
+  const oldDiff=(d.oldPct-CITY_OLD)*100;
+  const pop=d.tw[t];
+  const popRel=Math.round((d.tw[t]/(d.day/6)-1)*100);
+  const isFlat=d.swing<1.2;
+  const isHugeSwing=d.swing>1.6;
+  var lines=[];
+  lines.push(pickRand(SCENE_INTRO[t])+' '+pickRand(DOM_PERSONA[d.dom])+'.');
+  if(d.pk===t)lines.push('지금 이 시각이 — 이 동네의 <em>정점</em>이다.');
+  else if(d.tr===t)lines.push('지금이 — 이 동네가 가장 비는 시각.');
+  else if(heatRank<=5)lines.push('지금 깨어있음 <em>93곳 중 '+heatRank+'위</em>. 빠지지 않는 별.');
+  else if(popRel>20)lines.push('평소보다 <em>+'+popRel+'%</em> — 지금이 이 동네의 시간.');
+  else if(popRel<-15)lines.push('평소보다 <em>'+popRel+'%</em>. 사람들이 흩어진 시각.');
+  if(isFlat)lines.push('하루 종일 거의 변하지 않는다. 비지 않는 골목.');
+  else if(isHugeSwing)lines.push('썰물과 밀물이 뚜렷한 — 직(職)과 주(住)가 갈라진 동네.');
+  var dataLine='<b>지금</b> 약 '+pop.toLocaleString()+'명 · ';
+  if(youthDiff>10)dataLine+='청년 비율 도시 평균 대비 <b>+'+youthDiff.toFixed(0)+'%p</b>.';
+  else if(oldDiff>10)dataLine+='노년 비율 도시 평균 대비 <b>+'+oldDiff.toFixed(0)+'%p</b>.';
+  else if(youthDiff<-8)dataLine+='청년 비율 <b>'+youthDiff.toFixed(0)+'%p</b> (도시 평균 대비).';
+  else dataLine+='주인 세대는 <b>'+AGE[d.dom]+'</b>.';
+  return {name:d.n,gu:d.g,tag:TIME_TAG[t],clock:WHR[t],poem:lines.join(' '),data:dataLine};
+}
+let walkStep=0,walkPath=[],walkSeq=[];
+function startWalk(){
+  walkStep=0;walkPath=[];
+  walkSeq=[0,1,2,3,4,5];
+  document.getElementById('walkReveal').classList.remove('on');
+  show('s-walk');renderWalk();
+}
+function renderWalk(){
+  const t=walkSeq[walkStep];
+  document.getElementById('wkTime').textContent=WIN[t];
+  document.getElementById('wkStep').textContent=walkStep+1;
+  document.getElementById('wpTime').textContent=TIME_TAG[t]+' · '+WSUB[t];
+  document.getElementById('wpQ').textContent=TIME_Q[t];
+  document.getElementById('wkProg').style.width=((walkStep+1)/6*100)+'%';
+  document.getElementById('walkReveal').classList.remove('on');
+  const visited=walkPath.map(p=>p.d);
+  const top=[...SKY].sort((a,b)=>b.own[t]-a.own[t]).slice(0,10);
+  const pool=top.filter(d=>visited.indexOf(d)<0);
+  const picks=shuffle(pool).slice(0,3);
+  while(picks.length<3){const r=SKY[(Math.random()*SKY.length)|0];if(picks.indexOf(r)<0&&visited.indexOf(r)<0)picks.push(r);}
+  const wc=document.getElementById('walkChoices');wc.innerHTML='';
+  picks.forEach(d=>{
+    const b=document.createElement('button');b.className='walk-choice';
+    const heat=d.own[t];
+    let spark='<div class="wc-sparkline">';
+    for(let i=0;i<6;i++){const h=Math.max(12,d.own[i]*100);
+      spark+='<i style="height:'+h.toFixed(0)+'%;opacity:'+(i===t?'1':'0.42')+';background:'+(i===t?'linear-gradient(180deg,var(--lime),rgba(116,239,176,.3))':'linear-gradient(180deg,var(--gold),rgba(95,214,224,.25))')+'"></i>';}
+    spark+='</div>';
+    let hint='주인 <b style="color:'+ACOL[d.dom]+'">'+AGE[d.dom]+'</b>';
+    if(d.pk===t)hint+=' · <b style="color:var(--lime)">제 정점의 시각</b>';
+    else if(d.swing<1.2)hint+=' · 비지 않는 골목';
+    else if(d.swing>1.6)hint+=' · 큰 호흡의 동네';
+    b.innerHTML='<div class="wc-hd"><div class="wc-nm">'+d.n+'<span>'+d.g+'</span></div><div class="wc-tag">★ '+(heat*100).toFixed(0)+'</div></div>'+
+      '<div class="wc-hint">'+hint+'</div>'+spark;
+    b.onclick=function(){chooseWalk(d);};
+    wc.appendChild(b);
+  });
+}
+function chooseWalk(d){
+  const t=walkSeq[walkStep];
+  walkPath.push({d:d,t:t});
+  const scene=buildScene(d,t);
+  const rv=document.getElementById('walkReveal');
+  document.getElementById('wRvResult').innerHTML='착륙 — <span style="color:var(--gold)">'+d.n+'</span>';
+  document.getElementById('wRvResult').className='rv-result win';
+  document.getElementById('wRvScene').innerHTML='<div class="rs-tag">'+scene.tag+' · '+String(WHR[t]).padStart(2,'0')+':00</div>'+
+    '<div class="rs-nm">'+scene.name+'<span>'+scene.gu+'</span></div>'+
+    '<div class="rs-poem">'+scene.poem+'</div>'+
+    '<div class="rs-data">'+scene.data+'</div>';
+  document.getElementById('wRvNext').textContent=walkStep>=5?'항해 일지 보기 →':'다음 시간으로 →';
+  rv.classList.add('on');
+  document.getElementById('walkChoices').innerHTML='';
+}
+function nextWalkStep(){
+  if(walkStep>=5){finishWalk();return;}
+  walkStep++;
+  renderWalk();
+}
+
+/* ===== CARDS GAME — Transmission ===== */
+let cardCol=[];
+try{cardCol=JSON.parse(localStorage.getItem('mtmCards')||'[]');}catch(e){cardCol=[];}
+function saveCardCol(){try{localStorage.setItem('mtmCards',JSON.stringify(cardCol));}catch(e){}}
+function updateCardCount(){const e=document.getElementById('cdCount');if(e)e.textContent=cardCol.length;}
+function startCards(){
+  updateCardCount();
+  document.getElementById('cardStage').innerHTML='<div class="empty-card"><div class="ec-glow"></div><div class="ec-line">통신기 신호 대기 중</div><div class="ec-sub">버튼을 누르면 — 무작위 별의 신호가 잡힌다</div></div>';
+  show('s-cards');
+}
+let _lastCardKey=null;
+function pullCard(){
+  const d=SKY[(Math.random()*SKY.length)|0];
+  const t=(Math.random()*6)|0;
+  const scene=buildScene(d,t);
+  const key=d.n+'|'+t;
+  _lastCardKey={k:key,n:d.n,g:d.g,t:t,h:WHR[t]};
+  const isLiked=cardCol.some(c=>c.k===key);
+  document.getElementById('cardStage').innerHTML='<div class="star-card">'+
+    '<button class="sc-fav'+(isLiked?' on':'')+'" onclick="toggleFav()" aria-label="좋아요">❤</button>'+
+    '<div class="sc-time">'+scene.tag+'</div>'+
+    '<div class="sc-clock">'+String(WHR[t]).padStart(2,'0')+'<small>:00</small></div>'+
+    '<div class="sc-name">'+scene.name+'<span>'+scene.gu+'</span></div>'+
+    '<div class="sc-line">'+scene.poem+'</div>'+
+    '<div class="sc-data">'+scene.data+'</div></div>';
+}
+function toggleFav(){
+  if(!_lastCardKey)return;
+  const idx=cardCol.findIndex(c=>c.k===_lastCardKey.k);
+  if(idx>=0)cardCol.splice(idx,1);
+  else cardCol.push(_lastCardKey);
+  saveCardCol();updateCardCount();
+  const btn=document.querySelector('.sc-fav');if(btn)btn.classList.toggle('on');
+}
+function showCollection(){
+  const cs=document.getElementById('colSub');
+  const gr=document.getElementById('colGrid');
+  if(cardCol.length===0){cs.textContent='아직 모은 별이 없어. 통신기로 돌아가서 한 장 뽑아봐.';gr.innerHTML='';show('s-collection');return;}
+  cs.innerHTML='수신한 신호 <b style="color:var(--cream)">'+cardCol.length+'장</b>. 누르면 그 별의 카드가 다시 떨어진다.';
+  let h='';
+  cardCol.forEach((c,i)=>{
+    h+='<div class="col-card" onclick="replayCard('+i+')"><button class="cc-x" onclick="removeFav('+i+',event)" aria-label="제거">×</button>'+
+      '<div class="cc-time">'+WIN[c.t]+' · '+String(c.h).padStart(2,'0')+'시</div>'+
+      '<div class="cc-nm">'+c.n+'</div><div class="cc-g">'+c.g+'</div></div>';
+  });
+  gr.innerHTML=h;
+  show('s-collection');
+}
+function removeFav(i,e){e.stopPropagation();cardCol.splice(i,1);saveCardCol();updateCardCount();showCollection();}
+function replayCard(i){
+  const c=cardCol[i];const d=SKY.find(x=>x.n===c.n);if(!d)return;
+  show('s-cards');
+  const scene=buildScene(d,c.t);
+  _lastCardKey={k:c.k,n:d.n,g:d.g,t:c.t,h:WHR[c.t]};
+  document.getElementById('cardStage').innerHTML='<div class="star-card">'+
+    '<button class="sc-fav on" onclick="toggleFav()" aria-label="좋아요">❤</button>'+
+    '<div class="sc-time">'+scene.tag+'</div>'+
+    '<div class="sc-clock">'+String(WHR[c.t]).padStart(2,'0')+'<small>:00</small></div>'+
+    '<div class="sc-name">'+scene.name+'<span>'+scene.gu+'</span></div>'+
+    '<div class="sc-line">'+scene.poem+'</div>'+
+    '<div class="sc-data">'+scene.data+'</div></div>';
+}
+
+/* ===== RESULT ===== */
+let lastGame='walk';
+function finishWalk(){
+  lastGame='walk';
+  document.getElementById('rsBanner').textContent='항해 일지 · OPERATION SEOUL';
+  const persona=analyzePersona();
+  document.getElementById('rsScore').textContent='✦';
+  document.getElementById('rsMax').textContent='';
+  document.getElementById('rsGrade').textContent=persona.tag;
+  document.getElementById('rsTitle').textContent=persona.title;
+  document.getElementById('rsTitleSub').textContent=persona.sub;
+  let grid='';
+  walkPath.forEach(function(p){
+    grid+='<div class="sq g" style="width:auto;height:auto;padding:7px 12px;font-family:Pretendard;font-size:11.5px;font-weight:800">'+WIN[p.t]+' · '+p.d.n+'</div>';
+  });
+  const rg=document.getElementById('rsGrid');
+  rg.innerHTML=grid;rg.style.flexWrap='wrap';rg.style.gap='6px';
+  document.getElementById('rsInsight').innerHTML=persona.insight;
+  document.getElementById('rsAgain').textContent='🚀 또 항해하기';
+  document.getElementById('rsAgain').onclick=startWalk;
+  document.getElementById('rsSwap').textContent='📡 별 카드 슬롯';
+  document.getElementById('rsSwap').onclick=startCards;
+  show('s-result');
+}
+function analyzePersona(){
+  const domCount=[0,0,0,0];
+  var totalYouth=0,totalOld=0,dayPicks=0,nightPicks=0,flatCount=0,swingCount=0;
+  walkPath.forEach(function(p){
+    domCount[p.d.dom]++;
+    totalYouth+=p.d.youthPct;totalOld+=p.d.oldPct;
+    if(p.t<=2)dayPicks++;
+    if(p.t>=4)nightPicks++;
+    if(p.d.swing<1.2)flatCount++;
+    if(p.d.swing>1.6)swingCount++;
+  });
+  const topDom=domCount.indexOf(Math.max.apply(0,domCount));
+  const avgYouth=(totalYouth/6*100).toFixed(0);
+  const avgOld=(totalOld/6*100).toFixed(0);
+  var title,sub;
+  if(topDom===1&&nightPicks>=3){title='🌃 새벽 청년의 영혼';sub='너는 잠 안 오는 사람. 새벽 3시 노트북이 켜진 도시에서 가장 깨어있다.';}
+  else if(topDom===3&&dayPicks>=3){title='☕ 낮 노년의 영혼';sub='너는 천천한 사람. 오전 햇살의 골목, 오후 4시의 산책.';}
+  else if(flatCount>=4){title='🏠 정주(定住)의 영혼';sub='너는 변하지 않는 것을 사랑한다. 빠지지 않고 비지 않는 골목들로만 걸었다.';}
+  else if(swingCount>=4){title='🌊 썰물·밀물의 영혼';sub='너는 호흡이 큰 사람. 사람이 빠졌다 차는 동네들로만 갔다.';}
+  else if(topDom===2){title='👨‍👩‍👧 가족의 시간 영혼';sub='너는 일터와 집의 균형을 안다. 퇴근 후가 너의 시간.';}
+  else if(dayPicks>=4){title='🌞 낮의 영혼';sub='너는 드물게도 — 서울의 낮을 사랑한다. 명륜·계동·사근의 친구.';}
+  else if(nightPicks>=4){title='🌙 야행성의 영혼';sub='너는 잠의 도시 속에서 깨어있다. 심야가 너의 시간.';}
+  else{title='🌌 균형의 영혼';sub='너는 낮과 밤, 청년과 노년 사이를 떠다닌다. 어디에도 묶이지 않는.';}
+  var insight='<b>오늘의 항해:</b> '+walkPath.map(function(p){return p.d.n;}).join(' → ')+'<br>';
+  insight+='<span style="color:var(--cream-d);font-size:12.5px">청년 비율 평균 <b style="color:var(--cream)">'+avgYouth+'%</b> · 노년 비율 평균 <b style="color:var(--cream)">'+avgOld+'%</b></span>';
+  insight+='<br><br><b class="t">— 오늘의 도시 인사이트 —</b><br>';
+  insight+='서울 저층주거지 93곳 중 <b>57곳이 심야에 정점</b>이다. 낮엔 일터로 흩어졌다 새벽에야 가장 차오르는, <b>잠자러 돌아오는 도시</b>.';
+  insight+=' 낮(오전~늦은오후)에 정점인 곳은 손에 꼽힌다: <b>명륜3가·계동·누하동·사근동</b> — 대학·한옥·일터가 깃든 outlier들.';
+  return {tag:'OPERATION COMPLETE',title:title,sub:sub,insight:insight};
+}
+function copyShare(){
+  var txt='🌌  Operation Seoul · 오늘 밤의 항해\n';
+  txt+=document.getElementById('rsTitle').textContent+'\n';
+  txt+=walkPath.map(function(p){return WIN[p.t]+'·'+p.d.n;}).join(' → ')+'\n';
+  txt+='— 93개 별 중 너의 영혼은? 너도 항해해봐.';
+  try{navigator.clipboard.writeText(txt);}catch(e){}
+  const t=document.getElementById('toast');t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);
+}
+function rsAgain(){}
+/* ===== LEGACY removed (replaced by walk + cards above) ===== */
+function _deadCode_(){
+const _killBlock=function(){return null;
+function _x_(){
+  // 다양한 절정 시간대 골고루
+  const byPk=[[],[],[],[],[],[]];
+  SKY.forEach(d=>byPk[d.pk].push(d));
+  const picks=[];
+  // 라운드 5개, 다양성: 절정 시간이 다른 것 우선
+  const order=shuffle([0,1,2,3,4,5]);
+  for(const t of order){
+    if(byPk[t].length){const p=byPk[t][(Math.random()*byPk[t].length)|0];if(!picks.includes(p))picks.push(p);}
+    if(picks.length===5)break;
+  }
+  while(picks.length<5){const d=SKY[(Math.random()*SKY.length)|0];if(!picks.includes(d))picks.push(d);}
+  return picks;
+}
+function startPeak(){
+  pkRound=0;pkScore=0;pkLog=[];pkQueue=pickPeakQueue();
+  document.getElementById('reveal').classList.remove('on');
+  show('s-peak');renderPeak();
+}
+function renderPeak(){
+  const d=pkQueue[pkRound];pkCur=d;pkAnswered=false;
+  document.getElementById('rdNum').textContent=pkRound+1;
+  document.getElementById('rdScore').textContent=pkScore;
+  document.getElementById('rdProg').style.width=((pkRound+1)/5*100)+'%';
+  document.getElementById('rdName').innerHTML=d.n+'<span>'+d.g+'</span>';
+  document.getElementById('rdHint').textContent='주인 세대: '+AGE[d.dom]+' · 곡선을 잘 봐.';
+  document.getElementById('reveal').classList.remove('on');
+  drawQzBars(d,false);
+  buildTimeGrid();
+}
+function drawQzBars(d,reveal){
+  const sv=document.getElementById('qzBars');sv.innerHTML='';
+  const W=440,H=220,PL=18,PR=18,PT=18,PB=40,cw=W-PL-PR,ch=H-PT-PB;
+  const mx=Math.max.apply(0,d.tw),gap=cw/6,bw=gap*0.66;
+  // grid lines
+  for(let g=1;g<4;g++){
+    const y=PT+ch*g/4;
+    sv.appendChild(el('line',{x1:PL,y1:y,x2:W-PR,y2:y,stroke:'#1c3a52','stroke-width':1,opacity:.55}));
+  }
+  for(let i=0;i<6;i++){
+    const v=d.tw[i],bx=PL+gap*i+(gap-bw)/2,bh=v/mx*ch;
+    const isPk=i===d.pk;
+    // hidden mode: show all bars same height shadowy, gradient
+    const fill=reveal?(isPk?'#5fd6e0':'rgba(95,214,224,.42)'):'rgba(95,214,224,.32)';
+    const rect=el('rect',{x:bx.toFixed(1),y:(PT+ch-bh).toFixed(1),width:bw.toFixed(1),
+      height:bh.toFixed(1),fill,rx:3});
+    sv.appendChild(rect);
+    if(reveal&&isPk){
+      sv.appendChild(el('rect',{x:(bx-2.5).toFixed(1),y:(PT+ch-bh-4).toFixed(1),
+        width:(bw+5).toFixed(1),height:(bh+4).toFixed(1),fill:'none',stroke:'#74efb0',
+        'stroke-width':2,rx:4,opacity:.85}));
+      const cr=el('text',{x:(bx+bw/2).toFixed(1),y:(PT+ch-bh-8).toFixed(1),'text-anchor':'middle',
+        'font-size':10,'font-weight':800,'font-family':'Pretendard',fill:'#74efb0'});
+      cr.textContent='정점';sv.appendChild(cr);
+    }
+    // x labels
+    const t=el('text',{x:(bx+bw/2).toFixed(1),y:PT+ch+15,'text-anchor':'middle',
+      'font-size':10.5,'font-weight':700,'font-family':'Pretendard',
+      fill:reveal&&isPk?'#74efb0':'#93a8b8'});
+    t.textContent=WIN[i];sv.appendChild(t);
+    const t2=el('text',{x:(bx+bw/2).toFixed(1),y:PT+ch+28,'text-anchor':'middle',
+      'font-size':9,'font-family':'Pretendard',fill:'#637688'});
+    t2.textContent=WSUB[i].replace('새벽 ','');sv.appendChild(t2);
+  }
+}
+function buildTimeGrid(){
+  const g=document.getElementById('timeGrid');g.innerHTML='';
+  for(let i=0;i<6;i++){
+    const b=document.createElement('button');b.className='tg-btn';
+    b.innerHTML='<div class="tn">'+WIN[i]+'</div><div class="ts">'+WSUB[i].replace('새벽 ','')+'</div>';
+    b.onclick=()=>answerPeak(i,b);
+    g.appendChild(b);
+  }
+}
+function answerPeak(idx,btn){
+  if(pkAnswered)return;pkAnswered=true;
+  const d=pkCur,correct=idx===d.pk;
+  const pts=correct?100:0;
+  pkScore+=pts;pkLog.push(correct);
+  document.getElementById('rdScore').textContent=pkScore;
+  [...document.querySelectorAll('.tg-btn')].forEach((b,i)=>{
+    b.disabled=true;
+    if(i===d.pk)b.classList.add('right');
+    else if(i===idx&&!correct)b.classList.add('wrong');
+  });
+  drawQzBars(d,true);
+  // reveal
+  const rv=document.getElementById('reveal');
+  const res=document.getElementById('rvResult');
+  res.textContent=correct?'정답! +100':'아쉽다…';
+  res.className='rv-result '+(correct?'win':'lose');
+  document.getElementById('rvInsight').innerHTML=peakInsight(d,idx,correct);
+  document.getElementById('rvNext').textContent=pkRound>=4?'결과 보기 →':'다음 →';
+  rv.classList.add('on');
+}
+function peakInsight(d,picked,correct){
+  const pk=d.pk,tr=d.tr,swing=d.swing;
+  let lead='';
+  if(correct){
+    lead='맞아 — <b>'+d.n+'</b>은 '+WIN[pk]+'이 정점이야. ';
+  }else{
+    lead='<b>'+d.n+'</b>의 진짜 정점은 <b>'+WIN[pk]+'</b>(<span style="color:#93a8b8">'+WSUB[pk]+'</span>)였어. ';
+  }
+  let detail='';
+  if(pk>=4)detail='낮엔 일터·학교로 흩어졌다 <b>'+WIN[pk]+'</b>에 돌아오는 — 잠자러 오는 동네. ';
+  else if(pk<=2)detail='드물게도 정점이 <b>'+WIN[pk]+'</b> — '+(d.dom===1?'청년이 낮을 채우는 ':'')+'일터·학교·관광이 깃든 골목. ';
+  else detail='하루를 마치고 사람이 돌아오는 <b>'+WIN[pk]+'</b>이 절정. ';
+  let third='';
+  if(swing>1.6)third='최대/최소 차이 <b class="t">'+swing.toFixed(2)+'배</b> — 썰물·밀물이 뚜렷한 동네.';
+  else if(swing<1.2)third='최대/최소 차이 <b class="t">'+swing.toFixed(2)+'배</b> — 하루 종일 거의 변하지 않는, 비지 않는 골목.';
+  else third='하루 동안 사람이 빠졌다 다시 차는, 평범한 호흡.';
+  return lead+detail+third;
+}
+function nextPeakRound(){
+  if(pkRound>=4){finishPeak();return;}
+  pkRound++;renderPeak();
+}
+
+/* ===== HIGHER OR LOWER ===== */
+const HILO_METRICS=[
+  {k:'youth_night',q:'심야(새벽 2–4시) <span>청년 인구</span>가 더 많은 동네는?',get:d=>d.w[5][1],unit:'명'},
+  {k:'old_morning',q:'오전(7–9시) <span>노년 인구</span>가 더 많은 동네는?',get:d=>d.w[0][3],unit:'명'},
+  {k:'peak_pop',q:'<span>가장 붐비는 시각</span>의 총인구가 더 큰 동네는?',get:d=>d.tw[d.pk],unit:'명'},
+  {k:'youth_pct',q:'<span>청년 비율</span>이 더 높은 동네는?',get:d=>Math.round(d.youthPct*1000)/10,unit:'%'},
+  {k:'old_pct',q:'<span>노년 비율</span>이 더 높은 동네는?',get:d=>Math.round(d.oldPct*1000)/10,unit:'%'},
+  {k:'day_avg',q:'<span>하루 누적 생활인구</span>가 더 많은 동네는?',get:d=>Math.round(d.day/6),unit:'명/시'},
+  {k:'evening',q:'<span>저녁(19–21시) 인구</span>가 더 많은 동네는?',get:d=>d.tw[3],unit:'명'},
+  {k:'morning_youth',q:'<span>오전 청년 인구</span>가 더 많은 동네는?',get:d=>d.w[0][1],unit:'명'},
+  {k:'mid_late',q:'<span>늦은오후(15–17시) 중년 인구</span>가 더 많은 동네는?',get:d=>d.w[2][2],unit:'명'},
+  {k:'swing',q:'하루 동안 사람이 더 크게 <span>빠졌다 차오르는</span> 동네는?',get:d=>Math.round(d.swing*100)/100,unit:'배'}
+];
+let hStreak=0,hBest=0,hA=null,hB=null,hMetric=null,hAnswered=false;
+function loadBest(){try{return parseInt(localStorage.getItem('mtmHiloBest')||'0',10);}catch(e){return 0;}}
+function saveBest(v){try{localStorage.setItem('mtmHiloBest',v);}catch(e){}}
+hBest=loadBest();
+function pickPair(metric){
+  // 비슷하지 않은 값으로 두 동네 뽑기 (의외성을 위해 가끔 가까운 것도)
+  for(let attempt=0;attempt<8;attempt++){
+    const a=SKY[(Math.random()*SKY.length)|0],b=SKY[(Math.random()*SKY.length)|0];
+    if(a===b)continue;
+    const va=metric.get(a),vb=metric.get(b);
+    if(Math.abs(va-vb)<0.001)continue;
+    const ratio=Math.min(va,vb)/Math.max(va,vb);
+    // 처음엔 큰 차이, 후반엔 비슷한 것도 OK
+    const want=hStreak<3?0.6:0.85;
+    if(ratio<=want||attempt>=6)return [a,b];
+  }
+  // fallback
+  let a=SKY[0],b=SKY[1];
+  while(a===b||metric.get(a)===metric.get(b)){a=SKY[(Math.random()*SKY.length)|0];b=SKY[(Math.random()*SKY.length)|0];}
+  return [a,b];
+}
+function startHilo(){
+  hStreak=0;hAnswered=false;
+  document.getElementById('hStreak').textContent=0;
+  document.getElementById('hBest').textContent=hBest;
+  document.getElementById('hiloReveal').classList.remove('on');
+  hMetric=HILO_METRICS[(Math.random()*HILO_METRICS.length)|0];
+  const pair=pickPair(hMetric);
+  hA=pair[0];hB=pair[1];
+  renderHilo(true);
+  show('s-hilo');
+}
+function renderHilo(firstAOnly){
+  document.getElementById('hiloQ').innerHTML=hMetric.q;
+  document.getElementById('hAName').innerHTML=hA.n+'<span>'+hA.g+'</span>';
+  document.getElementById('hAStat').textContent=hMetric.q.replace(/<[^>]+>/g,'').replace(/ 동네는\?$/,'').replace(/^<span>/,'');
+  const valA=hMetric.get(hA);
+  document.getElementById('hANum').innerHTML=fmtVal(valA,hMetric.unit);
+  document.getElementById('hBName').innerHTML=hB.n+'<span>'+hB.g+'</span>';
+  document.getElementById('hBStat').textContent='?';
+  document.getElementById('hBNum').className='hc-num q';
+  document.getElementById('hBNum').textContent='?';
+  document.querySelectorAll('.vs-btn').forEach(b=>b.disabled=false);
+  hAnswered=false;
+}
+function fmtVal(v,unit){
+  if(unit==='명'||unit==='명/시')return Math.round(v).toLocaleString()+'<small>'+unit+'</small>';
+  if(unit==='%')return v.toFixed(1)+'<small>%</small>';
+  if(unit==='배')return v.toFixed(2)+'<small>배</small>';
+  return v+'<small>'+unit+'</small>';
+}
+function countUp(elT,from,to,unit){
+  const start=performance.now(),dur=900;
+  function step(t){
+    const p=Math.min(1,(t-start)/dur),e=1-Math.pow(1-p,2.3);
+    const cur=from+(to-from)*e;
+    elT.innerHTML=fmtVal(cur,unit);
+    if(p<1)requestAnimationFrame(step);
+    else elT.innerHTML=fmtVal(to,unit);
+  }
+  requestAnimationFrame(step);
+}
+function guessHilo(dir){
+  if(hAnswered)return;hAnswered=true;
+  document.querySelectorAll('.vs-btn').forEach(b=>b.disabled=true);
+  const va=hMetric.get(hA),vb=hMetric.get(hB);
+  const real=vb>va?1:-1;
+  const correct=dir===real;
+  const numEl=document.getElementById('hBNum');
+  numEl.className='hc-num';
+  numEl.style.color=correct?'#74efb0':'#ff6b8a';
+  document.getElementById('hBStat').textContent=hMetric.q.replace(/<[^>]+>/g,'').replace(/ 동네는\?$/,'');
+  countUp(numEl,va,vb,hMetric.unit);
+  setTimeout(()=>{
+    if(correct){
+      hStreak++;
+      if(hStreak>hBest){hBest=hStreak;saveBest(hBest);}
+      document.getElementById('hStreak').textContent=hStreak;
+      document.getElementById('hBest').textContent=hBest;
+      const rv=document.getElementById('hiloReveal');
+      document.getElementById('hRvResult').textContent='정답! 🔥 연승 '+hStreak;
+      document.getElementById('hRvResult').className='rv-result win';
+      document.getElementById('hRvInsight').innerHTML=hiloInsight(hA,hB,va,vb,hMetric,true);
+      document.getElementById('hRvNext').textContent='다음 라운드 →';
+      rv.classList.add('on');
+    }else{
+      const rv=document.getElementById('hiloReveal');
+      document.getElementById('hRvResult').textContent='땡 — 연승 '+hStreak+'에서 끊김';
+      document.getElementById('hRvResult').className='rv-result lose';
+      document.getElementById('hRvInsight').innerHTML=hiloInsight(hA,hB,va,vb,hMetric,false);
+      document.getElementById('hRvNext').textContent='결과 보기 →';
+      rv.classList.add('on');
+    }
+  },1000);
+}
+function hiloInsight(a,b,va,vb,m,correct){
+  let s='';
+  s+='<b>'+b.n+'</b>은 '+fmtVal(vb,m.unit).replace(/<[^>]*>/g,'').replace(m.unit,'')+' '+m.unit;
+  s+=', <b>'+a.n+'</b>은 '+fmtVal(va,m.unit).replace(/<[^>]*>/g,'').replace(m.unit,'')+' '+m.unit+'. ';
+  const r=vb/va;
+  if(r>2)s+='<span class="t">2배 차이</span> — 같은 서울인데 호흡이 완전히 달라. ';
+  else if(r>1.5)s+='<b class="t">'+r.toFixed(2)+'배</b> 차이.';
+  else if(r<0.5)s+='<span class="t">절반 이하</span> — 같은 서울인데 호흡이 완전히 달라. ';
+  else if(r<0.7)s+='<b class="t">'+r.toFixed(2)+'배</b> 차이.';
+  else s+='꽤 가까웠어. ';
+  // 추가 컨텍스트
+  if(m.k==='youth_pct'){
+    const dom=b.youthPct>CITY_YOUTH?b:a;s+='<b>'+dom.n+'</b>은 서울 평균('+(CITY_YOUTH*100).toFixed(0)+'%)보다 청년이 많아.';
+  }else if(m.k==='old_pct'){
+    const dom=b.oldPct>CITY_OLD?b:a;s+='<b>'+dom.n+'</b>은 서울 평균('+(CITY_OLD*100).toFixed(0)+'%)보다 노년이 많아.';
+  }else if(m.k==='swing'){
+    const big=b.swing>a.swing?b:a;s+='<b>'+big.n+'</b>은 정점 '+WIN[big.pk]+', 바닥 '+WIN[big.tr]+'.';
+  }else{
+    s+='두 동네 모두 주인 세대는 '+AGE[b.dom]+(a.dom===b.dom?' (동일)':' / '+AGE[a.dom])+'.';
+  }
+  return s;
+}
+function nextHiloRound(){
+  if(!document.getElementById('hRvResult').classList.contains('win')){finishHilo();return;}
+  // 이긴 경우: B가 새 A, 새 B + 새 metric (가끔)
+  hA=hB;
+  hMetric=Math.random()<0.5?hMetric:HILO_METRICS[(Math.random()*HILO_METRICS.length)|0];
+  // 새 B
+  let nb=SKY[(Math.random()*SKY.length)|0];
+  for(let i=0;i<8;i++){
+    if(nb!==hA&&hMetric.get(nb)!==hMetric.get(hA))break;
+    nb=SKY[(Math.random()*SKY.length)|0];
+  }
+  hB=nb;
+  document.getElementById('hiloReveal').classList.remove('on');
+  renderHilo(false);
+}
+
+/* ===== RESULT ===== */
+let lastGame='peak';
+function finishPeak(){
+  lastGame='peak';
+  document.getElementById('rsBanner').textContent='FINAL · 절정 시간 맞히기';
+  document.getElementById('rsScore').textContent=pkScore;
+  document.getElementById('rsMax').textContent=' / 500';
+  const correct=pkLog.filter(x=>x).length;
+  let grade,title,sub;
+  if(correct===5){grade='S등급';title='🏆 도시의 박사';sub='5문제 전부 — 서울의 시간이 네 안에 흐른다.';}
+  else if(correct===4){grade='A등급';title='🌙 야행성 탐험가';sub='4/5 — 골목의 리듬을 거의 다 읽었어.';}
+  else if(correct===3){grade='B등급';title='🚇 출퇴근 모드';sub='3/5 — 한낮의 동네는 잘 봤어. 새벽은 한 번 더.';}
+  else if(correct===2){grade='C등급';title='☕ 동네 커피 한 잔';sub='2/5 — 슬쩍 본 정도. Higher or Lower로 감을 키워봐.';}
+  else if(correct===1){grade='D등급';title='🌫️ 길치 모드';sub='1/5 — 다시 한 판?';}
+  else{grade='F등급';title='👻 유령 도시';sub='0/5 — 아예 다른 도시 같았겠다. 한 번 더.';}
+  document.getElementById('rsGrade').textContent=grade;
+  document.getElementById('rsTitle').textContent=title;
+  document.getElementById('rsTitleSub').textContent=sub;
+  let grid='';pkLog.forEach(c=>{grid+='<div class="sq '+(c?'g':'r')+'">'+(c?'✓':'×')+'</div>';});
+  document.getElementById('rsGrid').innerHTML=grid;
+  document.getElementById('rsInsight').innerHTML=peakSummary();
+  document.getElementById('rsAgain').textContent='한 판 더';
+  document.getElementById('rsAgain').onclick=startPeak;
+  document.getElementById('rsSwap').textContent='Higher or Lower 도전';
+  document.getElementById('rsSwap').onclick=startHilo;
+  show('s-result');
+}
+function peakSummary(){
+  const right=pkLog.map((c,i)=>c?pkQueue[i].pk:-1).filter(x=>x>=0);
+  let bandHit=[0,0,0,0,0,0];right.forEach(p=>bandHit[p]++);
+  let best=-1,bestI=-1;bandHit.forEach((v,i)=>{if(v>best){best=v;bestI=i;}});
+  let s='';
+  if(right.length>=3){
+    s+='특히 <b>'+WIN[bestI]+'</b> 동네를 잘 맞췄어 — '+(best>=2?'그 시간대 감각이 좋네.':'한 번은 우연일 수도, 두 번은 실력.')+' ';
+  }
+  // 도시 평균 인사이트
+  s+='서울 저층주거지 93곳 중 <b class="t">57곳이 심야</b>에 가장 차. 낮엔 일터로 흩어지는 — 잠자러 돌아오는 도시거든. ';
+  s+='낮(오전~늦은오후)에 정점인 곳은 손에 꼽혀: <b>명륜3가·계동·누하동·사근동</b> — 대학·한옥·일터가 깃든.';
+  return s;
+}
+function finishHilo(){
+  lastGame='hilo';
+  document.getElementById('rsBanner').textContent='FINAL · Higher or Lower';
+  document.getElementById('rsScore').textContent=hStreak;
+  document.getElementById('rsMax').textContent=' 연승';
+  let grade,title,sub;
+  if(hStreak>=10){grade='S등급';title='🔥 데이터 무당';sub=hStreak+'연승 — 숫자가 보이는 능력자.';}
+  else if(hStreak>=7){grade='A등급';title='⭐ 도시 산책가';sub=hStreak+'연승 — 골목의 결을 알아.';}
+  else if(hStreak>=5){grade='B등급';title='🚶 익숙한 사람';sub=hStreak+'연승 — 서울에 산 티가 난다.';}
+  else if(hStreak>=3){grade='C등급';title='🤔 감으로 찍는 사람';sub=hStreak+'연승 — 절반은 운, 절반은 감.';}
+  else if(hStreak>=1){grade='D등급';title='🎲 동전 던지기';sub=hStreak+'연승 — 다음 판은 더 잘할 거야.';}
+  else{grade='F등급';title='💀 첫판 패배';sub='0연승 — 다시!';}
+  document.getElementById('rsGrade').textContent=grade;
+  document.getElementById('rsTitle').textContent=title;
+  document.getElementById('rsTitleSub').textContent=sub;
+  let grid='';for(let i=0;i<Math.min(hStreak+1,10);i++){grid+='<div class="sq '+(i<hStreak?'g':'r')+'">'+(i<hStreak?'✓':'×')+'</div>';}
+  if(hStreak===0)grid='<div class="sq r">×</div>';
+  document.getElementById('rsGrid').innerHTML=grid;
+  let s='최고 기록 <b>'+hBest+'연승</b>. ';
+  if(hStreak>=hBest&&hStreak>0)s='🎉 신기록! <b>'+hStreak+'연승</b>. ';
+  s+='Higher or Lower는 두 동네의 단순한 숫자 비교지만 — 서울이 얼마나 <b class="t">불균일한 도시</b>인지 보여줘. ';
+  s+='같은 행정구역 안에서도 청년 비율이 두 배 차이 나는 곳이 흔해. 절정 시간 게임으로 동네 곡선 감각도 키워봐.';
+  document.getElementById('rsInsight').innerHTML=s;
+  document.getElementById('rsAgain').textContent='한 판 더';
+  document.getElementById('rsAgain').onclick=startHilo;
+  document.getElementById('rsSwap').textContent='절정 시간 맞히기 도전';
+  document.getElementById('rsSwap').onclick=startPeak;
+  show('s-result');
+}
+function rsAgain(){}
+function copyShare(){
+  let txt='';
+  if(lastGame==='peak'){
+    txt='🗺️  서울의 하루 — 절정 시간 맞히기\n점수 '+pkScore+'/500 · '+document.getElementById('rsTitle').textContent+'\n';
+    pkLog.forEach(c=>txt+=c?'🟩':'🟥');
+    txt+='\n93개 저층주거지 중 누가 어느 시각에 깨어있는지 — 너도 해봐.';
+  }else{
+    txt='🔥  서울의 하루 — Higher or Lower\n'+hStreak+'연승 (최고 '+hBest+') · '+document.getElementById('rsTitle').textContent+'\n';
+    for(let i=0;i<Math.min(hStreak,10);i++)txt+='🟩';
+    if(hStreak<10)txt+='🟥';
+    txt+='\n두 동네 인구 배틀. 너도 도전해봐.';
+  }
+  try{navigator.clipboard.writeText(txt);}catch(e){}
+  const t=document.getElementById('toast');t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200);
+}
+};}
+/* (end of legacy dead block) */
+
+/* ===== EXPLORE MODE (preserved) ===== */
+const sky=document.getElementById('sky');
+const VBW=820,VBH=680,PADX=20,PADYT=20,PADYB=20;
+const _sProj=makeProj(VBW,VBH,PADX,PADYT,PADYB);
+const skyPx=_sProj.px, skyPy=_sProj.py;
+let sel=-1,exploreBuilt=false;
+function injectDefs(){
+  const defs=el('defs',{});
+  const f=el('filter',{id:'soft',x:'-160%',y:'-160%',width:'420%',height:'420%'});
+  f.appendChild(el('feGaussianBlur',{stdDeviation:'2.7'}));
+  defs.appendChild(f);
+  sky.appendChild(defs);
+}
+function bgSky(){
+  injectDefs();
+  for(let i=0;i<56;i++)sky.appendChild(el('circle',{cx:(Math.random()*VBW).toFixed(1),
+    cy:(Math.random()*VBH).toFixed(1),r:(Math.random()*0.9+0.2).toFixed(1),fill:'#bcd6e8',
+    opacity:(Math.random()*0.13+0.03).toFixed(2)}));
+  let dp='';RIVER.forEach((p,i)=>{dp+=(i?'L':'M')+skyPx(p[0]).toFixed(1)+' '+skyPy(p[1]).toFixed(1)+' ';});
+  sky.appendChild(el('path',{d:dp,fill:'none',stroke:'#2f6d8f','stroke-width':15,
+    'stroke-linecap':'round','stroke-linejoin':'round',opacity:0.3,filter:'url(#soft)'}));
+  sky.appendChild(el('path',{d:dp,fill:'none',stroke:'#6fd6e6','stroke-width':2,
+    'stroke-linecap':'round','stroke-linejoin':'round',opacity:0.45}));
+  drawGuBase(sky,skyPx,skyPy,{stroke:'rgba(140,200,225,0.28)',labelSize:10,labelFill:'rgba(210,235,245,0.42)'});
+}
+function star(d,r,col,gop,cop){
+  const x=skyPx(d.lo),y=skyPy(d.la),g=el('g',{});g.style.cursor='pointer';
+  g.appendChild(el('circle',{cx:x,cy:y,r:(r*4.4).toFixed(1),fill:col,opacity:(gop*0.55).toFixed(3)}));
+  g.appendChild(el('circle',{cx:x,cy:y,r:(r*2.5).toFixed(1),fill:col,opacity:gop.toFixed(3)}));
+  const core=el('circle',{cx:x,cy:y,r:r.toFixed(2),fill:col,opacity:cop.toFixed(2)});
+  g.appendChild(core);
+  const seed=el('circle',{cx:x,cy:y,r:(r*0.4+0.5).toFixed(2),fill:'#f0fdff',opacity:(cop*0.55+0.1).toFixed(2)});
+  g.appendChild(seed);
+  g.appendChild(el('circle',{cx:x,cy:y,r:Math.max(r*4.4,13).toFixed(1),fill:'transparent'}));
+  g.addEventListener('pointerenter',()=>{core.setAttribute('stroke','#fff');core.setAttribute('stroke-width','1.1');showInfo(d);});
+  g.addEventListener('pointerleave',()=>core.removeAttribute('stroke'));
+  g.addEventListener('click',()=>openDetail(d));
+  sky.appendChild(g);
+}
+function buildSky(){
+  sky.innerHTML='';bgSky();
+  if(sel<0){
+    const ds=SKY.map(d=>d.day),dlo=Math.min.apply(0,ds),dhi=Math.max.apply(0,ds);
+    SKY.forEach(d=>{const t=(d.day-dlo)/(dhi-dlo);star(d,3.4+t*6.2,ACOL[d.dom],0.07+t*0.15,0.6+t*0.34);});
+  }else{
+    SKY.forEach(d=>{const t=d.own[sel],bl=Math.pow(t,1.5);
+      star(d,2.3+bl*11.5,ACOL[d.dom],0.05+bl*0.36,0.16+bl*0.84);});
+  }
+}
+const info=document.getElementById('info');
+function showInfo(d){
+  document.getElementById('iNm').innerHTML=d.n+'<span>'+d.g+'</span>';
+  if(sel<0){
+    document.getElementById('iOwn').innerHTML='주인 세대 — <span style="color:'+ACOL[d.dom]+'">'+AGE[d.dom]+'</span>';
+    document.getElementById('iPop').textContent='정점 '+WIN[d.pk]+' / 바닥 '+WIN[d.tr];
+  }else{
+    const cur=d.tw[sel];
+    document.getElementById('iOwn').innerHTML='<span style="color:'+TCOL[sel]+'">'+WIN[sel]+'</span> 인구 약 '+cur.toLocaleString()+'명';
+    document.getElementById('iPop').textContent='제 하루 평균 대비 '+Math.round((cur/(d.day/6)-1)*100)+'%';
+  }
+  info.classList.add('on');
+}
+function setSel(i){
+  sel=i;
+  document.querySelectorAll('#lensRow .lens').forEach((e,j)=>e.classList.toggle('on',j===i+1));
+  buildSky();updateLegend();info.classList.remove('on');
+}
+function updateLegend(){
+  const lg=document.getElementById('legend');
+  const hint='<span style="color:#5f7588">🖱️ 휠 확대 · 드래그 이동 · 더블클릭 리셋</span>';
+  if(sel<0)lg.innerHTML='<span><b style="color:#e3ecf2">빛깔</b> = 그 동네의 주인 세대 · <b style="color:#e3ecf2">크기</b> = 하루 누적 생활인구.</span> &nbsp; '+hint;
+  else lg.innerHTML='<span style="color:'+TCOL[sel]+';font-size:15px">●</span> <span>크고 환한 별 = <b style="color:#e3ecf2">'+WIN[sel]+'</b>이 정점인 동네.</span> &nbsp; '+hint;
+}
+function drawBars(d){
+  const svg=document.getElementById('bars');svg.innerHTML='';
+  const W=440,H=258,PL=12,PR=12,PT=16,PB=46,cw=W-PL-PR,ch=H-PT-PB;
+  const mx=Math.max.apply(0,d.tw);
+  const gap=cw/6,bw=gap*0.62;
+  for(let i=0;i<6;i++){
+    const w=d.w[i],bx=PL+gap*i+(gap-bw)/2,bh=tot(w)/mx*ch;
+    let yy=PT+ch;
+    for(let a=0;a<4;a++){
+      const seg=w[a]/tot(w)*bh;
+      svg.appendChild(el('rect',{x:bx.toFixed(1),y:(yy-seg).toFixed(1),width:bw.toFixed(1),
+        height:Math.max(seg,0).toFixed(1),fill:ACOL[a]}));
+      yy-=seg;
+    }
+    svg.appendChild(el('rect',{x:bx.toFixed(1),y:(PT+ch-bh).toFixed(1),width:bw.toFixed(1),
+      height:bh.toFixed(1),fill:'none',stroke:'#081a2b','stroke-width':1}));
+    if(i===d.pk)svg.appendChild(el('rect',{x:(bx-2).toFixed(1),y:(PT+ch-bh-3).toFixed(1),
+      width:(bw+4).toFixed(1),height:(bh+3).toFixed(1),fill:'none',stroke:TCOL[i],'stroke-width':1.6,rx:2}));
+    const cx=bx+bw/2;
+    let t=el('text',{x:cx,y:PT+ch+16,'text-anchor':'middle','font-size':10.5,'font-weight':700,
+      'font-family':'Pretendard',fill:i===d.pk?TCOL[i]:'#e3ecf2'});t.textContent=WIN[i];svg.appendChild(t);
+    let t2=el('text',{x:cx,y:PT+ch+29,'text-anchor':'middle','font-size':8.5,
+      'font-family':'Pretendard',fill:'#637688'});t2.textContent=WSUB[i].replace('새벽 ','');svg.appendChild(t2);
+    let t3=el('text',{x:cx,y:PT+ch-bh-6,'text-anchor':'middle','font-size':9,
+      'font-family':'Pretendard',fill:'#8aa0b0'});t3.textContent=Math.round(tot(w)/1000)+'k';svg.appendChild(t3);
+  }
+}
+function interpret(d){
+  let s='주인은 — <b style="color:'+ACOL[d.dom]+'">'+AGE[d.dom]+'</b>. ';
+  if(d.pk>=4)s+='가장 붐비는 때는 <b>'+WIN[d.pk]+'</b> — 잠자러 돌아오는 동네. ';
+  else if(d.pk<=2)s+='드물게도 — 가장 붐비는 때가 <b>'+WIN[d.pk]+'</b>다. 일터·학교가 깃든 골목. ';
+  else s+='가장 붐비는 때는 <b>'+WIN[d.pk]+'</b>. ';
+  s+='가장 비는 건 <b>'+WIN[d.tr]+'</b>, 차이 '+d.swing.toFixed(2)+'배. ';
+  if(d.swing<1.2)s+='하루 종일 인구가 거의 그대로 — 비지 않는 골목. ';
+  else if(d.swing>1.6)s+='하루 사이 사람이 크게 빠졌다 다시 찬다 — 썰물과 밀물이 뚜렷. ';
+  else s+='하루 사이 사람이 빠졌다, 다시 찬다. ';
+  return s;
+}
+function openDetail(d){
+  document.getElementById('dNm').innerHTML=d.n+'<span>'+d.g+'</span>';
+  document.getElementById('dRead').innerHTML=interpret(d);
+  show('s-detail');drawBars(d);
+}
+function buildLensRow(){
+  const lr=document.getElementById('lensRow');lr.innerHTML='';
+  [['하루','전체 한눈에'],['오전','7–9시'],['이른오후','11–13시'],['늦은오후','15–17시'],['저녁','19–21시'],['밤','22–24시'],['심야','새벽 2–4시']].forEach((nm,j)=>{
+    const b=document.createElement('button');b.className='lens'+(j===0?' on':'');
+    b.innerHTML='<div class="ln">'+nm[0]+'</div><div class="ls">'+nm[1]+'</div>';
+    b.onclick=()=>setSel(j-1);lr.appendChild(b);
+  });
+}
+function enterExplore(){
+  if(!exploreBuilt){
+    buildLensRow();buildSky();updateLegend();
+    document.getElementById('srcNote').textContent='생활인구 = 서울시·통신 데이터로 추정한 특정 시각 특정 지역의 모든 인구. 출처: 서울 열린데이터광장 「행정동 단위 서울 생활인구(내국인)」 2026년 3~4월 평일 평균. 세대: 유소년 0~19 · 청년 20~39 · 중년 40~64 · 노년 65+.';
+    sky.addEventListener('pointerleave',()=>info.classList.remove('on'));
+    attachZoomPan(sky,{x:0,y:0,w:VBW,h:VBH});
+    exploreBuilt=true;
+  }
+  show('s-sky');
+}
+
+/* ===== SAJU 오행 (Five Elements) — 사주·풍수·별자리 (override) ===== */
+const EL=['목','화','토','금','수'];
+const EL_HAN=['木','火','土','金','水'];
+const EL_COL=['#74efb0','#ff9b73','#ffd96b','#e3ecf2','#5fcdff'];
+const EL_MEAN=['자람','빛남','안정','정돈','깊음'];
+const SAJU_QS=[
+  {tag:'사주 · 출생의 시각',q:'당신을 가장 닮은 시각은?',options:[
+    {l:'새벽 — 동이 트는 시각',s:{목:2}},
+    {l:'한낮 — 해가 가장 높은 시각',s:{화:2}},
+    {l:'저녁 — 해가 기우는 시각',s:{금:2}},
+    {l:'심야 — 별이 가장 많은 시각',s:{수:2}},
+    {l:'잘 모르겠다 — 모든 시각이 비슷하다',s:{토:2}}
+  ]},
+  {tag:'풍수 · 방위',q:'당신이 머무는 방위는?',options:[
+    {l:'동쪽 — 떠오르는 자리',s:{목:2}},
+    {l:'남쪽 — 해 받는 자리',s:{화:2}},
+    {l:'중앙 — 균형의 자리',s:{토:2}},
+    {l:'서쪽 — 해 지는 자리',s:{금:2}},
+    {l:'북쪽 — 깊어지는 자리',s:{수:2}}
+  ]},
+  {tag:'별자리 · 영혼의 나이',q:'당신 영혼의 나이는?',options:[
+    {l:'어린이 — 자라나는 시기',s:{목:2}},
+    {l:'청년 — 차오르는 시기',s:{목:1,화:1}},
+    {l:'중년 — 단단해지는 시기',s:{토:1,금:1}},
+    {l:'노년 — 깊어지는 시기',s:{금:1,수:1}},
+    {l:'알 수 없다 — 시간 밖의 영혼',s:{토:1,수:1}}
+  ]},
+  {tag:'사주 · 호흡',q:'당신의 한 주는 어떻게 흐릅니까?',options:[
+    {l:'격동 — 차오르고 비워진다',s:{목:1,수:1}},
+    {l:'활기 — 위로 향한다',s:{화:2}},
+    {l:'안정 — 거의 같다',s:{토:2}},
+    {l:'정돈 — 가지런하다',s:{금:2}},
+    {l:'흐름 — 한 방향으로 흐른다',s:{수:2}}
+  ]},
+  {tag:'풍수 · 입지',q:'당신이 살고 싶은 골목은?',options:[
+    {l:'30년 된 빵집이 있는 골목',s:{토:1,금:1}},
+    {l:'어제 생긴 카페가 있는 곳',s:{목:1,화:1}},
+    {l:'산자락의 조용한 동네',s:{수:1,토:1}},
+    {l:'한강 가까이 흐르는 동네',s:{수:2}},
+    {l:'바뀌어가는 중인 동네',s:{목:1,수:1}}
+  ]},
+  {tag:'사주 · 자리',q:'한낮 두 시, 당신은 어디 있습니까?',options:[
+    {l:'일터에 — 일이 가장 빛나는 시각',s:{화:1,금:1}},
+    {l:'집에 — 드물게도',s:{토:1,수:1}},
+    {l:'거리·카페에 — 사람들 사이',s:{목:1,화:1}},
+    {l:'떠돌고 있다 — 한 곳에 없는 사람',s:{수:1,목:1}}
+  ]},
+  {tag:'별자리 · 빛깔',q:'당신을 끄는 빛깔은?',options:[
+    {l:'푸른 빛 — 자라는 풀의 색',s:{목:2}},
+    {l:'붉은 빛 — 타오르는 불의 색',s:{화:2}},
+    {l:'노란 빛 — 단단한 흙의 색',s:{토:2}},
+    {l:'흰 빛 — 가지런한 금속의 색',s:{금:2}},
+    {l:'검은 빛 — 깊은 물의 색',s:{수:2}}
+  ]}
+];
+let sjStep=0, sjVec={};
+function startSaju(){
+  sjStep=0; sjVec={};
+  show('s-saju');
+  renderSajuQ();
+}
+function renderSajuQ(){
+  const q=SAJU_QS[sjStep];
+  document.getElementById('sjStep').textContent=sjStep+1;
+  document.getElementById('sjProg').style.width=((sjStep+1)/SAJU_QS.length*100)+'%';
+  document.getElementById('sjTag').textContent=q.tag;
+  document.getElementById('sjQ').textContent=q.q;
+  const opts=document.getElementById('sjOptions');opts.innerHTML='';
+  q.options.forEach((opt,i)=>{
+    const b=document.createElement('button');b.className='sj-opt';
+    b.textContent=opt.l;
+    b.onclick=()=>answerSaju(i);
+    opts.appendChild(b);
+  });
+}
+function answerSaju(idx){
+  const opt=SAJU_QS[sjStep].options[idx];
+  for(const k in opt.s){sjVec[k]=(sjVec[k]||0)+opt.s[k];}
+  sjStep++;
+  if(sjStep>=SAJU_QS.length)finishSaju();
+  else renderSajuQ();
+}
+function hoodElements(d){
+  const e={목:0,화:0,토:0,금:0,수:0};
+  // 시간 정점 (출생 시각)
+  if(d.pk===0)e.목+=3;
+  else if(d.pk===1)e.목+=1,e.화+=2;
+  else if(d.pk===2)e.화+=3;
+  else if(d.pk===3)e.금+=3;
+  else if(d.pk===4)e.금+=1,e.수+=2;
+  else if(d.pk===5)e.수+=3;
+  // 주인 세대
+  if(d.dom===0)e.목+=1;
+  else if(d.dom===1)e.목+=2,e.화+=1;
+  else if(d.dom===2)e.토+=2,e.금+=1;
+  else if(d.dom===3)e.금+=1,e.수+=2;
+  // 호흡 (swing)
+  if(d.swing<1.2)e.토+=3;
+  else if(d.swing>1.6)e.수+=2,e.목+=1;
+  // 방위 (풍수)
+  if(d.la>37.60)e.수+=2;
+  else if(d.la<37.49)e.화+=2;
+  if(d.lo<126.90)e.금+=2;
+  else if(d.lo>127.08)e.목+=2;
+  if(d.lo>=126.96&&d.lo<=127.02&&d.la>=37.55&&d.la<=37.60)e.토+=2;
+  // 한강변 = 수
+  if(Math.abs(d.la-37.535)<0.018)e.수+=1;
+  // 산자락 = 수+토
+  const mtn=['평창동','부암동','정릉동','성북동','명륜3가','후암동','계동','누하동'];
+  if(mtn.indexOf(d.n)>=0)e.수+=1,e.토+=1;
+  // 청년 비율
+  if(d.youthPct>CITY_YOUTH+0.05)e.목+=1,e.화+=1;
+  if(d.oldPct>CITY_OLD+0.05)e.금+=1,e.수+=1;
+  return e;
+}
+function elemDist(a,b){
+  // 정규화 후 유클리드 거리
+  const sa=EL.reduce((x,k)=>x+a[k],0)||1, sb=EL.reduce((x,k)=>x+b[k],0)||1;
+  let d=0;
+  for(const k of EL){const na=a[k]/sa, nb=b[k]/sb; d+=(na-nb)*(na-nb);}
+  return Math.sqrt(d);
+}
+function elemComplement(userE,hoodE){
+  // 용신: 사용자가 부족한 원소를 동네가 많이 갖고 있을수록 좋음
+  const userTotal=EL.reduce((x,k)=>x+userE[k],0)||1;
+  const hoodTotal=EL.reduce((x,k)=>x+hoodE[k],0)||1;
+  const userMax=Math.max(...EL.map(k=>userE[k]/userTotal));
+  let s=0;
+  for(const k of EL){
+    const deficit=userMax-(userE[k]/userTotal);
+    s+=deficit*(hoodE[k]/hoodTotal);
+  }
+  return s;
+}
+function finishSaju(){
+  const userE={목:0,화:0,토:0,금:0,수:0};
+  for(const k in sjVec){if(EL.indexOf(k)>=0)userE[k]=sjVec[k];}
+  const hoodE=SKY.map(d=>({d,e:hoodElements(d)}));
+  // 본명궁: 거리 가장 가까움
+  const byDist=hoodE.slice().sort((a,b)=>elemDist(userE,a.e)-elemDist(userE,b.e));
+  const winner=byDist[0].d;
+  // 용신: 부족한 걸 채워주는 별 (winner 제외)
+  const byComp=hoodE.slice().sort((a,b)=>elemComplement(userE,b.e)-elemComplement(userE,a.e));
+  let useful=byComp.find(x=>x.d!==winner).d;
+  // 정반대: 가장 거리 먼 별
+  const opposite=byDist[byDist.length-1].d;
+  renderSajuResult(winner,useful,opposite,userE);
+}
+function clusterNeighbors(d){return SKY.filter(x=>x.g===d.g&&x.n!==d.n).slice(0,3).map(x=>x.n);}
+function sajuMini(d){
+  const e=hoodElements(d);
+  const top=EL.slice().sort((a,b)=>e[b]-e[a])[0];
+  return WIN[d.pk]+' 정점 · '+top+'('+EL_HAN[EL.indexOf(top)]+')의 별';
+}
+function elemChart(e){
+  const sum=EL.reduce((x,k)=>x+e[k],0)||1;
+  const maxv=Math.max(...EL.map(k=>e[k]))||1;
+  let h='<div class="elem-row">';
+  EL.forEach((k,i)=>{
+    const filled=Math.round(e[k]/maxv*5);
+    h+='<div class="elem-cell"><div class="el-name" style="color:'+EL_COL[i]+'">'+k+'<small>'+EL_HAN[i]+'</small></div>';
+    h+='<div class="el-dots">';
+    for(let j=0;j<5;j++)h+='<i style="background:'+(j<filled?EL_COL[i]:'rgba(255,255,255,0.10)')+'"></i>';
+    h+='</div><div class="el-val">'+e[k]+'</div></div>';
+  });
+  h+='</div>';
+  return h;
+}
+function sajuFormat(userE){
+  const sorted=EL.slice().sort((a,b)=>userE[b]-userE[a]);
+  const top=sorted[0],second=sorted[1],low=sorted[sorted.length-1];
+  const tH=EL_HAN[EL.indexOf(top)],sH=EL_HAN[EL.indexOf(second)],lH=EL_HAN[EL.indexOf(low)];
+  // 두 원소가 강하면 그 쌍의 격, 아니면 단일 격
+  const isStrong=userE[top]>=userE[second]*1.4;
+  if(isStrong){
+    const map={
+      '목':{name:'목강격(木强格)',line:'자람의 격 — 새벽의 영혼'},
+      '화':{name:'화왕격(火旺格)',line:'빛남의 격 — 한낮의 영혼'},
+      '토':{name:'토중격(土重格)',line:'안정의 격 — 변하지 않는 영혼'},
+      '금':{name:'금예격(金銳格)',line:'정돈의 격 — 저녁의 영혼'},
+      '수':{name:'수심격(水深格)',line:'깊음의 격 — 심야의 영혼'}
+    };
+    return {格:map[top].name,line:map[top].line,topEl:top,lowEl:low};
+  }
+  const pair=top+second, pairR=second+top;
+  const pairs={
+    '목화':{name:'목화통명격(木火通明)',line:'나무가 불을 통해 빛난다 — 자라며 빛나는 영혼'},
+    '목토':{name:'목토배양격(木土培養)',line:'흙이 나무를 키운다 — 자라 깃드는 영혼'},
+    '목금':{name:'목금상극격(木金相剋)',line:'금이 나무를 다듬는다 — 단련되는 영혼'},
+    '목수':{name:'수목상생격(水木相生)',line:'물이 나무를 키운다 — 깊이서 자라는 영혼'},
+    '화토':{name:'화토상생격(火土相生)',line:'불이 흙을 다진다 — 빛이 깃드는 영혼'},
+    '화금':{name:'화금상극격(火金相剋)',line:'불이 금을 단련한다 — 부딪쳐 다듬는 영혼'},
+    '화수':{name:'수화기제격(水火旣濟)',line:'물과 불이 서로를 살린다 — 양극의 균형'},
+    '토금':{name:'토금상생격(土金相生)',line:'흙이 금을 낳는다 — 안정에서 정돈되는 영혼'},
+    '토수':{name:'토수상생격(土水相生)',line:'안정과 흐름이 어우러진 영혼'},
+    '금수':{name:'금수상생격(金水相生)',line:'금이 물을 낳는다 — 맑은 사주의 영혼'}
+  };
+  const f=pairs[pair]||pairs[pairR]||{name:top+second+'격',line:'두 결이 어우러진 영혼'};
+  return {格:f.name,line:f.line,topEl:top,lowEl:low};
+}
+function sajuQuote(userE,topEl,lowEl){
+  // 옛말 — 부족한 원소가 무엇이냐에 따라
+  const quotes={
+    '목':{
+      '금':{h:'木多金缺',k:'목다금결',line:'나무가 무성한데 금이 모자라다.<br>너의 자람을 다듬어줄 자리를 찾으라.'},
+      '토':{h:'木盛土虛',k:'목성토허',line:'나무가 무성한데 흙이 비었다.<br>안정의 자리가 너를 받쳐줄 것이다.'},
+      '수':{h:'木旱思水',k:'목한사수',line:'나무가 마르니 물을 그리워한다.<br>깊은 별이 너를 채워줄 것이다.'},
+      '화':{h:'木無火發',k:'목무화발',line:'나무가 있으나 불이 없으니 빛이 안 핀다.<br>한낮의 별이 너를 깨울 것이다.'}
+    },
+    '화':{
+      '수':{h:'火炎土燥',k:'화염토조',line:'불이 타오르니 흙이 마른다.<br>물의 깊이가 너를 식혀줄 것이다.'},
+      '목':{h:'火無木滅',k:'화무목멸',line:'불이 있으나 나무가 없으니 곧 꺼진다.<br>자라는 별이 너의 연료가 될 것이다.'},
+      '토':{h:'火炎無歸',k:'화염무귀',line:'불이 타오르나 돌아갈 곳이 없다.<br>안정의 자리를 만들라.'},
+      '금':{h:'火逼金熔',k:'화핍금용',line:'불이 금을 녹인다 — 너무 뜨거우면 다듬을 수 없다.<br>정돈의 별을 찾으라.'}
+    },
+    '토':{
+      '수':{h:'土厚埋金',k:'토후매금',line:'흙이 두꺼우니 금이 묻힌다.<br>흐름이 너를 살릴 것이다.'},
+      '목':{h:'土實無生',k:'토실무생',line:'흙이 단단하나 자라는 것이 없다.<br>새벽의 별이 너를 흔들 것이다.'},
+      '금':{h:'土多金薄',k:'토다금박',line:'흙이 많으니 금이 얇아진다.<br>정돈의 자리가 너에게 모양을 줄 것이다.'},
+      '화':{h:'土寒無溫',k:'토한무온',line:'흙이 차니 따뜻함이 없다.<br>한낮의 별이 너를 데울 것이다.'}
+    },
+    '금':{
+      '화':{h:'金白水淸',k:'금백수청',line:'금이 희고 물이 맑으니 — 맑은 사주.<br>다만 불이 모자라니 빛을 찾으라.'},
+      '목':{h:'金多木折',k:'금다목절',line:'금이 많으면 나무가 부러진다.<br>자라는 자리가 너의 단단함을 풀어줄 것이다.'},
+      '수':{h:'金冷無流',k:'금냉무류',line:'금은 단단하나 흐름이 없다.<br>흐르는 자리를 찾으라.'},
+      '토':{h:'金露無根',k:'금로무근',line:'금이 드러났으나 뿌리가 없다.<br>안정의 자리가 너를 묻어줄 것이다.'}
+    },
+    '수':{
+      '화':{h:'水强火滅',k:'수강화멸',line:'물이 강하니 불이 꺼진다.<br>빛을 잃지 않을 자리를 찾으라.'},
+      '토':{h:'水汎無止',k:'수범무지',line:'물이 흘러도 멈출 곳이 없다.<br>안정의 자리가 너를 가둘 것이다.'},
+      '목':{h:'水寒無生',k:'수한무생',line:'물이 차니 자라는 것이 없다.<br>새벽의 별이 너를 깨울 것이다.'},
+      '금':{h:'水多金沈',k:'수다금침',line:'물이 많으니 금이 가라앉는다.<br>정돈의 자리가 너를 끌어올릴 것이다.'}
+    }
+  };
+  return (quotes[topEl]&&quotes[topEl][lowEl])||{h:'五行調和',k:'오행조화',line:'다섯 결이 어우러진 — 드물게 균형 잡힌 사주.'};
+}
+function fengshuiLine(d){
+  if(d.la>37.62)return '북쪽 끝, 산자락의 자리 — 도성 밖, 천천한 호흡의 영역.';
+  if(d.la>37.59)return '북쪽 도성, 옛 종로의 결 — 한옥과 골목의 영역.';
+  if(d.la<37.48)return '한강 남쪽 평지의 자리 — 새로운 도시의 결.';
+  if(d.la<37.51)return '강 너머 한강 남쪽의 자리 — 정주(定住)의 영역.';
+  if(d.lo<126.88)return '서쪽 변두리의 자리 — 잠의 도시, 비행기의 그림자.';
+  if(d.lo>127.12)return '동쪽 외곽의 자리 — 새로 생겨나는 영역.';
+  if(d.lo<126.92)return '한강 북쪽 서편의 자리 — 마포·서대문의 결.';
+  if(d.lo>127.05)return '한강 북쪽 동편의 자리 — 동대문·성북·중랑의 결.';
+  return '한강을 끼고 도성을 마주한 자리 — 도시 한복판의 별.';
+}
+function sajuFengshui(d){
+  const ns=d.la>37.55?'한강 북쪽':(d.la<37.51?'한강 남쪽':'한강 가까이');
+  const ew=d.lo<126.92?'서편':(d.lo>127.05?'동편':'중심');
+  return '<span style="font-size:14px;line-height:1.8">'+ns+' · '+ew+' &nbsp;<span style="color:var(--cream-d);font-size:11.5px">(위도 '+d.la.toFixed(3)+', 경도 '+d.lo.toFixed(3)+')</span><br>'+
+    '<span style="color:var(--cream);font-size:13.5px;font-style:italic">'+fengshuiLine(d)+'</span></span>';
+}
+function renderSajuResult(winner,useful,opposite,userE){
+  lastGame='saju';
+  const fmt=sajuFormat(userE);
+  const quote=sajuQuote(userE,fmt.topEl,fmt.lowEl);
+  document.getElementById('rsBanner').textContent='🔮 동네 사주 · 운명의 별';
+  const sc=document.getElementById('rsScore');sc.textContent='✦';sc.style.fontSize='52px';
+  document.getElementById('rsMax').textContent='';
+  document.getElementById('rsGrade').textContent=fmt.格;
+  document.getElementById('rsTitle').textContent=winner.n;
+  document.getElementById('rsTitleSub').textContent=winner.g+' · '+fmt.line;
+  // 오행 차트 + 별자리
+  const grid=document.getElementById('rsGrid');
+  const cluster=clusterNeighbors(winner);
+  grid.innerHTML='<div class="sr-cluster">'+winner.g+' 별자리 — '+winner.n+(cluster.length?' · '+cluster.join(' · '):'')+'</div>'+
+    '<div class="sr-section"><div class="sh">당신의 오행 사주</div>'+elemChart(userE)+'</div>';
+  grid.style.flexWrap='wrap';grid.style.justifyContent='center';grid.style.flexDirection='column';
+  let insight='';
+  // 옛말
+  insight+='<div class="sr-quote"><div class="qh">'+quote.h+' <span class="qk">'+quote.k+'</span></div><div class="ql">'+quote.line+'</div></div>';
+  // 본명궁 풀이
+  const hoodE=hoodElements(winner);
+  const hoodTop=EL.slice().sort((a,b)=>hoodE[b]-hoodE[a])[0];
+  insight+='<div class="sr-section"><div class="sh">🌟 본명궁(本命宮) — 당신을 닮은 별</div>';
+  insight+='<div style="font-size:13.5px;line-height:1.84;color:var(--cream)"><b style="color:var(--gold)">'+winner.n+'</b>은 <b>'+hoodTop+'('+EL_HAN[EL.indexOf(hoodTop)]+')</b>의 별. '+sajuFengshui(winner)+'</div></div>';
+  // 용신
+  const usefulE=hoodElements(useful);
+  const usefulTop=EL.slice().sort((a,b)=>usefulE[b]-usefulE[a])[0];
+  insight+='<div class="sr-section sr-useful"><div class="sh">⚡ 용신(用神) — 당신을 채워줄 별</div>';
+  insight+='<div style="font-size:13.5px;line-height:1.84;color:var(--cream)">당신의 사주에 부족한 <b style="color:'+EL_COL[EL.indexOf(fmt.lowEl)]+'">'+fmt.lowEl+'('+EL_HAN[EL.indexOf(fmt.lowEl)]+')</b>의 기운을 채워줄 별 — <b style="color:var(--gold)">'+useful.n+'</b> <span style="color:var(--cream-d);font-size:12px">'+useful.g+'</span><br><span style="color:var(--cream-d);font-size:12.5px;font-style:italic">'+usefulTop+'('+EL_HAN[EL.indexOf(usefulTop)]+')의 결이 강한 별 · '+WIN[useful.pk]+' 정점</span></div></div>';
+  // 정반대
+  insight+='<div class="sr-opposite"><div class="sh">🌑 정반대의 별 (상극)</div><div class="pn">'+opposite.n+'<span style="font-size:13px;color:var(--cream-d);font-weight:500;margin-left:6px;font-family:Pretendard">'+opposite.g+'</span></div><div class="pl">'+sajuMini(opposite)+' · 당신과 오행이 가장 먼 결</div></div>';
+  document.getElementById('rsInsight').innerHTML=insight;
+  document.getElementById('rsAgain').textContent='🔮 다시 사주 보기';
+  document.getElementById('rsAgain').onclick=startSaju;
+  document.getElementById('rsSwap').textContent='🔭 운명의 별을 지도에서';
+  document.getElementById('rsSwap').onclick=function(){enterExplore();};
+  show('s-result');
+}
+function copyShare(){
+  const winner=document.getElementById('rsTitle').textContent;
+  const sub=document.getElementById('rsTitleSub').textContent;
+  let txt='🔮  서울 별자리 · 동네 사주\n';
+  txt+='운명의 별 — '+winner+'\n';
+  txt+=sub+'\n';
+  txt+='— 당신의 별은 어느 동네인가요?';
+  try{navigator.clipboard.writeText(txt);}catch(e){}
+  const t=document.getElementById('toast');t.classList.add('on');setTimeout(function(){t.classList.remove('on');},2200);
+}
+
+/* ===== INIT ===== */
+startCine();
+</script>
+</body>
+</html>

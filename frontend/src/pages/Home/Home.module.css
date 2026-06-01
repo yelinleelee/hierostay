@@ -1,0 +1,646 @@
+.page {
+  background: #fff;
+}
+
+/* ── Search section ── */
+.searchSection {
+  position: relative;
+  padding: 40px 40px 30px;
+  border-bottom: 1px solid #ebebeb;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+}
+
+.heroDrawing {
+  display: block;
+  margin: 0 auto 20px;
+  max-width: 720px;
+  width: 100%;
+  height: auto;
+}
+
+.heroSub {
+  font-size: 24px;
+  font-weight: 400;
+  color: #333333;
+  margin-bottom: 0;
+  text-align: center;
+}
+
+.searchPill {
+  position: relative;
+  z-index: 1;
+}
+
+.searchPill {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 18px;
+  height: 88px;
+  width: 100%;
+  max-width: 860px;
+  cursor: pointer;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s;
+  overflow: hidden;
+}
+.searchPill:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.14);
+}
+
+.searchItem {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 28px;
+  flex: 1;
+  height: 100%;
+  transition: background 0.15s;
+}
+.searchItem:hover { background: #f7f7f7; }
+
+.searchLabel {
+  font-size: 12px;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 4px;
+}
+.searchPlaceholder {
+  font-size: 14px;
+  color: #717171;
+}
+
+.searchDivider {
+  width: 1px;
+  height: 36px;
+  background: #ddd;
+  flex-shrink: 0;
+}
+
+.searchBtn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 12px;
+  padding: 0 26px;
+  height: 64px;
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+.searchBtn:hover { background: #333; }
+
+/* ── Three Cards ── */
+.threeCards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  background: #fff;
+}
+
+.card {
+  padding: 64px 48px 56px;
+  border-right: 1px solid #e8e0d4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+}
+.card:last-child { border-right: none; }
+.card { border-right: none !important; border-top: none; border-bottom: 2px solid #1a1a1a; }
+
+.card { transition: background 0.2s; }
+
+.card1:hover { background: #aaff6e; }
+.card2:hover { background: #ff85c2; }
+.card3:hover { background: #00f0ff; }
+
+.card1:hover .cardBtn,
+.card2:hover .cardBtn,
+.card3:hover .cardBtn {
+  background: #1a1a1a;
+  color: #fff;
+  border-color: #1a1a1a;
+}
+
+.card1 .cardBtn { background: #aaff6e; color: #1a1a1a; }
+.card2 .cardBtn { background: #ff85c2; color: #1a1a1a; }
+.card3 .cardBtn { background: #00f0ff; color: #1a1a1a; }
+
+.cardEyebrow {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0 0 12px;
+  letter-spacing: 0.01em;
+}
+
+.cardTitle {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: clamp(32px, 3.5vw, 52px);
+  font-weight: 800;
+  line-height: 1.05;
+  color: #1a1a1a;
+  margin: 0 0 24px;
+  letter-spacing: -0.01em;
+  text-transform: lowercase;
+}
+
+.cardTitleImg {
+  width: 100%;
+  max-width: 280px;
+  height: auto;
+  margin: 0 0 24px;
+}
+
+.cardDesc {
+  font-family: 'Noto Serif KR', serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: #555;
+  margin: 0 0 40px;
+  flex: 1;
+}
+
+.cardBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: #d4501f;
+  color: #fff;
+  border: 2px solid #1a1a1a;
+  border-radius: 40px;
+  padding: 14px 28px;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  font-family: 'Pretendard', sans-serif;
+  transition: background 0.2s, transform 0.15s;
+}
+.cardBtn:hover {
+  background: #b8401a;
+  transform: translateY(-1px);
+}
+
+/* ── Neighborhood Modal ── */
+.neighborhoodOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neighborhoodModal {
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 680px;
+  max-height: 85vh;
+  overflow-y: auto;
+}
+
+.neighborhoodClose {
+  position: sticky;
+  top: 16px;
+  float: right;
+  margin: 16px 16px 0 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: #222;
+}
+.neighborhoodClose:hover { background: #f5f5f5; }
+
+.gameFrame {
+  width: 100%;
+  height: calc(85vh - 60px);
+  border: none;
+  border-radius: 0 0 20px 20px;
+  display: block;
+}
+
+@media (max-width: 900px) {
+  .threeCards { grid-template-columns: 1fr; }
+  .card { border-right: none; border-bottom: 1px solid #e8e0d4; padding: 48px 32px; }
+  .card:last-child { border-bottom: none; }
+}
+
+/* ── Info slider ── */
+.infoSection {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 48px 40px 40px;
+  border-top: 1px solid #ebebeb;
+}
+
+.infoHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.infoTitle {
+  font-size: 18px;
+  font-weight: 700;
+  color: #222;
+  letter-spacing: -0.01em;
+}
+
+.infoArrows {
+  display: flex;
+  gap: 8px;
+}
+
+.arrowBtn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #222;
+  transition: box-shadow 0.15s, opacity 0.15s;
+}
+.arrowBtn:hover:not(:disabled) { box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.arrowBtn:disabled { opacity: 0.3; cursor: default; }
+
+.infoTrack {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  overflow: hidden;
+}
+
+.infoCard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28px 28px 28px 32px;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: transform 0.18s, box-shadow 0.18s;
+  min-height: 120px;
+}
+.infoCard:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.infoCardText {
+  flex: 1;
+  padding-right: 16px;
+}
+
+.infoCardTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.35;
+  margin-bottom: 8px;
+  letter-spacing: -0.01em;
+}
+
+.infoCardDesc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.55;
+}
+
+.infoCardEmoji {
+  font-size: 44px;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ── Concept sections ── */
+.conceptSection {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 56px 40px;
+}
+.conceptSection + .conceptSection {
+  border-top: 1px solid #ebebeb;
+}
+
+.conceptHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.conceptTitle {
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 6px;
+  color: #222;
+}
+.conceptDesc {
+  font-size: 14px;
+  color: #717171;
+}
+
+.sectionArrow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #717171;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sectionArrow:hover { color: #222; }
+
+.cardGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+/* ── CTA Banner ── */
+.banner {
+  position: relative;
+  overflow: hidden;
+  background: #eaf3ec;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.banner:hover {
+  background: #e0ebe2; /* 마우스 오버 시 약간 더 진한 연초록색 적용 */
+}
+
+.bannerInner {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 20px 40px;
+}
+
+.bannerText {
+  font-size: 17px;
+  color: #1a3325;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+.bannerText strong {
+  font-weight: 700;
+}
+
+@media (max-width: 1200px) {
+  .cardGrid { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 900px) {
+  .infoTrack {
+    grid-template-columns: repeat(2, 1fr);
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+  }
+  .infoCard { scroll-snap-align: start; min-width: 260px; }
+  .infoSection { padding: 36px 20px 28px; }
+  .searchSection { padding: 64px 20px 48px; }
+  .searchPill { height: 60px; }
+  .searchItem { padding: 0 18px; }
+  .searchBtn { padding: 0 18px; font-size: 14px; }
+  .cardGrid { grid-template-columns: repeat(2, 1fr); }
+  .conceptSection { padding: 40px 20px; }
+  .conceptHeader { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .bannerInner { padding: 12px 24px; }
+}
+@media (max-width: 600px) {
+  .searchPill { flex-direction: column; height: auto; border-radius: 16px; }
+  .searchDivider { width: 100%; height: 1px; margin: 0; }
+  .searchItem { padding: 14px 20px; }
+  .searchBtn { margin: 10px; width: calc(100% - 20px); justify-content: center; }
+  .cardGrid { grid-template-columns: 1fr; }
+}
+
+/* ── Host Modal ── */
+.hostOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.hostModal {
+  position: relative;
+  background: #fff;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 680px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.2);
+}
+
+.hostModalClose {
+  position: sticky;
+  top: 16px;
+  float: right;
+  margin: 16px 16px 0 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #ddd;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+  color: #222;
+  flex-shrink: 0;
+}
+.hostModalClose:hover { background: #f5f5f5; }
+
+.hostModalBody {
+  padding: 0 32px 40px;
+  clear: both;
+}
+
+.hmHero {
+  text-align: center;
+  padding: 16px 0 32px;
+  border-bottom: 1px solid #ebebeb;
+  margin-bottom: 32px;
+}
+
+.hmHeroImg {
+  display: block;
+  margin: 0 auto 24px;
+  max-width: 200px;
+  width: 100%;
+  height: auto;
+}
+
+.hmHeroTitle {
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.5;
+  color: #1a1a1a;
+  margin-bottom: 12px;
+  letter-spacing: -0.02em;
+}
+
+.hmHeroDesc {
+  font-size: 15px;
+  color: #717171;
+  line-height: 1.6;
+}
+
+.hmSection {
+  margin-bottom: 32px;
+}
+
+.hmSectionTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1.5;
+  margin-bottom: 16px;
+  letter-spacing: -0.01em;
+}
+
+.hmPainList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hmPainCard {
+  background: #f8f8f8;
+  border: 1px solid #ebebeb;
+  border-radius: 12px;
+  padding: 14px 18px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #333;
+}
+
+.hmSolutionGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+}
+
+.hmSolutionCard {
+  background: #f8f8f8;
+  border-radius: 14px;
+  padding: 18px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hmSolutionIcon { font-size: 28px; }
+.hmSolutionTitle { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+.hmSolutionDesc { font-size: 13px; color: #717171; line-height: 1.55; }
+
+.hmStats {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.hmStatItem {
+  flex: 1;
+  background: #f0f4ff;
+  border-radius: 14px;
+  padding: 18px 12px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hmStatNum {
+  font-size: 22px;
+  font-weight: 800;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+}
+
+.hmStatLabel {
+  font-size: 12px;
+  color: #717171;
+}
+
+.hmCta {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.hmCtaBtn {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.hmCtaBtn:hover { background: #333; }
+
+.hmCtaBtnSecondary {
+  background: transparent;
+  color: #1a1a1a;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.hmCtaBtnSecondary:hover { background: #f5f5f5; }
+
+@media (max-width: 600px) {
+  .hostModalBody { padding: 0 20px 32px; }
+  .hmSolutionGrid { grid-template-columns: 1fr; }
+  .hmStats { flex-direction: column; }
+}

@@ -1,0 +1,359 @@
+.page {
+  min-height: calc(100vh - 64px);
+  background: #f9f7f4;
+  display: flex;
+  justify-content: center;
+  padding: 48px 24px 80px;
+}
+
+/* ── Quiz ── */
+.quizWrap {
+  width: 100%;
+  max-width: 560px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.progressBar {
+  width: 100%;
+  height: 4px;
+  background: #e8e3dc;
+  border-radius: 2px;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+.progressFill {
+  height: 100%;
+  background: #1a1a1a;
+  border-radius: 2px;
+  transition: width 0.4s ease;
+}
+.progressText {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 28px;
+  align-self: flex-end;
+}
+
+.layerBadge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 5px 14px;
+  border-radius: 20px;
+  margin-bottom: 28px;
+  letter-spacing: 0.02em;
+}
+.layer1 { background: #fff3e0; color: #c17f3a; }
+.layer2 { background: #e8f3ec; color: #2d6a4f; }
+
+.questionCard {
+  text-align: center;
+  margin-bottom: 36px;
+}
+.questionEmoji { font-size: 52px; margin-bottom: 16px; }
+.questionText {
+  font-size: clamp(22px, 4vw, 28px);
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  margin-bottom: 10px;
+}
+.questionSub {
+  font-size: 14px;
+  color: #888;
+  line-height: 1.55;
+}
+
+.options {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  background: #fff;
+  border: 1.5px solid #e8e3dc;
+  border-radius: 14px;
+  padding: 18px 20px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #1a1a1a;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+.option:hover { border-color: #bbb; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.optionSelected {
+  border-color: #1a1a1a;
+  background: #1a1a1a;
+  color: #fff;
+}
+.optionEmoji { font-size: 20px; flex-shrink: 0; }
+.optionLabel { flex: 1; }
+.optionCheck {
+  font-size: 14px;
+  font-weight: 700;
+  opacity: 0.9;
+}
+
+.nextBtn {
+  width: 100%;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  font-size: 16px;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  background: #ddd;
+  color: #999;
+  transition: background 0.2s, color 0.2s;
+}
+.nextBtnActive {
+  background: #1a1a1a;
+  color: #fff;
+}
+.nextBtnActive:hover { background: #333; }
+
+.skipBack {
+  margin-top: 16px;
+  background: none;
+  border: none;
+  font-size: 13px;
+  color: #aaa;
+  cursor: pointer;
+  font-family: inherit;
+  min-height: 24px;
+}
+.skipBack:hover { color: #555; }
+
+/* ── Result ── */
+.resultWrap {
+  width: 100%;
+  max-width: 720px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.resultHeader {
+  text-align: center;
+  margin-bottom: 40px;
+}
+.resultEyebrow {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d6a4f;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+.resultTitle {
+  font-size: clamp(26px, 4vw, 36px);
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.highlight { color: #c17f3a; }
+.resultSub { font-size: 14px; color: #888; }
+
+.resultCards {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 32px;
+}
+
+.resultCard {
+  background: #fff;
+  border: 1px solid #e8e3dc;
+  border-radius: 20px;
+  padding: 28px;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+.resultCard:hover { box-shadow: 0 6px 24px rgba(0,0,0,0.08); }
+.resultCardTop {
+  border-color: #c17f3a;
+  border-width: 2px;
+}
+
+.topBadge {
+  position: absolute;
+  top: -12px;
+  left: 24px;
+  background: #c17f3a;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: 0.03em;
+}
+
+.cardHead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.cardRegion {
+  font-size: 12px;
+  color: #888;
+  margin-bottom: 4px;
+}
+.cardName {
+  font-size: 22px;
+  font-weight: 700;
+  color: #1a1a1a;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+.cardDesc {
+  font-size: 13px;
+  color: #555;
+  line-height: 1.6;
+}
+
+.matchBadge {
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  flex-shrink: 0;
+  background: #f9f7f4;
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+.matchNum { font-size: 32px; font-weight: 800; color: #1a1a1a; }
+.matchPct { font-size: 14px; font-weight: 600; color: #888; }
+
+.matchBar {
+  height: 5px;
+  background: #f0ece6;
+  border-radius: 3px;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.matchBarFill {
+  height: 100%;
+  background: linear-gradient(90deg, #c17f3a, #e8a45a);
+  border-radius: 3px;
+  transition: width 0.8s ease;
+}
+
+.tagRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+.tag {
+  font-size: 12px;
+  font-weight: 500;
+  background: #f5f0e8;
+  color: #6b4c2a;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.scoreGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  padding: 20px;
+  background: #f9f7f4;
+  border-radius: 14px;
+  margin-bottom: 20px;
+}
+
+.scoreSection {}
+.scoreSectionLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: #888;
+  margin-bottom: 10px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+.scoreRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 7px;
+}
+.scoreLabel {
+  font-size: 11px;
+  color: #555;
+  width: 68px;
+  flex-shrink: 0;
+}
+.scoreMini {
+  flex: 1;
+  height: 4px;
+  background: #e0dbd3;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.scoreMiniBar {
+  height: 100%;
+  background: #1a1a1a;
+  border-radius: 2px;
+}
+.scoreNum {
+  font-size: 11px;
+  font-weight: 600;
+  color: #888;
+  width: 24px;
+  text-align: right;
+}
+
+.cardActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.priceRange { font-size: 13px; color: #888; }
+.viewBtn {
+  background: #1a1a1a;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px 20px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+.viewBtn:hover { background: #333; }
+
+.restartBtn {
+  background: none;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 12px 32px;
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, color 0.15s;
+}
+.restartBtn:hover { border-color: #999; color: #333; }
+
+@media (max-width: 600px) {
+  .page { padding: 32px 16px 60px; }
+  .scoreGrid { grid-template-columns: 1fr; }
+  .cardHead { flex-direction: column; }
+  .matchBadge { align-self: flex-start; }
+}

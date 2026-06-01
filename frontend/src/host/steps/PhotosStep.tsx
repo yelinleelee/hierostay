@@ -1,60 +1,69 @@
-import { useRef } from "react";
-import { ImagePlus, X } from "lucide-react";
-import { useRegister } from "../RegisterContext";
-import { StepNav } from "../StepNav";
+import { useEffect, useMemo, useRef } from 'react';
+import styles from '../Register.module.css';
+import { useRegister } from '../RegisterContext';
 
 export function PhotosStep() {
   const { data, addPhotos, removePhoto } = useRegister();
-  const inputRef = useRef<HTMLInputElement | null>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  function onPick(e: React.ChangeEvent<HTMLInputElement>) {
-    const files = Array.from(e.target.files ?? []);
-    addPhotos(files);
-    e.target.value = "";
+  const previews = useMemo(
+    () => data.photos.map(file => URL.createObjectURL(file)),
+    [data.photos]
+  );
+  useEffect(() => () => previews.forEach(URL.revokeObjectURL), [previews]);
+
+  function handleFiles(files: FileList | null) {
+    if (!files?.length) return;
+    const arr = Array.from(files).filter(f => f.type.startsWith('image/'));
+    if (arr.length) addPhotos(arr);
   }
 
   return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">사진</h1>
-        <p className="mt-1 text-sm text-slate-500">최대 10장까지 업로드할 수 있어요.</p>
-      </header>
+    <div className={styles.stepPage}>
+      <h1 className={styles.stepTitle}>숙소 사진을 추가해주세요</h1>
+      <p className={styles.stepDesc}>최소 1장 이상의 사진을 업로드해주세요. 첫 번째 사진이 대표 사진으로 사용됩니다.</p>
 
-      <input
-        ref={inputRef}
-        type="file"
-        accept="image/*"
-        multiple
-        hidden
-        onChange={onPick}
-      />
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {data.photos.map((file, i) => (
-          <div key={i} className="group relative aspect-square overflow-hidden rounded-md bg-slate-100">
-            <img src={URL.createObjectURL(file)} alt="" className="h-full w-full object-cover" />
-            <button
-              type="button"
-              onClick={() => removePhoto(i)}
-              className="absolute right-1 top-1 rounded-full bg-black/50 p-1 text-white opacity-0 transition group-hover:opacity-100"
-              aria-label="remove"
-            >
-              <X className="size-3.5" />
-            </button>
-          </div>
-        ))}
-        {data.photos.length < 10 && (
-          <button
-            type="button"
-            onClick={() => inputRef.current?.click()}
-            className="flex aspect-square items-center justify-center rounded-md border-2 border-dashed border-slate-300 text-slate-500 hover:border-slate-400 hover:text-slate-700"
-          >
-            <ImagePlus className="size-6" />
-          </button>
-        )}
+      <div
+        className={styles.photoDrop}
+        onClick={() => inputRef.current?.click()}
+        onDragOver={e => e.preventDefault()}
+        onDrop={e => { e.preventDefault(); handleFiles(e.dataTransfer.files); }}
+      >
+        <div className={styles.photoDropIcon}>
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2" /><circle cx="8.5" cy="8.5" r="1.5" />
+            <polyline points="21 15 16 10 5 21" />
+          </svg>
+        </div>
+        <div className={styles.photoDropTitle}>사진을 여기에 드래그하거나 클릭하여 업로드</div>
+        <div className={styles.photoDropDesc}>JPG, PNG, WEBP (최대 10MB)</div>
+        <input
+          ref={inputRef}
+          type="file"
+          accept="image/*"
+          multiple
+          style={{ display: 'none' }}
+          onChange={e => { handleFiles(e.target.files); e.target.value = ''; }}
+        />
       </div>
 
-      <StepNav back="../location" next="../price" disabled={data.photos.length === 0} />
-    </section>
+      {previews.length > 0 && (
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12, marginTop: 24 }}>
+          {previews.map((src, i) => (
+            <div key={src} style={{ position: 'relative', aspectRatio: '1 / 1', borderRadius: 10, overflow: 'hidden', background: '#eee' }}>
+              <img src={src} alt={`업로드 ${i + 1}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+              {i === 0 && (
+                <span style={{ position: 'absolute', top: 8, left: 8, background: 'var(--dark)', color: 'white', fontSize: 11, fontWeight: 600, padding: '4px 8px', borderRadius: 6 }}>대표</span>
+              )}
+              <button
+                onClick={() => removePhoto(i)}
+                style={{ position: 'absolute', top: 8, right: 8, width: 28, height: 28, borderRadius: '50%', border: 'none', background: 'rgba(0,0,0,0.6)', color: 'white', cursor: 'pointer', fontSize: 16, lineHeight: 1 }}
+                aria-label="삭제"
+              >×</button>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

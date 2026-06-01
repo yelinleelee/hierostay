@@ -1,37 +1,35 @@
-import { PROPERTY_TYPE_OPTIONS, useRegister } from "../RegisterContext";
-import { StepNav } from "../StepNav";
+import styles from '../Register.module.css';
+import { useRegister } from '../RegisterContext';
+import type { PropertyType } from '../../types/property';
+
+const TYPES: { icon: string; label: string; desc: string; value: PropertyType }[] = [
+  { icon: '🏠', label: '단독주택', desc: '독채 주택 전체',       value: 'house' },
+  { icon: '🏢', label: '아파트',   desc: '도심형 아파트',         value: 'apartment' },
+  { icon: '🏡', label: '별장/펜션', desc: '자연 속 독립 공간',     value: 'villa' },
+  { icon: '🏯', label: '한옥',     desc: '전통 한국 건축',         value: 'unique' },
+  { icon: '🛖', label: '독채 캐빈', desc: '숲속 통나무집',         value: 'guesthouse' },
+  { icon: '🏨', label: '부티크 호텔', desc: '감성 소규모 호텔',   value: 'hotel' },
+];
 
 export function TypeStep() {
   const { data, setField } = useRegister();
-
   return (
-    <section className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-semibold tracking-tight">어떤 숙소를 등록하시나요?</h1>
-        <p className="mt-1 text-sm text-slate-500">유형을 하나 선택해주세요.</p>
-      </header>
-
-      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
-        {PROPERTY_TYPE_OPTIONS.map((opt) => {
-          const active = data.type === opt.value;
-          return (
-            <button
-              key={opt.value}
-              type="button"
-              onClick={() => setField("type", opt.value)}
-              className={`rounded-lg border p-4 text-left text-sm transition ${
-                active
-                  ? "border-slate-900 bg-slate-900 text-white"
-                  : "border-slate-200 hover:border-slate-300"
-              }`}
-            >
-              {opt.label}
-            </button>
-          );
-        })}
+    <div className={styles.stepPage}>
+      <h1 className={styles.stepTitle}>어떤 유형의 숙소를 등록하시나요?</h1>
+      <p className={styles.stepDesc}>숙소 유형을 선택해주세요.</p>
+      <div className={styles.typeGrid}>
+        {TYPES.map(t => (
+          <div
+            key={t.value}
+            className={`${styles.typeCard} ${data.type === t.value ? styles.typeCardSelected : ''}`}
+            onClick={() => setField('type', t.value)}
+          >
+            <div className={styles.typeIcon}>{t.icon}</div>
+            <div className={styles.typeLabel}>{t.label}</div>
+            <div className={styles.typeDesc}>{t.desc}</div>
+          </div>
+        ))}
       </div>
-
-      <StepNav next="../concept" disabled={!data.type} />
-    </section>
+    </div>
   );
 }

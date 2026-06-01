@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="600" viewBox="0 0 800 600">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#b8afa4"/>
+      <stop offset="100%" style="stop-color:#8c7f72"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#bg)"/>
+  <line x1="400" y1="0" x2="400" y2="600" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <line x1="0" y1="300" x2="800" y2="300" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+  <rect x="340" y="220" width="120" height="90" rx="4" fill="none" stroke="rgba(255,255,255,0.25)" stroke-width="1.5"/>
+  <rect x="358" y="310" width="84" height="2" fill="rgba(255,255,255,0.2)"/>
+  <text x="400" y="358" font-family="'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif" font-size="18" font-weight="600" fill="rgba(255,255,255,0.75)" text-anchor="middle">오픈레터하우스</text>
+  <text x="400" y="382" font-family="Arial, sans-serif" font-size="12" letter-spacing="3" fill="rgba(255,255,255,0.4)" text-anchor="middle">OPEN LETTER HOUSE</text>
+</svg>
