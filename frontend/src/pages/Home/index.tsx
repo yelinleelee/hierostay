@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSearchModal } from '../../context/SearchModalContext';
 import { StayCard, propertyToCardData, type StayCardData } from '../../components/common/StayCard';
@@ -15,29 +15,6 @@ const GAMES = [
 
 const CARD_COLORS = ['cp-1', 'cp-2', 'cp-3', 'cp-4', 'cp-5', 'cp-6'];
 
-const INFO_CARDS = [
-  {
-    title: '오픈레터하우스를 소개합니다',
-    desc: '로컬 문화와 함께하는 진짜 여행의 시작',
-    bg: '#f5f0e8',
-    emoji: '✉️',
-    link: '/about',
-  },
-  {
-    title: '숙소 관리가 귀찮다면?',
-    desc: '오픈레터 관리 구독 서비스 — 숙소 운영을 우리에게 맡겨보세요',
-    bg: '#eeebf8',
-    emoji: '🏡',
-    link: '/host/hiero',
-  },
-  {
-    title: '매물부터 리모델링까지',
-    desc: '숙소 컨설팅 서비스 — 매물 발굴부터 리모델링까지 직접 공급해드려요',
-    bg: '#e8f0f8',
-    emoji: '🔑',
-    link: '/host/launching',
-  },
-];
 
 
 interface ConceptSectionProps {
