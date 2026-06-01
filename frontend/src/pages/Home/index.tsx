@@ -39,53 +39,6 @@ const INFO_CARDS = [
   },
 ];
 
-function InfoSlider() {
-  const navigate = useNavigate();
-  const trackRef = useRef<HTMLDivElement>(null);
-  const [idx, setIdx] = useState(0);
-  const total = INFO_CARDS.length;
-
-  function slide(dir: 1 | -1) {
-    const next = Math.max(0, Math.min(total - 1, idx + dir));
-    setIdx(next);
-    if (trackRef.current) {
-      const card = trackRef.current.children[next] as HTMLElement;
-      card?.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
-    }
-  }
-
-  return (
-    <div className={styles.infoSection}>
-      <div className={styles.infoHeader}>
-        <h2 className={styles.infoTitle}>지금 확인해보세요</h2>
-        <div className={styles.infoArrows}>
-          <button className={styles.arrowBtn} onClick={() => slide(-1)} disabled={idx === 0}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="15 18 9 12 15 6"/></svg>
-          </button>
-          <button className={styles.arrowBtn} onClick={() => slide(1)} disabled={idx === total - 1}>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6"/></svg>
-          </button>
-        </div>
-      </div>
-      <div className={styles.infoTrack} ref={trackRef}>
-        {INFO_CARDS.map((card) => (
-          <div
-            key={card.title}
-            className={styles.infoCard}
-            style={{ background: card.bg }}
-            onClick={() => card.link && navigate(card.link)}
-          >
-            <div className={styles.infoCardText}>
-              <p className={styles.infoCardTitle}>{card.title}</p>
-              <p className={styles.infoCardDesc}>{card.desc}</p>
-            </div>
-            <span className={styles.infoCardEmoji}>{card.emoji}</span>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-}
 
 interface ConceptSectionProps {
   title: string;
@@ -206,7 +159,6 @@ function HostModal({ onClose }: { onClose: () => void }) {
 
 export function HomePage() {
   const { open } = useSearchModal();
-  const navigate = useNavigate();
   const [properties, setProperties] = useState<Property[]>([]);
   const [gameUrl, setGameUrl] = useState<string | null>(null);
   const [hostModalOpen, setHostModalOpen] = useState(false);
